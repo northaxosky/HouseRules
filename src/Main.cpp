@@ -5,6 +5,37 @@
 
 namespace
 {
+	class MenuSink :
+		public RE::BSTEventSink<RE::MenuOpenCloseEvent>
+	{
+	public:
+		static MenuSink* GetSingleton()
+		{
+			static MenuSink instance;
+			return std::addressof(instance);
+		}
+
+		RE::BSEventNotifyControl ProcessEvent(
+			const RE::MenuOpenCloseEvent&                 a_event,
+			RE::BSTEventSource<RE::MenuOpenCloseEvent>*) override
+		{
+			if (a_event.menuName == "PauseMenu" && !a_event.opening) {
+				MCM::Settings::Update();
+			}
+			return RE::BSEventNotifyControl::kContinue;
+		}
+	};
+
+	void RegisterMenuSink()
+	{
+		const auto ui = RE::UI::GetSingleton();
+		if (!ui) {
+			REX::WARN("UI singleton unavailable; MCM live-reload disabled");
+			return;
+		}
+		ui->RegisterSink<RE::MenuOpenCloseEvent>(MenuSink::GetSingleton());
+	}
+
 	void MessageHandler(F4SE::MessagingInterface::Message* a_msg)
 	{
 		if (!a_msg) {
@@ -14,6 +45,9 @@ namespace
 		switch (a_msg->type) {
 			case F4SE::MessagingInterface::kGameDataReady:
 				MCM::Settings::Update();
+				break;
+			case F4SE::MessagingInterface::kGameLoaded:
+				RegisterMenuSink();
 				break;
 			default:
 				break;
