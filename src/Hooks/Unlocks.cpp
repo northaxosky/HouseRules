@@ -9,6 +9,6 @@ namespace Hooks::Unlocks
 	void Install()
 	{
 		// TODO(install-hooks): per-restriction GetDifficultyLevel hooks.
-		spdlog::info("Hooks::Unlocks::Install (stub)");
+		REX::INFO("Hooks::Unlocks::Install (stub)");
 	}
 }

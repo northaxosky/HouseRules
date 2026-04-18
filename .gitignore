@@ -19,3 +19,6 @@ Thumbs.db
 
 # user-local reference files
 .local/
+
+# clangd compile database (generated, contains local paths)
+compile_commands.json

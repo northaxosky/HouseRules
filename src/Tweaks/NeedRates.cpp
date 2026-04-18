@@ -18,7 +18,7 @@ namespace Tweaks::NeedRates
 
 			const auto setting = dataHandler->LookupForm<RE::TESGlobal>(0, a_name);
 			if (!setting) {
-				spdlog::warn("NeedRates: GMST '{}' not found", a_name);
+				REX::WARN("NeedRates: GMST '{}' not found", a_name);
 				return;
 			}
 
@@ -28,12 +28,12 @@ namespace Tweaks::NeedRates
 
 	void Apply()
 	{
-		if (!MCM::Settings::General::bEnabled) {
+		if (!MCM::Settings::General::bEnabled.GetValue()) {
 			return;
 		}
 
 		// TODO(wire-gmsts): resolve actual hunger/thirst/sleep GMSTs and apply.
-		spdlog::info(
+		REX::INFO(
 			"NeedRates::Apply hunger={} thirst={} sleep={}",
 			MCM::Settings::NeedRates::fHungerRate.GetValue(),
 			MCM::Settings::NeedRates::fThirstRate.GetValue(),
