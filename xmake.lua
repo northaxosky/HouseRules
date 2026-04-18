@@ -1,6 +1,9 @@
 -- set minimum xmake version
 set_xmakever("2.9.4")
 
+-- enable REX::INI before pulling in CommonLibF4
+set_config("commonlib_ini", true)
+
 -- include CommonLibF4 (default: submodule at lib/commonlibf4; override with COMMONLIBF4_PATH env var)
 local commonlib_path = os.getenv("COMMONLIBF4_PATH") or "lib/commonlibf4"
 includes(commonlib_path)
