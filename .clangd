@@ -36,10 +36,10 @@ CompileFlags:
         - /W3
         - /bigobj
         - /permissive-
-        - /EHsc
         - /nologo
     Add:
         - /std:c++latest
+        - /EHsc
         - /Zc:preprocessor
         - -Wno-unknown-warning-option
         - -Wno-microsoft-enum-value
