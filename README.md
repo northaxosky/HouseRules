@@ -1,10 +1,10 @@
 # Survival Architect
 
-An F4SE plugin that curates and configures Fallout 4's Survival mode through a single MCM menu. A clean-room reimplementation combining features from Unlimited Survival Mode, Survival Options, Survival Configuration Menu, and BakaSurvivalSettings.
+An F4SE plugin that configures Fallout 4's Survival mode through a single MCM menu. Selectively unlock vanilla Survival restrictions (fast travel, console, saves, compass, etc.) and tune need rates (hunger, thirst, sleep) without leaving Survival difficulty.
 
 ## Status
 
-v0.1 — scaffolding. Unlocks and need-rate sliders wired end-to-end first; SCM's larger surface (disease, adrenaline, weight-based food/drink) deferred.
+v0.1 — scaffolding in place; unlocks and need-rate sliders coming next.
 
 ## Requirements
 
@@ -14,7 +14,7 @@ v0.1 — scaffolding. Unlocks and need-rate sliders wired end-to-end first; SCM'
 
 ## Build
 
-Requires [xmake](https://xmake.io) and [Dear Modding's CommonLibF4](https://github.com/doodlum/CommonLibF4) checked out locally (default: `C:/Utilities/CommonLibF4`, override with `COMMONLIBF4_PATH` env var).
+Requires [xmake](https://xmake.io) and a local checkout of CommonLibF4 (default path `C:/Utilities/CommonLibF4`, override with the `COMMONLIBF4_PATH` env var).
 
 ```sh
 xmake config -m releasedbg

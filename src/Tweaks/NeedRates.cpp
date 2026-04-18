@@ -32,10 +32,7 @@ namespace Tweaks::NeedRates
 			return;
 		}
 
-		// TODO: confirm the correct GMST names vs globals; Survival Options exposed
-		// fSurvivalNeedHunger / fSurvivalNeedThirst / fSurvivalNeedSleep. We'll likely
-		// need GameSettingCollection::GetSetting for the f* ones and TESGlobal lookup
-		// only for globals. This stub logs intent; wire up properly in follow-up.
+		// TODO(wire-gmsts): resolve actual hunger/thirst/sleep GMSTs and apply.
 		spdlog::info(
 			"NeedRates::Apply hunger={} thirst={} sleep={}",
 			MCM::Settings::NeedRates::fHungerRate.GetValue(),
