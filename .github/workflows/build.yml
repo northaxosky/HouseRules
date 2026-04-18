@@ -1,0 +1,51 @@
+name: Build
+
+on:
+    push:
+        branches: [master]
+    pull_request:
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: windows-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                  submodules: recursive
+
+            - name: Setup xmake
+              uses: xmake-io/github-action-setup-xmake@v1
+              with:
+                  xmake-version: 2.9.4
+
+            - name: Cache xmake packages
+              uses: actions/cache@v4
+              with:
+                  path: |
+                      ~/AppData/Local/.xmake/packages
+                  key: xmake-packages-${{ runner.os }}-${{ hashFiles('xmake-requires.lock') }}
+                  restore-keys: |
+                      xmake-packages-${{ runner.os }}-
+
+            - name: Configure
+              run: xmake f -p windows -a x64 -m releasedbg -y
+
+            - name: Build
+              run: xmake build
+
+            - name: Stage release layout
+              shell: pwsh
+              run: |
+                  $plugins = "artifact/Data/F4SE/Plugins"
+                  New-Item -ItemType Directory -Path $plugins -Force | Out-Null
+                  Copy-Item build/windows/x64/releasedbg/SurvivalArchitect.dll $plugins
+                  Copy-Item -Recurse Data/MCM artifact/Data/
+
+            - name: Upload artifact
+              uses: actions/upload-artifact@v4
+              with:
+                  name: SurvivalArchitect-${{ github.sha }}
+                  path: artifact
+                  if-no-files-found: error
