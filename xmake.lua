@@ -1,8 +1,8 @@
 -- set minimum xmake version
 set_xmakever("2.9.4")
 
--- include Dear Modding's CommonLibF4 (override with COMMONLIBF4_PATH env var)
-local commonlib_path = os.getenv("COMMONLIBF4_PATH") or "C:/Utilities/CommonLibF4"
+-- include CommonLibF4 (default: submodule at lib/commonlibf4; override with COMMONLIBF4_PATH env var)
+local commonlib_path = os.getenv("COMMONLIBF4_PATH") or "lib/commonlibf4"
 includes(commonlib_path)
 
 -- set project
