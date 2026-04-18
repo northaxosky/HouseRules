@@ -1,0 +1,15 @@
+# enforce LF line endings across platforms
+* text=auto eol=lf
+
+# windows-only build scripts
+*.bat    text eol=crlf
+*.cmd    text eol=crlf
+*.ps1    text eol=crlf
+
+# binaries
+*.dll    binary
+*.pdb    binary
+*.esp    binary
+*.esl    binary
+*.esm    binary
+*.ba2    binary

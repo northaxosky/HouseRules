@@ -1,0 +1,24 @@
+# xmake / build artifacts
+build/
+.xmake/
+vsxmake*/
+*.pdb
+*.idb
+*.ilk
+
+# VS / IDE
+.vs/
+.vscode/
+*.sln
+*.vcxproj*
+*.user
+
+# OS
+Thumbs.db
+.DS_Store
+
+# local reference mods (installed copies of SO / SCM)
+.local/
+
+# package manager local state
+xmake-requires.lock
