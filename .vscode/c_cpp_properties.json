@@ -26,32 +26,6 @@
                 "SPDLOG_WCHAR_TO_UTF8_SUPPORT",
                 "SI_CONVERT_WIN32"
             ]
-        },
-        {
-            "name": "SurvivalArchitect (Linux, edit-only)",
-            "intelliSenseMode": "linux-gcc-x64",
-            "compilerPath": "/usr/bin/g++",
-            "cStandard": "c17",
-            "cppStandard": "c++23",
-            "includePath": [
-                "${workspaceFolder}/src",
-                "${workspaceFolder}/lib/commonlibf4/include",
-                "${workspaceFolder}/lib/commonlibf4/lib/commonlib-shared/include"
-            ],
-            "defines": [
-                "NDEBUG",
-                "WIN32",
-                "_WINDOWS",
-                "_USRDLL",
-                "WIN32_LEAN_AND_MEAN",
-                "NOMINMAX",
-                "COMMONLIB_OPTION_INI=1",
-                "COMMONLIB_RUNTIMECOUNT=3",
-                "SPDLOG_COMPILED_LIB",
-                "SPDLOG_USE_STD_FORMAT",
-                "SPDLOG_WCHAR_TO_UTF8_SUPPORT",
-                "SI_CONVERT_WIN32"
-            ]
         }
     ],
     "version": 4
