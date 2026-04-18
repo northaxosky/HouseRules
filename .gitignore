@@ -8,7 +8,10 @@ vsxmake*/
 
 # VS / IDE
 .vs/
-.vscode/
+.vscode/*
+!.vscode/c_cpp_properties.json
+!.vscode/extensions.json
+!.vscode/settings.json
 *.sln
 *.vcxproj*
 *.user
