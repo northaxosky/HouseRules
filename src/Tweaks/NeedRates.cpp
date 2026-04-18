@@ -4,25 +4,36 @@
 
 #include "Settings.h"
 
+#include <unordered_map>
+
 namespace Tweaks::NeedRates
 {
 	namespace
 	{
-		// TODO: cache the GMST pointers on first apply rather than re-looking them up.
-		void SetGameSetting(const char* a_name, float a_value)
+		// Baseline GMST values captured on first Apply(); subsequent applies
+		// multiply this snapshot rather than the already-modified engine value.
+		std::unordered_map<std::string_view, float> g_snapshot;
+
+		void ApplyRate(std::string_view a_name, float a_multiplier)
 		{
-			const auto dataHandler = RE::TESDataHandler::GetSingleton();
-			if (!dataHandler) {
+			const auto collection = RE::GameSettingCollection::GetSingleton();
+			if (!collection) {
+				REX::WARN("NeedRates: GameSettingCollection unavailable");
 				return;
 			}
 
-			const auto setting = dataHandler->LookupForm<RE::TESGlobal>(0, a_name);
+			const auto setting = collection->GetSetting(a_name);
 			if (!setting) {
 				REX::WARN("NeedRates: GMST '{}' not found", a_name);
 				return;
 			}
 
-			setting->value = a_value;
+			const auto [it, inserted] = g_snapshot.try_emplace(a_name, setting->GetFloat());
+			const auto base = it->second;
+			const auto next = base * a_multiplier;
+			setting->SetFloat(next);
+
+			REX::INFO("NeedRates: {} base={} mult={} -> {}", a_name, base, a_multiplier, next);
 		}
 	}
 
@@ -32,11 +43,8 @@ namespace Tweaks::NeedRates
 			return;
 		}
 
-		// TODO(wire-gmsts): resolve actual hunger/thirst/sleep GMSTs and apply.
-		REX::INFO(
-			"NeedRates::Apply hunger={} thirst={} sleep={}",
-			MCM::Settings::NeedRates::fHungerRate.GetValue(),
-			MCM::Settings::NeedRates::fThirstRate.GetValue(),
-			MCM::Settings::NeedRates::fSleepRate.GetValue());
+		ApplyRate("fSurvivalNeedHungerRateBase", MCM::Settings::NeedRates::fHungerRate.GetValue());
+		ApplyRate("fSurvivalNeedThirstRateBase", MCM::Settings::NeedRates::fThirstRate.GetValue());
+		ApplyRate("fSurvivalNeedSleepRateBase", MCM::Settings::NeedRates::fSleepRate.GetValue());
 	}
 }
