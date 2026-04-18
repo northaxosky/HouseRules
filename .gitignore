@@ -17,8 +17,5 @@ vsxmake*/
 Thumbs.db
 .DS_Store
 
-# local reference mods (installed copies of SO / SCM)
+# user-local reference files
 .local/
-
-# package manager local state
-xmake-requires.lock
