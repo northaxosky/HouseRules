@@ -24,13 +24,10 @@ add_rules("plugin.vsxmake.autoupdate")
 
 -- targets
 target("SurvivalArchitect")
-    add_deps("commonlibf4")
+    set_kind("shared")
+    set_arch("x64")
 
-    add_rules("commonlibf4.plugin", {
-        name = "SurvivalArchitect",
-        author = "Kuz",
-        description = "Curated survival mode configuration for Fallout 4"
-    })
+    add_deps("commonlibf4")
 
     add_files("src/**.cpp")
     add_headerfiles("src/**.h")
