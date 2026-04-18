@@ -10,7 +10,6 @@ vsxmake*/
 .vs/
 .vscode/*
 !.vscode/c_cpp_properties.json
-!.vscode/extensions.json
 !.vscode/settings.json
 *.sln
 *.vcxproj*
@@ -23,5 +22,5 @@ Thumbs.db
 # user-local reference files
 .local/
 
-# clangd compile database (generated, contains local paths)
+# IntelliSense compile database (generated, contains local paths)
 compile_commands.json

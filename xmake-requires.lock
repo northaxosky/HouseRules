@@ -1,4 +1,46 @@
 {
+    ["linux|x86_64"] = {
+        ["cmake#f56260b5"] = {
+            repo = {
+                branch = "master",
+                commit = "5d884df7466fe56373350f6e6c9ec1f2d8f3259e",
+                url = "https://github.com/xmake-io/xmake-repo.git"
+            },
+            version = "4.2.3"
+        },
+        ["convertutf#f56260b5"] = {
+            repo = {
+                branch = "master",
+                commit = "5d884df7466fe56373350f6e6c9ec1f2d8f3259e",
+                url = "https://github.com/xmake-io/xmake-repo.git"
+            },
+            version = "v1.0.1"
+        },
+        ["ninja#f56260b5"] = {
+            repo = {
+                branch = "master",
+                commit = "5d884df7466fe56373350f6e6c9ec1f2d8f3259e",
+                url = "https://github.com/xmake-io/xmake-repo.git"
+            },
+            version = "v1.13.1"
+        },
+        ["simpleini v4.25#f56260b5"] = {
+            repo = {
+                branch = "master",
+                commit = "5d884df7466fe56373350f6e6c9ec1f2d8f3259e",
+                url = "https://github.com/xmake-io/xmake-repo.git"
+            },
+            version = "v4.25"
+        },
+        ["spdlog v1.16.0#09c8c173"] = {
+            repo = {
+                branch = "master",
+                commit = "5d884df7466fe56373350f6e6c9ec1f2d8f3259e",
+                url = "https://github.com/xmake-io/xmake-repo.git"
+            },
+            version = "v1.16.0"
+        }
+    },
     __meta__ = {
         version = "1.0"
     },
