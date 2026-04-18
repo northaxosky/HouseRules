@@ -1,4 +1,3 @@
 {
-    "C_Cpp.intelliSenseEngine": "default",
-    "clangd.enable": false
+    "C_Cpp.intelliSenseEngine": "default"
 }
