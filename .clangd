@@ -44,3 +44,5 @@ CompileFlags:
         - -Wno-unknown-warning-option
         - -Wno-microsoft-enum-value
         - -Wno-pragma-pack
+        - -Wno-c++11-narrowing
+        - -Wno-c++11-narrowing-const-reference
