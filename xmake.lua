@@ -1,5 +1,5 @@
--- set minimum xmake version
-set_xmakever("2.9.4")
+-- set minimum xmake version (commonlibf4 requires 3.0.0+)
+set_xmakever("3.0.0")
 
 -- enable REX::INI before pulling in CommonLibF4
 set_config("commonlib_ini", true)
