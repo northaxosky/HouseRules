@@ -1,0 +1,40 @@
+CompileFlags:
+    Remove:
+        - /FI*
+        - -FI*
+        - /Yu*
+        - -Yu*
+        - /Fp*
+        - -Fp*
+        - /std:c++23preview
+        - -std:c++23preview
+        - /std:c++latest
+        - -std:c++latest
+        - /utf-8
+        - /external:*
+        - -external:*
+        - /diagnostics:*
+        - /MD
+        - /MT
+        - /Zi
+        - /FS
+        - /EHsc
+        - /permissive-
+        - /cgthreads*
+        - /wd*
+        - /we*
+        - /Zc:*
+        - /fp:*
+        - /guard:*
+        - /bigobj
+        - /opt:*
+        - /O2
+        - /O1
+        - /Ob*
+        - /GL
+        - /W4
+        - /nologo
+    Add:
+        - -std=c++23
+        - -Wno-unknown-warning-option
+        - -Wno-microsoft
