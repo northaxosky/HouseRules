@@ -11,22 +11,42 @@ namespace Hooks::Unlocks
 {
 	namespace
 	{
-		using GDLHook = REL::Hook<RE::DifficultyLevel(RE::PlayerCharacter*)>;
-		using VoidPCHook = REL::Hook<void(RE::PlayerCharacter*)>;
+		using GDLFn = RE::DifficultyLevel(RE::PlayerCharacter*);
+		using GDLHook = REL::Hook<GDLFn>;
 
-		// Hooks live for the plugin's lifetime — store as base pointers so we
-		// can hold different signatures in the same container.
+		using VoidPCFn = void(RE::PlayerCharacter*);
+		using VoidPCHook = REL::Hook<VoidPCFn>;
+
 		std::vector<std::unique_ptr<REL::HookObject>> g_hooks;
 
-		template <class Hook, class Fn>
-		void AddHook(std::uint64_t a_fn_id, std::size_t a_offset, Fn* a_fn, const char* a_label)
+		template <class HookT, class FnT>
+		void AddHook(std::uint64_t a_id, std::size_t a_offset, FnT* a_fn, const char* a_label)
 		{
-			auto hook = std::make_unique<Hook>(REL::ID(a_fn_id), a_offset, a_fn);
+			auto hook = std::make_unique<HookT>(REL::ID(a_id), a_offset, a_fn);
 			const bool init_ok   = hook->Init();
 			const bool enable_ok = hook->Enable();
 			REX::INFO("Unlocks: hook {} (id={} +0x{:X}) init={} enable={}",
-				a_label, a_fn_id, a_offset, init_ok, enable_ok);
+				a_label, a_id, a_offset, init_ok, enable_ok);
 			g_hooks.push_back(std::move(hook));
+		}
+
+		// Pick the (id, offset) for the current runtime. NG and AE share values in
+		// practice (verified by our AE scan matching Baka's NG offsets 1:1 for every
+		// hook). An id of 0 means "skip on this runtime" — a call site that exists
+		// on NG/AE but not OG, or vice versa.
+		bool SelectSite(
+			std::uint64_t og_id, std::uint64_t ng_id,
+			std::size_t og_off, std::size_t ng_off,
+			std::uint64_t& out_id, std::size_t& out_off)
+		{
+			using RT = REL::Module::Runtime;
+			switch (REL::Module::GetRuntimeIndex()) {
+				case RT::kOG: out_id = og_id; out_off = og_off; break;
+				case RT::kNG:
+				case RT::kAE: out_id = ng_id; out_off = ng_off; break;
+				default:      return false;
+			}
+			return out_id != 0;
 		}
 
 		RE::DifficultyLevel RealDifficulty(RE::PlayerCharacter* a_this)
@@ -36,9 +56,6 @@ namespace Hooks::Unlocks
 			return real(a_this);
 		}
 
-		// When the matching MCM toggle is on, return kVeryEasy so the game's
-		// Survival gate treats the current session as non-Survival for this
-		// particular call site; otherwise fall through to the real difficulty.
 		bool ShouldSpoof(bool a_toggle)
 		{
 			return MCM::Settings::General::bEnabled.GetValue() && a_toggle;
@@ -100,10 +117,6 @@ namespace Hooks::Unlocks
 				: RealDifficulty(a_this);
 		}
 
-		// RequestQueueDoorAutosave replacement. In vanilla, this fn unconditionally
-		// queues a door-autosave unless in Survival. We intercept the call and only
-		// queue when the user wants autosaves (bSaveAuto ON) or the game isn't in
-		// Survival at all.
 		void Replace_RequestQueueDoorAutosave(RE::PlayerCharacter* a_this)
 		{
 			if (!a_this) {
@@ -119,62 +132,78 @@ namespace Hooks::Unlocks
 			}
 		}
 
-		void InstallOG()
+		struct GDLSite
 		{
-			struct Site
-			{
-				std::uint64_t fn_id;
-				std::size_t   offset;
-				RE::DifficultyLevel (*spoof)(RE::PlayerCharacter*);
-				const char* label;
-			};
+			std::uint64_t og_id;
+			std::uint64_t ng_id;  // AE == NG in practice
+			std::size_t   og_off;
+			std::size_t   ng_off;  // AE == NG in practice
+			GDLFn*        spoof;
+			const char*   label;
+		};
 
-			// OG 1.10.163 hook sites. See .local/findings/og-hook-sites.md.
-			const Site sites[] = {
-				{ 927099,  0x20A, &Spoof_Console,          "Console / MenuOpenHandler" },
+		struct VoidPCSite
+		{
+			std::uint64_t og_id;
+			std::uint64_t ng_id;
+			std::size_t   og_off;
+			std::size_t   ng_off;
+			VoidPCFn*     fn;
+			const char*   label;
+		};
 
-				{ 1470086, 0x06C, &Spoof_SaveSelf,         "SaveSelf / QuickSaveLoadHandler" },
-				{ 425422,  0x047, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::CheckIfSaveLoadPossible" },
-				{ 1330449, 0x0C1, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::InitMainList" },
+		// OG IDs/offsets: our scan of the unpacked 1.10.163 Fallout4.exe,
+		// cross-referenced with IDA name-port JSON.
+		// NG/AE IDs/offsets: Baka's source (REL::ID + offset), confirmed against
+		// our AE 1.11.191 scan. NG and AE match exactly for every hook below.
+		// An id of 0 means "skip on this runtime" (call site doesn't exist there).
+		const GDLSite kGdlSites[] = {
+			{ 927099,  2249425, 0x20A, 0x1AA, &Spoof_Console,          "Console / MenuOpenHandler" },
 
-				{ 712982,  0x31E, &Spoof_FastTravel,       "FastTravel / PipboyMenu::PipboyMenu" },
-				{ 1327120, 0x013, &Spoof_FastTravel,       "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
+			{ 1470086, 2249427, 0x06C, 0x06C, &Spoof_SaveSelf,         "SaveSelf / QuickSaveLoadHandler" },
+			{ 425422,  2223965, 0x047, 0x04D, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::CheckIfSaveLoadPossible" },
+			{ 1330449, 2223964, 0x0C1, 0x0C6, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::InitMainList" },
 
-				{ 1158548, 0x04E, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor" },
-				{ 98443,   0x193, &Spoof_SaveAuto,         "SaveAuto / WorkshopMenu dtor" },
-				{ 1231000, 0x18A, &Spoof_SaveAuto,         "SaveAuto / PipboyManager::OnPipboyCloseAnim" },
-				{ 146861,  0x678, &Spoof_SaveAuto,         "SaveAuto / PlayerCharacter::HandlePositionPlayerRequest (autosave on arrival)" },
+			{ 712982,  2224179, 0x31E, 0x34C, &Spoof_FastTravel,       "FastTravel / PipboyMenu::PipboyMenu" },
+			{ 1327120, 2224206, 0x013, 0x014, &Spoof_FastTravel,       "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
 
-				{ 1475119, 0x017, &Spoof_CompassEnemies,   "CompassEnemies / HUDMarkerUtils::GetHostileEnemyMaxDistance" },
+			{ 1158548, 2223294, 0x04E, 0x04E, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor" },
+			// NG/AE have a second LevelUpMenu call site OG doesn't expose.
+			{ 0,       2223327, 0,     0x057, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor (NG/AE extra)" },
+			{ 98443,   2224974, 0x193, 0x13E, &Spoof_SaveAuto,         "SaveAuto / WorkshopMenu dtor" },
+			{ 1231000, 2225457, 0x18A, 0x1A4, &Spoof_SaveAuto,         "SaveAuto / PipboyManager::OnPipboyCloseAnim" },
+			{ 146861,  2232905, 0x678, 0x6A1, &Spoof_SaveAuto,         "SaveAuto / PlayerCharacter::HandlePositionPlayerRequest" },
 
-				{ 1301956, 0x00B, &Spoof_CompassLocations, "CompassLocations / HUDMarkerUtils::GetLocationMaxDistance" },
-				{ 1153736, 0x0A2, &Spoof_CompassLocations, "CompassLocations / CalculateCompassMarkersFunctor::UpdateLocationMarkers" },
+			{ 1475119, 2220612, 0x017, 0x01B, &Spoof_CompassEnemies,   "CompassEnemies / HUDMarkerUtils::GetHostileEnemyMaxDistance" },
 
-				// Both sites target TESWeightForm::GetFormWeight; we can't distinguish alch vs ammo
-				// without inspecting the form, so each site is tied to one toggle. First site → alch,
-				// second → ammo. Refine once we inspect the TESForm arg.
-				{ 1321341, 0x092, &Spoof_NoAlchWeight,     "Weight / TESWeightForm::GetFormWeight (alch)" },
-				{ 1321341, 0x11C, &Spoof_NoAmmoWeight,     "Weight / TESWeightForm::GetFormWeight (ammo)" },
-			};
+			{ 1301956, 2220611, 0x00B, 0x00B, &Spoof_CompassLocations, "CompassLocations / HUDMarkerUtils::GetLocationMaxDistance" },
+			{ 1153736, 2220617, 0x0A2, 0x086, &Spoof_CompassLocations, "CompassLocations / CalculateCompassMarkersFunctor::UpdateLocationMarkers" },
 
-			for (const auto& s : sites) {
-				AddHook<GDLHook>(s.fn_id, s.offset, s.spoof, s.label);
-			}
+			{ 1321341, 2193446, 0x092, 0x08E, &Spoof_NoAlchWeight,     "Weight / TESWeightForm::GetFormWeight (alch)" },
+			{ 1321341, 2193446, 0x11C, 0x110, &Spoof_NoAmmoWeight,     "Weight / TESWeightForm::GetFormWeight (ammo)" },
+		};
 
-			// Door-transition autosave: replace the call to RequestQueueDoorAutosave
-			// from inside TESObjectDOOR::DoorTeleportPlayerArrivalCallback.
-			AddHook<VoidPCHook>(
-				1397471, 0x1B4, &Replace_RequestQueueDoorAutosave,
-				"SaveAuto / TESObjectDOOR::DoorTeleportPlayerArrivalCallback");
-		}
+		const VoidPCSite kVoidPCSites[] = {
+			{ 1397471, 2198697, 0x1B4, 0x1B4, &Replace_RequestQueueDoorAutosave,
+			  "SaveAuto / TESObjectDOOR::DoorTeleportPlayerArrivalCallback" },
+		};
 	}
 
 	void Install()
 	{
-		if (!REL::Module::IsRuntimeOG()) {
-			REX::WARN("Unlocks: non-OG runtime; hooks disabled for v0.1");
-			return;
+		for (const auto& s : kGdlSites) {
+			std::uint64_t id;
+			std::size_t   off;
+			if (SelectSite(s.og_id, s.ng_id, s.og_off, s.ng_off, id, off)) {
+				AddHook<GDLHook>(id, off, s.spoof, s.label);
+			}
 		}
-		InstallOG();
+		for (const auto& s : kVoidPCSites) {
+			std::uint64_t id;
+			std::size_t   off;
+			if (SelectSite(s.og_id, s.ng_id, s.og_off, s.ng_off, id, off)) {
+				AddHook<VoidPCHook>(id, off, s.fn, s.label);
+			}
+		}
 	}
 }
