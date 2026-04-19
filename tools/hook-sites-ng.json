@@ -1,0 +1,19 @@
+[
+  { "id": 2249425, "offset": "0x1AA", "label": "Console / MenuOpenHandler" },
+  { "id": 2249427, "offset": "0x06C", "label": "SaveSelf / QuickSaveLoadHandler" },
+  { "id": 2223965, "offset": "0x04D", "label": "SaveSelf / PauseMenu::CheckIfSaveLoadPossible" },
+  { "id": 2223964, "offset": "0x0C6", "label": "SaveSelf / PauseMenu::InitMainList" },
+  { "id": 2224179, "offset": "0x347", "label": "FastTravel / PipboyMenu::PipboyMenu" },
+  { "id": 2224206, "offset": "0x014", "label": "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
+  { "id": 2223294, "offset": "0x04E", "label": "SaveAuto / LevelUpMenu dtor" },
+  { "id": 2223327, "offset": "0x057", "label": "SaveAuto / LevelUpMenu dtor (NG/AE extra)" },
+  { "id": 2224974, "offset": "0x13E", "label": "SaveAuto / WorkshopMenu dtor" },
+  { "id": 2225457, "offset": "0x1A4", "label": "SaveAuto / PipboyManager::OnPipboyCloseAnim" },
+  { "id": 2232905, "offset": "0x6A1", "label": "SaveAuto / PlayerCharacter::HandlePositionPlayerRequest" },
+  { "id": 2220612, "offset": "0x01B", "label": "CompassEnemies / HUDMarkerUtils::GetHostileEnemyMaxDistance" },
+  { "id": 2220611, "offset": "0x00B", "label": "CompassLocations / HUDMarkerUtils::GetLocationMaxDistance" },
+  { "id": 2220617, "offset": "0x086", "label": "CompassLocations / CalculateCompassMarkersFunctor::UpdateLocationMarkers" },
+  { "id": 2193446, "offset": "0x08E", "label": "Weight / TESWeightForm::GetFormWeight (alch)" },
+  { "id": 2193446, "offset": "0x110", "label": "Weight / TESWeightForm::GetFormWeight (ammo)" },
+  { "id": 2224576, "offset": "0x03A", "target_id": 2224540, "label": "SaveAuto / StartMenuBase::SendGameplayOptions -> GetMenuDifficultyLevel" }
+]
