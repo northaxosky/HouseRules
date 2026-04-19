@@ -4,6 +4,7 @@
 
 #include "Settings.h"
 
+#include <cstring>
 #include <memory>
 #include <vector>
 
@@ -187,6 +188,80 @@ namespace Hooks::Unlocks
 			{ 1397471, 2198697, 0x1B4, 0x1B4, &Replace_RequestQueueDoorAutosave,
 			  "SaveAuto / TESObjectDOOR::DoorTeleportPlayerArrivalCallback" },
 		};
+
+		// --- Re-enable Survival (byte patch) -----------------------------------
+		//
+		// Vanilla blocks re-entering Survival mode after you leave it by calling
+		// `MiscStatManager::QueryStat` inside `PauseMenu::CheckIfSaveLoadPossible`
+		// to check a save-tied "has left survival" stat. USM NOPs that call; we
+		// do the same, but sig-scan so one patch handles OG/NG/AE.
+		//
+		// Pattern: E8 ?? ?? ?? ?? 44 39 75 67  (CALL rel32 + cmp [rbp+0x67], r14d)
+		// Confirmed at OG RVA 0xB7FE2D.
+
+		std::uintptr_t g_reenable_addr      = 0;
+		std::uint8_t   g_reenable_original[5]{};
+		bool           g_reenable_saved     = false;
+		bool           g_reenable_patched   = false;
+
+		std::uintptr_t FindReenableSignature()
+		{
+			const auto mod = REL::Module::GetSingleton();
+			if (!mod) {
+				return 0;
+			}
+			const auto text = mod->segment(REL::Segment::text);
+			const auto base = text.pointer<std::uint8_t>();
+			const auto size = text.size();
+			for (std::size_t i = 0; i + 9 <= size; ++i) {
+				if (base[i] == 0xE8 &&
+					base[i + 5] == 0x44 &&
+					base[i + 6] == 0x39 &&
+					base[i + 7] == 0x75 &&
+					base[i + 8] == 0x67) {
+					return reinterpret_cast<std::uintptr_t>(base + i);
+				}
+			}
+			return 0;
+		}
+
+		void ApplyReenablePatchState()
+		{
+			if (g_reenable_addr == 0 || !g_reenable_saved) {
+				return;
+			}
+			const bool want_patched =
+				MCM::Settings::General::bEnabled.GetValue() &&
+				MCM::Settings::Unlocks::bReenableSurvival.GetValue();
+			if (want_patched == g_reenable_patched) {
+				return;
+			}
+			constexpr std::uint8_t nops[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
+			const void* src = want_patched ? static_cast<const void*>(nops)
+			                               : static_cast<const void*>(g_reenable_original);
+			if (REL::WriteSafe(g_reenable_addr, src, 5)) {
+				g_reenable_patched = want_patched;
+				REX::INFO("ReenableSurvival: {} patch at 0x{:X}",
+					want_patched ? "applied" : "reverted", g_reenable_addr);
+			} else {
+				REX::ERROR("ReenableSurvival: WriteSafe failed at 0x{:X}", g_reenable_addr);
+			}
+		}
+
+		void InstallReenableSurvival()
+		{
+			g_reenable_addr = FindReenableSignature();
+			if (!g_reenable_addr) {
+				REX::WARN("ReenableSurvival: signature not found; feature unavailable on this runtime");
+				return;
+			}
+			std::memcpy(g_reenable_original,
+				reinterpret_cast<const void*>(g_reenable_addr), 5);
+			g_reenable_saved = true;
+			REX::INFO("ReenableSurvival: sig found at 0x{:X}, original bytes cached",
+				g_reenable_addr);
+			ApplyReenablePatchState();
+		}
 	}
 
 	void Install()
@@ -205,5 +280,11 @@ namespace Hooks::Unlocks
 				AddHook<VoidPCHook>(id, off, s.fn, s.label);
 			}
 		}
+		InstallReenableSurvival();
+	}
+
+	void RefreshRuntimePatches()
+	{
+		ApplyReenablePatchState();
 	}
 }

@@ -2,6 +2,7 @@
 
 #include "Settings.h"
 
+#include "Hooks/Unlocks.h"
 #include "Tweaks/NeedRates.h"
 
 namespace MCM
@@ -15,5 +16,6 @@ namespace MCM
 		ini->Load();
 
 		Tweaks::NeedRates::Apply();
+		Hooks::Unlocks::RefreshRuntimePatches();
 	}
 }

@@ -125,7 +125,7 @@
                     "id": "bReenableSurvival:Unlocks",
                     "text": "Allow Re-entering Survival",
                     "type": "switcher",
-                    "help": "ON removes vanilla's one-way gate so you can switch Survival on and off freely (hook pending).",
+                    "help": "ON removes vanilla's one-way gate so you can switch Survival on and off freely. Live-toggleable via MCM.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 }
             ]

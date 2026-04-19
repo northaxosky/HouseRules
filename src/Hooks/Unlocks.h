@@ -5,4 +5,5 @@
 namespace Hooks::Unlocks
 {
 	void Install();
+	void RefreshRuntimePatches();  // re-apply byte-patch toggles (MCM reload)
 }
