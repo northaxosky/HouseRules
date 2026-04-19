@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import struct
 import sys
 from bisect import bisect_right
 from dataclasses import dataclass
@@ -38,13 +39,25 @@ class CallSite:
     offset_in_function: int
 
 
-def load_id_map(csv_path: str) -> tuple[dict[int, int], list[tuple[int, int]]]:
-    """Return (id->rva, sorted [(rva, id), ...])."""
+def load_id_map(path: str) -> tuple[dict[int, int], list[tuple[int, int]]]:
+    """Return (id->rva, sorted [(rva, id), ...]).
+
+    Accepts either a CSV (`id,fo4_addr_hex`) or an F4SE V0 AddressLib `.bin`
+    (`u64 count` + `count x {u64 id, u64 offset}`).
+    """
     id_to_rva: dict[int, int] = {}
-    for row in csv.DictReader(open(csv_path, encoding="utf-8")):
-        aid = int(row["id"])
-        rva = int(row["fo4_addr"], 16)
-        id_to_rva[aid] = rva
+    if path.endswith(".bin"):
+        with open(path, "rb") as fp:
+            (count,) = struct.unpack("<Q", fp.read(8))
+            data = fp.read(count * 16)
+        for i in range(count):
+            aid, off = struct.unpack_from("<QQ", data, i * 16)
+            id_to_rva[aid] = off
+    else:
+        for row in csv.DictReader(open(path, encoding="utf-8")):
+            aid = int(row["id"])
+            rva = int(row["fo4_addr"], 16)
+            id_to_rva[aid] = rva
     rva_sorted = sorted(((rva, aid) for aid, rva in id_to_rva.items()))
     return id_to_rva, rva_sorted
 
@@ -93,7 +106,8 @@ def find_calls_to(exe_path: str, target_rva: int) -> list[int]:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--exe", required=True)
-    ap.add_argument("--csv", required=True, help="AddressLib CSV (id,fo4_addr)")
+    ap.add_argument("--csv", required=True,
+                    help="AddressLib CSV (id,fo4_addr) or F4SE V0 .bin")
     ap.add_argument("--target-id", type=int, required=True,
                     help="AddressLib ID of the function whose call sites to find")
     args = ap.parse_args()
