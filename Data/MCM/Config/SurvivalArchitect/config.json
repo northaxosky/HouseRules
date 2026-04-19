@@ -1,10 +1,22 @@
 {
     "$schema": "https://raw.githubusercontent.com/Neanka/mcm/master/doc/mcm.schema.json",
     "minMcmVersion": 2,
-    "modName": "Survival Architect",
+    "modName": "SurvivalArchitect",
     "displayName": "Survival Architect",
     "pluginRequirements": [],
     "content": [
+        {
+            "text": "<font size='30'><p align='center'>Survival Architect</p></font>",
+            "html": true,
+            "type": "text"
+        },
+        { "type": "spacer" },
+        {
+            "text": "<font color='#AAAAAA'><p align='center'>Selectively unlock vanilla Survival restrictions and tune the experience without losing Survival difficulty.</p></font>",
+            "html": true,
+            "type": "text"
+        },
+        { "type": "spacer", "numLines": 2 },
         {
             "text": "General",
             "type": "section"
@@ -13,90 +25,117 @@
             "id": "bEnabled:General",
             "text": "Enable Plugin",
             "type": "switcher",
-            "help": "Master on/off. When off, all unlocks and tweaks revert to vanilla.",
+            "help": "Master on/off. When OFF, every unlock/tweak falls back to vanilla Survival behavior.",
             "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-
+        }
+    ],
+    "pages": [
         {
-            "text": "Survival Unlocks",
-            "type": "section"
-        },
-        {
-            "id": "bConsole:Unlocks",
-            "text": "Allow Console",
-            "type": "switcher",
-            "help": "Re-enable the developer console while in Survival.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bFastTravel:Unlocks",
-            "text": "Allow Fast Travel",
-            "type": "switcher",
-            "help": "Re-enable fast travel while in Survival.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bGodMode:Unlocks",
-            "text": "Allow God Mode",
-            "type": "switcher",
-            "help": "Re-enable the tgm/tdm console commands in Survival.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bSaveAuto:Unlocks",
-            "text": "Allow Auto-Saves",
-            "type": "switcher",
-            "help": "Re-enable vanilla auto-saves while in Survival.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bSaveSelf:Unlocks",
-            "text": "Allow Manual Saves",
-            "type": "switcher",
-            "help": "Re-enable F5 quicksave and the Save/Load menu while in Survival.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bSleepSave:Unlocks",
-            "text": "Sleep-Save Enabled",
-            "type": "switcher",
-            "help": "Keep vanilla Survival's sleep-based save behaviour.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bCompassEnemies:Unlocks",
-            "text": "Compass Shows Enemies",
-            "type": "switcher",
-            "help": "Re-enable red enemy dots on the compass.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bCompassLocations:Unlocks",
-            "text": "Compass Shows Locations",
-            "type": "switcher",
-            "help": "Re-enable undiscovered-location markers on the compass.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bAlchWeight:Unlocks",
-            "text": "Chems & Aid Have Weight",
-            "type": "switcher",
-            "help": "Keep vanilla Survival weight on consumables.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bAmmoWeight:Unlocks",
-            "text": "Ammo Has Weight",
-            "type": "switcher",
-            "help": "Keep vanilla Survival weight on ammunition.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-        {
-            "id": "bLockSurvival:Unlocks",
-            "text": "Lock Difficulty to Survival",
-            "type": "switcher",
-            "help": "Prevent changing difficulty away from Survival.",
-            "valueOptions": { "sourceType": "ModSettingBool" }
+            "pageDisplayName": "Unlocks",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Survival Unlocks</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Each toggle: OFF mirrors vanilla Survival, ON applies the tweak.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                {
+                    "text": "Menus & Saves",
+                    "type": "section"
+                },
+                {
+                    "id": "bConsole:Unlocks",
+                    "text": "Allow Console",
+                    "type": "switcher",
+                    "help": "ON re-enables the developer console while in Survival.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bSaveSelf:Unlocks",
+                    "text": "Allow Manual Saves",
+                    "type": "switcher",
+                    "help": "ON re-enables F5 quicksave and the Save/Load menu entries in Survival.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bSaveAuto:Unlocks",
+                    "text": "Allow Auto-Saves",
+                    "type": "switcher",
+                    "help": "ON re-enables vanilla auto-saves (menu-close autosaves, pause-menu autosave setting).",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bSleepSave:Unlocks",
+                    "text": "Disable Sleep-Save",
+                    "type": "switcher",
+                    "help": "ON stops Survival's sleep-as-save behavior (hook not yet implemented — v0.2).",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                { "type": "spacer" },
+                {
+                    "text": "Travel & Exploration",
+                    "type": "section"
+                },
+                {
+                    "id": "bFastTravel:Unlocks",
+                    "text": "Allow Fast Travel",
+                    "type": "switcher",
+                    "help": "ON re-enables fast travel from the Pipboy map while in Survival.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bCompassEnemies:Unlocks",
+                    "text": "Show Enemies on Compass",
+                    "type": "switcher",
+                    "help": "ON restores vanilla red-dot enemy markers on the compass.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bCompassLocations:Unlocks",
+                    "text": "Show Locations on Compass",
+                    "type": "switcher",
+                    "help": "ON restores vanilla undiscovered-location markers on the compass.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                { "type": "spacer" },
+                {
+                    "text": "Weight & Difficulty",
+                    "type": "section"
+                },
+                {
+                    "id": "bNoAlchWeight:Unlocks",
+                    "text": "Remove Chem/Aid Weight",
+                    "type": "switcher",
+                    "help": "ON strips Survival's added weight from consumables (chems, stimpaks, food).",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bNoAmmoWeight:Unlocks",
+                    "text": "Remove Ammo Weight",
+                    "type": "switcher",
+                    "help": "ON strips Survival's added weight from ammunition.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bGodMode:Unlocks",
+                    "text": "Allow God Mode",
+                    "type": "switcher",
+                    "help": "ON re-enables tgm/tdm console commands in Survival (hook not yet implemented — v0.2).",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bLockSurvival:Unlocks",
+                    "text": "Lock Difficulty to Survival",
+                    "type": "switcher",
+                    "help": "ON prevents changing difficulty away from Survival (hook not yet implemented — v0.2).",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                }
+            ]
         }
     ]
 }

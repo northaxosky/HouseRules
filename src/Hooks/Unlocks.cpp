@@ -74,16 +74,16 @@ namespace Hooks::Unlocks
 				: RealDifficulty(a_this);
 		}
 
-		RE::DifficultyLevel Spoof_AlchWeight(RE::PlayerCharacter* a_this)
+		RE::DifficultyLevel Spoof_NoAlchWeight(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bAlchWeight.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bNoAlchWeight.GetValue())
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
 
-		RE::DifficultyLevel Spoof_AmmoWeight(RE::PlayerCharacter* a_this)
+		RE::DifficultyLevel Spoof_NoAmmoWeight(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bAmmoWeight.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bNoAmmoWeight.GetValue())
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
@@ -122,8 +122,8 @@ namespace Hooks::Unlocks
 				// Both sites target TESWeightForm::GetFormWeight; we can't distinguish alch vs ammo
 				// without inspecting the form, so each site is tied to one toggle. First site → alch,
 				// second → ammo. Refine once we inspect the TESForm arg.
-				{ 1321341, 0x092, &Spoof_AlchWeight,       "Weight / TESWeightForm::GetFormWeight (alch)" },
-				{ 1321341, 0x11C, &Spoof_AmmoWeight,       "Weight / TESWeightForm::GetFormWeight (ammo)" },
+				{ 1321341, 0x092, &Spoof_NoAlchWeight,     "Weight / TESWeightForm::GetFormWeight (alch)" },
+				{ 1321341, 0x11C, &Spoof_NoAmmoWeight,     "Weight / TESWeightForm::GetFormWeight (ammo)" },
 			};
 
 			for (const auto& s : sites) {
