@@ -96,35 +96,6 @@
             "type": "toggle",
             "help": "Prevent changing difficulty away from Survival.",
             "valueOptions": { "sourceType": "ModSettingBool" }
-        },
-
-        {
-            "text": "Need Rates",
-            "type": "section"
-        },
-        {
-            "id": "fHungerRate:NeedRates",
-            "text": "Hunger Rate",
-            "type": "slider",
-            "help": "Multiplier on vanilla hunger rate. 0 disables hunger; 1 is vanilla.",
-            "sliderOptions": { "min": 0.0, "max": 5.0, "step": 0.1 },
-            "valueOptions": { "sourceType": "ModSettingFloat" }
-        },
-        {
-            "id": "fThirstRate:NeedRates",
-            "text": "Thirst Rate",
-            "type": "slider",
-            "help": "Multiplier on vanilla thirst rate. 0 disables thirst; 1 is vanilla.",
-            "sliderOptions": { "min": 0.0, "max": 5.0, "step": 0.1 },
-            "valueOptions": { "sourceType": "ModSettingFloat" }
-        },
-        {
-            "id": "fSleepRate:NeedRates",
-            "text": "Sleep Rate",
-            "type": "slider",
-            "help": "Multiplier on vanilla fatigue rate. 0 disables sleep need; 1 is vanilla.",
-            "sliderOptions": { "min": 0.0, "max": 5.0, "step": 0.1 },
-            "valueOptions": { "sourceType": "ModSettingFloat" }
         }
     ]
 }
