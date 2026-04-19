@@ -69,13 +69,6 @@
                     "help": "ON re-enables vanilla auto-saves (menu-close autosaves, pause-menu autosave setting).",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
-                {
-                    "id": "bSleepSave:Unlocks",
-                    "text": "Disable Sleep-Save",
-                    "type": "switcher",
-                    "help": "ON stops Survival's sleep-as-save behavior (hook not yet implemented — v0.2).",
-                    "valueOptions": { "sourceType": "ModSettingBool" }
-                },
                 { "type": "spacer" },
                 {
                     "text": "Travel & Exploration",
@@ -129,10 +122,10 @@
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
-                    "id": "bLockSurvival:Unlocks",
-                    "text": "Lock Difficulty to Survival",
+                    "id": "bReenableSurvival:Unlocks",
+                    "text": "Allow Re-entering Survival",
                     "type": "switcher",
-                    "help": "ON prevents changing difficulty away from Survival (hook not yet implemented — v0.2).",
+                    "help": "ON removes vanilla's one-way gate so you can switch Survival on and off freely (hook pending).",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 }
             ]

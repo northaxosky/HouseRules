@@ -20,12 +20,11 @@ namespace MCM
 			inline static REX::INI::Bool<> bGodMode{ "Unlocks", "bGodMode", false };
 			inline static REX::INI::Bool<> bSaveAuto{ "Unlocks", "bSaveAuto", false };
 			inline static REX::INI::Bool<> bSaveSelf{ "Unlocks", "bSaveSelf", false };
-			inline static REX::INI::Bool<> bSleepSave{ "Unlocks", "bSleepSave", false };
 			inline static REX::INI::Bool<> bCompassEnemies{ "Unlocks", "bCompassEnemies", false };
 			inline static REX::INI::Bool<> bCompassLocations{ "Unlocks", "bCompassLocations", false };
 			inline static REX::INI::Bool<> bNoAlchWeight{ "Unlocks", "bNoAlchWeight", false };
 			inline static REX::INI::Bool<> bNoAmmoWeight{ "Unlocks", "bNoAmmoWeight", false };
-			inline static REX::INI::Bool<> bLockSurvival{ "Unlocks", "bLockSurvival", false };
+			inline static REX::INI::Bool<> bReenableSurvival{ "Unlocks", "bReenableSurvival", false };
 		};
 
 		static void Update();
