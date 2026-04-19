@@ -104,6 +104,7 @@ namespace Hooks::Unlocks
 
 				{ 1470086, 0x06C, &Spoof_SaveSelf,         "SaveSelf / QuickSaveLoadHandler" },
 				{ 425422,  0x047, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::CheckIfSaveLoadPossible" },
+				{ 1330449, 0x0C1, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::InitMainList" },
 
 				{ 712982,  0x31E, &Spoof_FastTravel,       "FastTravel / PipboyMenu::PipboyMenu" },
 				{ 1327120, 0x013, &Spoof_FastTravel,       "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
