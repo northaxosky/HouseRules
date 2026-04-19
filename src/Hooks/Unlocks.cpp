@@ -107,12 +107,11 @@ namespace Hooks::Unlocks
 
 				{ 712982,  0x31E, &Spoof_FastTravel,       "FastTravel / PipboyMenu::PipboyMenu" },
 				{ 1327120, 0x013, &Spoof_FastTravel,       "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
-				{ 146861,  0x678, &Spoof_FastTravel,       "FastTravel / PlayerCharacter::HandlePositionPlayerRequest" },
 
-				{ 463507,  0x02B, &Spoof_SaveAuto,         "SaveAuto / PauseMenu::SaveSettings_Derived" },
 				{ 1158548, 0x04E, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor" },
 				{ 98443,   0x193, &Spoof_SaveAuto,         "SaveAuto / WorkshopMenu dtor" },
 				{ 1231000, 0x18A, &Spoof_SaveAuto,         "SaveAuto / PipboyManager::OnPipboyCloseAnim" },
+				{ 146861,  0x678, &Spoof_SaveAuto,         "SaveAuto / PlayerCharacter::HandlePositionPlayerRequest (autosave on arrival)" },
 
 				{ 1475119, 0x017, &Spoof_CompassEnemies,   "CompassEnemies / HUDMarkerUtils::GetHostileEnemyMaxDistance" },
 
