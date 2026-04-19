@@ -11,11 +11,23 @@ namespace Hooks::Unlocks
 {
 	namespace
 	{
-		using HookType = REL::Hook<RE::DifficultyLevel(RE::PlayerCharacter*)>;
+		using GDLHook = REL::Hook<RE::DifficultyLevel(RE::PlayerCharacter*)>;
+		using VoidPCHook = REL::Hook<void(RE::PlayerCharacter*)>;
 
-		// Hooks live for the plugin's lifetime — owned here so they aren't
-		// destroyed after Install() returns.
-		std::vector<std::unique_ptr<HookType>> g_hooks;
+		// Hooks live for the plugin's lifetime — store as base pointers so we
+		// can hold different signatures in the same container.
+		std::vector<std::unique_ptr<REL::HookObject>> g_hooks;
+
+		template <class Hook, class Fn>
+		void AddHook(std::uint64_t a_fn_id, std::size_t a_offset, Fn* a_fn, const char* a_label)
+		{
+			auto hook = std::make_unique<Hook>(REL::ID(a_fn_id), a_offset, a_fn);
+			const bool init_ok   = hook->Init();
+			const bool enable_ok = hook->Enable();
+			REX::INFO("Unlocks: hook {} (id={} +0x{:X}) init={} enable={}",
+				a_label, a_fn_id, a_offset, init_ok, enable_ok);
+			g_hooks.push_back(std::move(hook));
+		}
 
 		RE::DifficultyLevel RealDifficulty(RE::PlayerCharacter* a_this)
 		{
@@ -88,6 +100,25 @@ namespace Hooks::Unlocks
 				: RealDifficulty(a_this);
 		}
 
+		// RequestQueueDoorAutosave replacement. In vanilla, this fn unconditionally
+		// queues a door-autosave unless in Survival. We intercept the call and only
+		// queue when the user wants autosaves (bSaveAuto ON) or the game isn't in
+		// Survival at all.
+		void Replace_RequestQueueDoorAutosave(RE::PlayerCharacter* a_this)
+		{
+			if (!a_this) {
+				return;
+			}
+			if (RealDifficulty(a_this) != RE::DifficultyLevel::kTrueSurvival) {
+				a_this->doorAutosaveQueued = true;
+				return;
+			}
+			if (MCM::Settings::General::bEnabled.GetValue() &&
+				MCM::Settings::Unlocks::bSaveAuto.GetValue()) {
+				a_this->doorAutosaveQueued = true;
+			}
+		}
+
 		void InstallOG()
 		{
 			struct Site
@@ -127,13 +158,14 @@ namespace Hooks::Unlocks
 			};
 
 			for (const auto& s : sites) {
-				auto hook = std::make_unique<HookType>(REL::ID(s.fn_id), s.offset, s.spoof);
-				const bool init_ok   = hook->Init();
-				const bool enable_ok = hook->Enable();
-				REX::INFO("Unlocks: hook {} (id={} +0x{:X}) init={} enable={}",
-					s.label, s.fn_id, s.offset, init_ok, enable_ok);
-				g_hooks.push_back(std::move(hook));
+				AddHook<GDLHook>(s.fn_id, s.offset, s.spoof, s.label);
 			}
+
+			// Door-transition autosave: replace the call to RequestQueueDoorAutosave
+			// from inside TESObjectDOOR::DoorTeleportPlayerArrivalCallback.
+			AddHook<VoidPCHook>(
+				1397471, 0x1B4, &Replace_RequestQueueDoorAutosave,
+				"SaveAuto / TESObjectDOOR::DoorTeleportPlayerArrivalCallback");
 		}
 	}
 
