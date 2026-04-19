@@ -127,8 +127,10 @@ namespace Hooks::Unlocks
 			};
 
 			for (const auto& s : sites) {
-				g_hooks.push_back(std::make_unique<HookType>(REL::ID(s.fn_id), s.offset, s.spoof));
-				REX::INFO("Unlocks: hooked {} (id={} +0x{:X})", s.label, s.fn_id, s.offset);
+				auto hook = std::make_unique<HookType>(REL::ID(s.fn_id), s.offset, s.spoof);
+				const bool ok = hook->Init();
+				REX::INFO("Unlocks: hook {} (id={} +0x{:X}) init={}", s.label, s.fn_id, s.offset, ok);
+				g_hooks.push_back(std::move(hook));
 			}
 		}
 	}
