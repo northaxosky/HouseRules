@@ -5,10 +5,22 @@
 #include "Settings.h"
 
 // Byte-patch approach, mirroring what Unlimited Survival Mode does. Vanilla
-// PC::IsGodMode and PC::IsImmortal each contain a `jl short` at function
-// offset +0x25 (identical across OG/NG/AE) which blocks tgm/tim in Survival.
-// We flip that byte (0x7C → 0xEB) to turn the conditional jump into an
-// unconditional one when bGodMode is ON, and restore the original when OFF.
+// PC::IsGodMode and PC::IsImmortal share the same survival-gate:
+//
+//   +0x22  cmp eax, 5          ; eax = difficulty
+//   +0x25  jl  +0x35           ; low-diff path (fallthrough returns 1)
+//   +0x27  xor eax, eax        ; eax = 0
+//   +0x29  cmp [survival_flag], al
+//   +0x2F  setne al            ; al = 1 if flag is set
+//   +0x32  add eax, 5          ; eax = 5 or 6  <-- patch target here
+//   +0x35  cmp eax, 6
+//   +0x38  je  return_0        ; god mode blocked when eax == 6
+//
+// We flip the `5` immediate of `add eax, 5` (at function offset +0x34) to
+// `0`, so the high-diff path produces eax = 0 or 1 — never 6. Final `je`
+// never fires, god mode always returns 1 when the engine's flag is set,
+// regardless of Survival. Low-difficulty (diff < 5) takes the `jl` skip
+// and isn't affected. Identical offset in OG/NG/AE.
 //
 // Why byte-patch over replace_func: leaves vanilla IsGodMode's return-value
 // logic intact, so the console's ToggleGodModeFunction reads a faithful
@@ -19,9 +31,9 @@ namespace Hooks::GodMode
 {
 	namespace
 	{
-		constexpr std::size_t  kJlOffset = 0x25;  // offset of 'jl short' inside each function
-		constexpr std::uint8_t kJlByte   = 0x7C;  // original: jl short
-		constexpr std::uint8_t kJmpByte  = 0xEB;  // patched:  jmp short (same disp, always taken)
+		constexpr std::size_t  kImmOffset = 0x34;  // offset of the 'add eax, 5' immediate
+		constexpr std::uint8_t kOrigByte  = 0x05;  // vanilla: adds 5 (path can produce eax == 6)
+		constexpr std::uint8_t kPatchByte = 0x00;  // patched: adds 0 (eax never 6 → never blocked)
 
 		std::uintptr_t g_god_patch_addr = 0;
 		std::uintptr_t g_imm_patch_addr = 0;
@@ -37,7 +49,7 @@ namespace Hooks::GodMode
 			if (want == g_patched) {
 				return;
 			}
-			const std::uint8_t byte = want ? kJmpByte : kJlByte;
+			const std::uint8_t byte = want ? kPatchByte : kOrigByte;
 			const bool ok_god = REL::WriteSafe(g_god_patch_addr, &byte, 1);
 			const bool ok_imm = REL::WriteSafe(g_imm_patch_addr, &byte, 1);
 			if (ok_god && ok_imm) {
@@ -54,18 +66,15 @@ namespace Hooks::GodMode
 	{
 		REL::Relocation<std::uintptr_t> god_target{ RE::ID::PlayerCharacter::IsGodMode };
 		REL::Relocation<std::uintptr_t> imm_target{ RE::ID::PlayerCharacter::IsImmortal };
-		g_god_patch_addr = god_target.address() + kJlOffset;
-		g_imm_patch_addr = imm_target.address() + kJlOffset;
+		g_god_patch_addr = god_target.address() + kImmOffset;
+		g_imm_patch_addr = imm_target.address() + kImmOffset;
 
-		// Sanity: the byte we intend to patch should be the unpatched 'jl short'.
-		// If it isn't, either a different plugin already wrote here, or the
-		// offset is wrong on this runtime.
 		const auto cur_god = *reinterpret_cast<std::uint8_t*>(g_god_patch_addr);
 		const auto cur_imm = *reinterpret_cast<std::uint8_t*>(g_imm_patch_addr);
 		REX::INFO("GodMode: IsGodMode+0x{:X} @ 0x{:X} = 0x{:02X}, IsImmortal+0x{:X} @ 0x{:X} = 0x{:02X}",
-			kJlOffset, g_god_patch_addr, cur_god,
-			kJlOffset, g_imm_patch_addr, cur_imm);
-		if (cur_god != kJlByte || cur_imm != kJlByte) {
+			kImmOffset, g_god_patch_addr, cur_god,
+			kImmOffset, g_imm_patch_addr, cur_imm);
+		if (cur_god != kOrigByte || cur_imm != kOrigByte) {
 			REX::WARN("GodMode: unexpected byte at patch site — another plugin may already be patching here");
 		}
 
