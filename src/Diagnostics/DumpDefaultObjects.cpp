@@ -4,11 +4,18 @@
 
 #include "Settings.h"
 
-#include <algorithm>
+#include <cctype>
 #include <string>
 #include <string_view>
 #include <vector>
 
+// Iterates TESDataHandler form arrays for the types we care about and logs
+// any whose editor ID starts with a filter token. The BGSDefaultObject
+// singleton-array approach is unusable on OG (ID::BGSDefaultObject::Singleton
+// is runtime-0 there), so we filter forms directly by their editorID instead.
+// The DO-suffixed names (HardcoreHungerEffectKeyword_DO etc.) are just engine
+// lookup aliases — the underlying keywords have their own editor IDs like
+// HardcoreHungerEffect that this dump finds via prefix match.
 namespace Diagnostics::DumpDefaultObjects
 {
 	namespace
@@ -20,7 +27,6 @@ namespace Diagnostics::DumpDefaultObjects
 			for (std::size_t i = 0; i <= a_raw.size(); ++i) {
 				if (i == a_raw.size() || a_raw[i] == ',') {
 					auto token = a_raw.substr(start, i - start);
-					// trim whitespace
 					while (!token.empty() && std::isspace(static_cast<unsigned char>(token.front()))) token.erase(token.begin());
 					while (!token.empty() && std::isspace(static_cast<unsigned char>(token.back())))  token.pop_back();
 					if (!token.empty()) {
@@ -35,7 +41,7 @@ namespace Diagnostics::DumpDefaultObjects
 		bool NameMatches(std::string_view a_name, const std::vector<std::string>& a_filters)
 		{
 			if (a_filters.empty()) {
-				return true;  // no filter = pass everything
+				return true;
 			}
 			for (const auto& f : a_filters) {
 				if (f == "*") return true;
@@ -46,45 +52,9 @@ namespace Diagnostics::DumpDefaultObjects
 			return false;
 		}
 
-		const char* FormTypeName(RE::ENUM_FORM_ID a_type)
+		const char* SafeEditorID(const RE::TESForm* a_form)
 		{
-			using T = RE::ENUM_FORM_ID;
-			switch (a_type) {
-				case T::kKYWD: return "KYWD";
-				case T::kMGEF: return "MGEF";
-				case T::kALCH: return "ALCH";
-				case T::kFLST: return "FLST";
-				case T::kGLOB: return "GLOB";
-				case T::kSPEL: return "SPEL";
-				case T::kPERK: return "PERK";
-				case T::kAVIF: return "AVIF";
-				case T::kMISC: return "MISC";
-				case T::kWEAP: return "WEAP";
-				case T::kARMO: return "ARMO";
-				case T::kNPC_: return "NPC_";
-				case T::kRACE: return "RACE";
-				case T::kFACT: return "FACT";
-				case T::kQUST: return "QUST";
-				case T::kCOBJ: return "COBJ";
-				case T::kFURN: return "FURN";
-				default:       return "?";
-			}
-		}
-
-		const char* AVEditorID(const RE::ActorValueInfo* a_av)
-		{
-			if (!a_av) {
-				return "<none>";
-			}
-			const auto edid = a_av->GetFormEditorID();
-			return edid ? edid : "<unnamed AV>";
-		}
-
-		const char* FormEditorID(const RE::TESForm* a_form)
-		{
-			if (!a_form) {
-				return "<null>";
-			}
+			if (!a_form) return "<null>";
 			const auto edid = a_form->GetFormEditorID();
 			return edid ? edid : "";
 		}
@@ -92,10 +62,7 @@ namespace Diagnostics::DumpDefaultObjects
 		void DumpKeywordMGEFs(const RE::BGSKeyword* a_keyword)
 		{
 			auto* dh = RE::TESDataHandler::GetSingleton();
-			if (!dh) {
-				REX::WARN("    (no TESDataHandler)");
-				return;
-			}
+			if (!dh) return;
 			auto& mgefs = dh->GetFormArray<RE::EffectSetting>();
 			int matched = 0;
 			for (auto* mgef : mgefs) {
@@ -105,10 +72,10 @@ namespace Diagnostics::DumpDefaultObjects
 				const auto& d = mgef->data;
 				REX::INFO("    [MGEF] {:08X} edid='{}' baseCost={} primaryAV='{}' secondaryAV='{}' archetype={} flags=0x{:X}",
 					mgef->formID,
-					FormEditorID(mgef),
+					SafeEditorID(mgef),
 					d.baseCost,
-					AVEditorID(d.primaryAV),
-					AVEditorID(d.secondaryAV),
+					SafeEditorID(d.primaryAV),
+					SafeEditorID(d.secondaryAV),
 					static_cast<std::int32_t>(d.archetype.get()),
 					static_cast<std::uint32_t>(d.flags.get()));
 			}
@@ -131,7 +98,7 @@ namespace Diagnostics::DumpDefaultObjects
 					eff->data.duration,
 					eff->rawCost,
 					setting ? setting->formID : 0u,
-					setting ? FormEditorID(setting) : "");
+					setting ? SafeEditorID(setting) : "");
 			}
 		}
 
@@ -142,21 +109,39 @@ namespace Diagnostics::DumpDefaultObjects
 			std::uint32_t idx = 0;
 			a_fl->ForEachForm([&idx](RE::TESForm* f) {
 				if (f) {
-					REX::INFO("    [{}] {} {:08X} edid='{}'",
+					REX::INFO("    [{}] formType={} {:08X} edid='{}'",
 						idx,
-						FormTypeName(f->GetFormType()),
+						static_cast<std::uint32_t>(f->GetFormType()),
 						f->formID,
-						FormEditorID(f));
+						SafeEditorID(f));
 				}
 				++idx;
 				return RE::BSContainer::ForEachResult::kContinue;
 			});
 		}
 
-		void DumpGlobal(const RE::TESGlobal* a_glob)
+		template <class T>
+		int DumpByEditorID(const char* a_label, const std::vector<std::string>& a_filters,
+			void (*a_detail)(const T*))
 		{
-			if (!a_glob) return;
-			REX::INFO("    value={}", a_glob->value);
+			auto* dh = RE::TESDataHandler::GetSingleton();
+			if (!dh) return 0;
+			auto& arr = dh->GetFormArray<T>();
+			int matched = 0;
+			for (auto* form : arr) {
+				if (!form) continue;
+				const auto edid = form->GetFormEditorID();
+				if (!edid) continue;
+				if (!NameMatches(edid, a_filters)) continue;
+				++matched;
+				REX::INFO("[{}] {:08X} edid='{}'", a_label, form->formID, edid);
+				if (a_detail) a_detail(form);
+			}
+			return matched;
+		}
+
+		void DetailGlobal(const RE::TESGlobal* a_g) {
+			if (a_g) REX::INFO("    value={}", a_g->value);
 		}
 	}
 
@@ -171,53 +156,19 @@ namespace Diagnostics::DumpDefaultObjects
 		REX::INFO("--- DumpDefaultObjects start (filter='{}' -> {} token(s)) ---",
 			raw_filter, filters.size());
 
-		auto* dos = RE::BGSDefaultObject::GetSingleton();
-		if (!dos) {
-			REX::WARN("BGSDefaultObject singleton not available; aborting dump");
+		auto* dh = RE::TESDataHandler::GetSingleton();
+		if (!dh) {
+			REX::WARN("TESDataHandler singleton not available; aborting dump");
 			return;
 		}
 
-		int do_count    = 0;
-		int match_count = 0;
-		for (auto* entry : *dos) {
-			if (!entry) continue;
-			++do_count;
+		int kw    = DumpByEditorID<RE::BGSKeyword>   ("KYWD", filters, &DumpKeywordMGEFs);
+		int alch  = DumpByEditorID<RE::AlchemyItem>  ("ALCH", filters, &DumpAlchemyEffects);
+		int flst  = DumpByEditorID<RE::BGSListForm>  ("FLST", filters, &DumpFormList);
+		int glob  = DumpByEditorID<RE::TESGlobal>    ("GLOB", filters, &DetailGlobal);
+		int mgef  = DumpByEditorID<RE::EffectSetting>("MGEF", filters, nullptr);
 
-			const auto name = std::string_view{ entry->formEditorID };
-			if (!NameMatches(name, filters)) continue;
-			++match_count;
-
-			auto* form = entry->form;
-			if (!form) {
-				REX::INFO("[DO] {} -> <unresolved>", name);
-				continue;
-			}
-
-			REX::INFO("[DO] {} -> {} {:08X} edid='{}'",
-				name,
-				FormTypeName(form->GetFormType()),
-				form->formID,
-				FormEditorID(form));
-
-			switch (form->GetFormType()) {
-				case RE::ENUM_FORM_ID::kKYWD:
-					DumpKeywordMGEFs(form->As<RE::BGSKeyword>());
-					break;
-				case RE::ENUM_FORM_ID::kALCH:
-					DumpAlchemyEffects(form->As<RE::AlchemyItem>());
-					break;
-				case RE::ENUM_FORM_ID::kFLST:
-					DumpFormList(form->As<RE::BGSListForm>());
-					break;
-				case RE::ENUM_FORM_ID::kGLOB:
-					DumpGlobal(form->As<RE::TESGlobal>());
-					break;
-				default:
-					break;
-			}
-		}
-
-		REX::INFO("--- DumpDefaultObjects done ({}/{} DOs matched filter) ---",
-			match_count, do_count);
+		REX::INFO("--- DumpDefaultObjects done (KYWD={} ALCH={} FLST={} GLOB={} MGEF={}) ---",
+			kw, alch, flst, glob, mgef);
 	}
 }
