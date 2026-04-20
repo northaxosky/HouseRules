@@ -54,11 +54,17 @@ BENIGN_SUBSTRINGS = [
     "failed to allocate from branch pool",  # first-allocation fallback, non-fatal
 ]
 
-GAME_PROCESSES = ["Fallout4.exe", "f4se_loader.exe", "ModOrganizer.exe"]
+# Only the game process. NEVER include ModOrganizer.exe here — force-killing
+# MO2 skips the post-game cleanup that RootBuilder runs to undeploy Root mods,
+# which corrupts the MO2 setup and leaves Root files stuck in the game folder.
+# MO2 itself exits on its own after the game closes. f4se_loader.exe is a
+# shim that's already exited by the time we'd kill it; left out for safety.
+GAME_PROCESSES = ["Fallout4.exe"]
 
 
 def kill_game() -> None:
     for proc in GAME_PROCESSES:
+        assert proc != "ModOrganizer.exe", "never kill MO2 — RootBuilder depends on clean exit"
         subprocess.run(["taskkill", "/F", "/IM", proc], capture_output=True, check=False)
 
 
