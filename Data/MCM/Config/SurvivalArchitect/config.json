@@ -118,7 +118,7 @@
                     "id": "bGodMode:Unlocks",
                     "text": "Allow God Mode",
                     "type": "switcher",
-                    "help": "ON re-enables tgm/tdm console commands in Survival (hook not yet implemented — v0.2).",
+                    "help": "ON lets the tgm and tim console cheats take effect in Survival (damage is blocked while the cheat is active).",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {

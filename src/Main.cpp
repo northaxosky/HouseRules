@@ -1,5 +1,6 @@
 #include "PCH.h"
 
+#include "Hooks/GodMode.h"
 #include "Hooks/Unlocks.h"
 #include "Settings.h"
 
@@ -72,6 +73,7 @@ F4SE_EXPORT bool F4SEPlugin_Load(const F4SE::LoadInterface* a_f4se)
 	}
 
 	Hooks::Unlocks::Install();
+	Hooks::GodMode::Install();
 
 	REX::INFO("Survival Architect loaded");
 	return true;
