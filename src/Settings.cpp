@@ -4,7 +4,7 @@
 
 #include "Hooks/GodMode.h"
 #include "Hooks/Unlocks.h"
-#include "Tweaks/NeedRates.h"
+#include "Tweaks/Magnitudes.h"
 
 namespace MCM
 {
@@ -16,7 +16,7 @@ namespace MCM
 			"Data/MCM/Settings/SurvivalArchitect.ini");
 		ini->Load();
 
-		Tweaks::NeedRates::Apply();
+		Tweaks::Magnitudes::Apply();
 		Hooks::Unlocks::RefreshRuntimePatches();
 		Hooks::GodMode::RefreshRuntimePatches();
 	}

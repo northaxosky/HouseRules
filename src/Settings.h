@@ -27,6 +27,21 @@ namespace MCM
 			inline static REX::INI::Bool<> bReenableSurvival{ "Unlocks", "bReenableSurvival", false };
 		};
 
+		// Runtime multipliers on vanilla magnitudes. 1.0 = vanilla. 0.0 = effect nulled.
+		class Magnitudes
+		{
+		public:
+			inline static REX::INI::F32<> fStimpakHeal      { "Magnitudes", "fStimpakHeal",       1.0f };
+			inline static REX::INI::F32<> fStimpakLimbRepair{ "Magnitudes", "fStimpakLimbRepair", 1.0f };
+			inline static REX::INI::F32<> fRadAwayStrength  { "Magnitudes", "fRadAwayStrength",   1.0f };
+			inline static REX::INI::F32<> fRadXPotency      { "Magnitudes", "fRadXPotency",       1.0f };
+			inline static REX::INI::F32<> fFoodHeal         { "Magnitudes", "fFoodHeal",          1.0f };
+			inline static REX::INI::F32<> fWaterSatiation   { "Magnitudes", "fWaterSatiation",    1.0f };
+			inline static REX::INI::F32<> fHungerPenalty    { "Magnitudes", "fHungerPenalty",     1.0f };
+			inline static REX::INI::F32<> fThirstPenalty    { "Magnitudes", "fThirstPenalty",     1.0f };
+			inline static REX::INI::F32<> fSleepPenalty     { "Magnitudes", "fSleepPenalty",      1.0f };
+		};
+
 		// Developer-only. Not exposed in MCM. Edit settings.ini directly.
 		class Diagnostic
 		{
