@@ -175,23 +175,16 @@ namespace Hooks::GodMode
 			g_hooks.push_back(std::move(h));
 		}
 
-		// Start clean in case some other plugin or a prior session left the
-		// engine's tgm/tim bool set.
-		RefreshRuntimePatches();
-	}
-
-	// Called on pause-menu close after MCM settings reload. When the user
-	// disables bGodMode, clear the engine's tgm/tim flags — otherwise a
-	// previously-typed tgm would silently re-activate the moment the player
-	// leaves Survival (and the user would never connect the dots).
-	void RefreshRuntimePatches()
-	{
-		const bool enabled = MCM::Settings::General::bEnabled.GetValue() &&
-			MCM::Settings::Unlocks::bGodMode.GetValue();
-		if (enabled) {
-			return;  // user controls tgm/tim themselves
-		}
+		// Ensure a clean slate at each fresh process launch — protects against
+		// something else having pre-set the bools before our plugin loaded.
+		// Note: FO4 doesn't serialise the tgm/tim state into saves, so this
+		// is effectively the only reset point that matters.
 		if (auto* g = GodModePtr()) *g = false;
 		if (auto* i = ImmortalPtr()) *i = false;
 	}
+
+	// Placeholder so Settings::Update can call us uniformly with the other
+	// hook modules. No live state to refresh — the in-memory MCM value is
+	// read on every IsGodMode_Impl/CheckClampDamageModifier_Impl call.
+	void RefreshRuntimePatches() {}
 }
