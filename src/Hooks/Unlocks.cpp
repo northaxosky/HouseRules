@@ -18,17 +18,30 @@ namespace Hooks::Unlocks
 		using VoidPCFn = void(RE::PlayerCharacter*);
 		using VoidPCHook = REL::Hook<VoidPCFn>;
 
+		using MenuDLFn = RE::DifficultyLevel(RE::StartMenuBase*);
+		using MenuDLHook = REL::Hook<MenuDLFn>;
+
+		using SetMemberFn = bool(void*, void*, const char*, Scaleform::GFx::Value&, bool);
+		using SetMemberHook = REL::Hook<SetMemberFn>;
+
 		std::vector<std::unique_ptr<REL::HookObject>> g_hooks;
 
+		// Typed back-pointers for hooks whose spoof calls through to the original
+		// via Hook::operator(). Aliases into the heap-allocated hook inside g_hooks.
+		MenuDLHook*    g_menudl_hook    = nullptr;
+		SetMemberHook* g_setmember_hook = nullptr;
+
 		template <class HookT, class FnT>
-		void AddHook(std::uint64_t a_id, std::size_t a_offset, FnT* a_fn, const char* a_label)
+		HookT* AddHook(std::uint64_t a_id, std::size_t a_offset, FnT* a_fn, const char* a_label)
 		{
 			auto hook = std::make_unique<HookT>(REL::ID(a_id), a_offset, a_fn);
+			auto* raw = hook.get();
 			const bool init_ok   = hook->Init();
 			const bool enable_ok = hook->Enable();
 			REX::INFO("Unlocks: hook {} (id={} +0x{:X}) init={} enable={}",
 				a_label, a_id, a_offset, init_ok, enable_ok);
 			g_hooks.push_back(std::move(hook));
+			return raw;
 		}
 
 		struct RuntimeAddr
@@ -120,6 +133,34 @@ namespace Hooks::Unlocks
 			return ShouldSpoof(MCM::Settings::Unlocks::bNoAmmoWeight.GetValue())
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
+		}
+
+		// SendGameplayOptions Hook 1: spoof the GetMenuDifficultyLevel CALL so the
+		// main menu's "autosave enabled" indicator tracks bSaveAuto. We always
+		// invoke the original first — it caches the result on StartMenuBase
+		// (currentDisplayDifficultyLevel at offset 0x1F8) and skipping would leave
+		// the cache stale.
+		RE::DifficultyLevel Spoof_SaveAuto_MenuDL(RE::StartMenuBase* a_this)
+		{
+			const auto real = (*g_menudl_hook)(a_this);
+			return ShouldSpoof(MCM::Settings::Unlocks::bSaveAuto.GetValue())
+				? RE::DifficultyLevel::kVeryEasy
+				: real;
+		}
+
+		// SendGameplayOptions Hook 2: the engine builds a Scaleform value from a
+		// separately-computed difficulty and pushes it into the Flash object via
+		// SetMember. We re-read it from MainMenu (now spoofed by Hook 1) so the
+		// UI stays consistent with what the rest of the engine sees.
+		bool Spoof_SaveAuto_SetMember(void* a_this, void* a_data, const char* a_name,
+			Scaleform::GFx::Value& a_value, bool a_isObj)
+		{
+			if (auto* ui = RE::UI::GetSingleton()) {
+				if (auto menu = ui->GetMenu<RE::MainMenu>()) {
+					a_value = std::to_underlying(menu->GetMenuDifficultyLevel());
+				}
+			}
+			return (*g_setmember_hook)(a_this, a_data, a_name, a_value, a_isObj);
 		}
 
 		void Replace_RequestQueueDoorAutosave(RE::PlayerCharacter* a_this)
@@ -272,6 +313,19 @@ namespace Hooks::Unlocks
 			if (const auto* ra = SelectSite(s.og, s.ng, s.ae)) {
 				AddHook<VoidPCHook>(ra->id, ra->offset, s.fn, s.label);
 			}
+		}
+		// StartMenuBase::SendGameplayOptions — two call sites inside the same
+		// function. AE ID 4483089 was added after NG's AddressLib was published,
+		// so each runtime has its own ID.
+		if (const auto* ra = SelectSite(
+				{ 1103363, 0x036 }, { 2224576, 0x03A }, { 4483089, 0x03A })) {
+			g_menudl_hook = AddHook<MenuDLHook>(ra->id, ra->offset, &Spoof_SaveAuto_MenuDL,
+				"SaveAuto / StartMenuBase::SendGameplayOptions (GetMenuDifficultyLevel)");
+		}
+		if (const auto* ra = SelectSite(
+				{ 1103363, 0x0D6 }, { 2224576, 0x0DB }, { 4483089, 0x0DB })) {
+			g_setmember_hook = AddHook<SetMemberHook>(ra->id, ra->offset, &Spoof_SaveAuto_SetMember,
+				"SaveAuto / StartMenuBase::SendGameplayOptions (SetMember)");
 		}
 		InstallReenableSurvival();
 	}
