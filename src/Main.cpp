@@ -1,5 +1,6 @@
 #include "PCH.h"
 
+#include "Diagnostics/DumpDefaultObjects.h"
 #include "Hooks/GodMode.h"
 #include "Hooks/Unlocks.h"
 #include "Settings.h"
@@ -46,6 +47,7 @@ namespace
 		switch (a_msg->type) {
 			case F4SE::MessagingInterface::kGameDataReady:
 				MCM::Settings::Update();
+				Diagnostics::DumpDefaultObjects::MaybeRun();
 				break;
 			case F4SE::MessagingInterface::kGameLoaded:
 				RegisterMenuSink();

@@ -27,6 +27,19 @@ namespace MCM
 			inline static REX::INI::Bool<> bReenableSurvival{ "Unlocks", "bReenableSurvival", false };
 		};
 
+		// Developer-only. Not exposed in MCM. Edit settings.ini directly.
+		class Diagnostic
+		{
+		public:
+			inline static REX::INI::Bool<> bDumpOnLoad{
+				"Diagnostic", "bDumpOnLoad", false
+			};
+			inline static REX::INI::Str<> sDumpFilter{
+				"Diagnostic", "sDumpFilter",
+				std::string{ "Hardcore,Stimpack,SuperStimpack,RadAway,RadX,ObjectTypeWater" }
+			};
+		};
+
 		static void Update();
 	};
 }
