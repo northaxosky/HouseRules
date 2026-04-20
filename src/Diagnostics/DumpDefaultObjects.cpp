@@ -45,7 +45,7 @@ namespace Diagnostics::DumpDefaultObjects
 			}
 			for (const auto& f : a_filters) {
 				if (f == "*") return true;
-				if (a_name.size() >= f.size() && a_name.compare(0, f.size(), f) == 0) {
+				if (a_name.find(f) != std::string_view::npos) {
 					return true;
 				}
 			}

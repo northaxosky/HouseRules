@@ -36,7 +36,7 @@ namespace MCM
 			};
 			inline static REX::INI::Str<> sDumpFilter{
 				"Diagnostic", "sDumpFilter",
-				std::string{ "Hardcore,Stimpack,SuperStimpack,RadAway,RadX,ObjectTypeWater" }
+				std::string{ "Hardcore,Survival,Hunger,Thirst,Sleep,Fatigue,Stimpak,RadAway,RadX,Peckish,Weary,Parched,Dehydr,Starv" }
 			};
 		};
 
