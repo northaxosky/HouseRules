@@ -31,23 +31,27 @@ namespace Hooks::Unlocks
 			g_hooks.push_back(std::move(hook));
 		}
 
-		// Pick the (id, offset) for the current runtime. NG and AE share values in
-		// practice (verified by our AE scan matching Baka's NG offsets 1:1 for every
-		// hook). An id of 0 means "skip on this runtime" — a call site that exists
-		// on NG/AE but not OG, or vice versa.
-		bool SelectSite(
-			std::uint64_t og_id, std::uint64_t ng_id,
-			std::size_t og_off, std::size_t ng_off,
-			std::uint64_t& out_id, std::size_t& out_off)
+		struct RuntimeAddr
+		{
+			std::uint64_t id     = 0;  // 0 = skip on this runtime
+			std::size_t   offset = 0;
+		};
+
+		// NG and AE mostly share offsets, but not always. Real-world exception:
+		// FastTravel / PipboyMenu is at NG +0x347 / AE +0x34C (5-byte delta).
+		// Verify any new site with tools/audit_hook_offsets.py against each runtime.
+		const RuntimeAddr* SelectSite(
+			const RuntimeAddr& og, const RuntimeAddr& ng, const RuntimeAddr& ae)
 		{
 			using RT = REL::Module::Runtime;
+			const RuntimeAddr* ra = nullptr;
 			switch (REL::Module::GetRuntimeIndex()) {
-				case RT::kOG: out_id = og_id; out_off = og_off; break;
-				case RT::kNG:
-				case RT::kAE: out_id = ng_id; out_off = ng_off; break;
-				default:      return false;
+				case RT::kOG: ra = &og; break;
+				case RT::kNG: ra = &ng; break;
+				case RT::kAE: ra = &ae; break;
+				default:      return nullptr;
 			}
-			return out_id != 0;
+			return ra->id != 0 ? ra : nullptr;
 		}
 
 		RE::DifficultyLevel RealDifficulty(RE::PlayerCharacter* a_this)
@@ -133,59 +137,52 @@ namespace Hooks::Unlocks
 			}
 		}
 
-		struct GDLSite
+		template <class Fn>
+		struct Site
 		{
-			std::uint64_t og_id;
-			std::uint64_t ng_id;  // AE == NG in practice
-			std::size_t   og_off;
-			std::size_t   ng_off;  // AE == NG in practice
-			GDLFn*        spoof;
-			const char*   label;
+			RuntimeAddr og;
+			RuntimeAddr ng;
+			RuntimeAddr ae;
+			Fn*         fn;
+			const char* label;
 		};
 
-		struct VoidPCSite
-		{
-			std::uint64_t og_id;
-			std::uint64_t ng_id;
-			std::size_t   og_off;
-			std::size_t   ng_off;
-			VoidPCFn*     fn;
-			const char*   label;
-		};
+		// OG offsets: scan of the unpacked 1.10.163 Fallout4.exe, named via IDA
+		// port JSON. NG/AE: Baka's source cross-checked with our scans of the
+		// unpacked NG/AE binaries. An id of 0 skips on that runtime (call site
+		// doesn't exist there, or can't be verified yet).
+		//
+		// NG and AE mostly match, but the FastTravel/PipboyMenu offset differs
+		// (NG 0x347 vs AE 0x34C). Run tools/audit_hook_offsets.py after any
+		// change here to catch drift.
+		const Site<GDLFn> kGdlSites[] = {
+			{ {927099,  0x20A}, {2249425, 0x1AA}, {2249425, 0x1AA}, &Spoof_Console,          "Console / MenuOpenHandler" },
 
-		// OG IDs/offsets: our scan of the unpacked 1.10.163 Fallout4.exe,
-		// cross-referenced with IDA name-port JSON.
-		// NG/AE IDs/offsets: Baka's source (REL::ID + offset), confirmed against
-		// our AE 1.11.191 scan. NG and AE match exactly for every hook below.
-		// An id of 0 means "skip on this runtime" (call site doesn't exist there).
-		const GDLSite kGdlSites[] = {
-			{ 927099,  2249425, 0x20A, 0x1AA, &Spoof_Console,          "Console / MenuOpenHandler" },
+			{ {1470086, 0x06C}, {2249427, 0x06C}, {2249427, 0x06C}, &Spoof_SaveSelf,         "SaveSelf / QuickSaveLoadHandler" },
+			{ {425422,  0x047}, {2223965, 0x04D}, {2223965, 0x04D}, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::CheckIfSaveLoadPossible" },
+			{ {1330449, 0x0C1}, {2223964, 0x0C6}, {2223964, 0x0C6}, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::InitMainList" },
 
-			{ 1470086, 2249427, 0x06C, 0x06C, &Spoof_SaveSelf,         "SaveSelf / QuickSaveLoadHandler" },
-			{ 425422,  2223965, 0x047, 0x04D, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::CheckIfSaveLoadPossible" },
-			{ 1330449, 2223964, 0x0C1, 0x0C6, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::InitMainList" },
+			{ {712982,  0x31E}, {2224179, 0x347}, {2224179, 0x34C}, &Spoof_FastTravel,       "FastTravel / PipboyMenu::PipboyMenu" },
+			{ {1327120, 0x013}, {2224206, 0x014}, {2224206, 0x014}, &Spoof_FastTravel,       "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
 
-			{ 712982,  2224179, 0x31E, 0x34C, &Spoof_FastTravel,       "FastTravel / PipboyMenu::PipboyMenu" },
-			{ 1327120, 2224206, 0x013, 0x014, &Spoof_FastTravel,       "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
-
-			{ 1158548, 2223294, 0x04E, 0x04E, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor" },
+			{ {1158548, 0x04E}, {2223294, 0x04E}, {2223294, 0x04E}, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor" },
 			// NG/AE have a second LevelUpMenu call site OG doesn't expose.
-			{ 0,       2223327, 0,     0x057, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor (NG/AE extra)" },
-			{ 98443,   2224974, 0x193, 0x13E, &Spoof_SaveAuto,         "SaveAuto / WorkshopMenu dtor" },
-			{ 1231000, 2225457, 0x18A, 0x1A4, &Spoof_SaveAuto,         "SaveAuto / PipboyManager::OnPipboyCloseAnim" },
-			{ 146861,  2232905, 0x678, 0x6A1, &Spoof_SaveAuto,         "SaveAuto / PlayerCharacter::HandlePositionPlayerRequest" },
+			{ {0,       0    }, {2223327, 0x057}, {2223327, 0x057}, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor (NG/AE extra)" },
+			{ {98443,   0x193}, {2224974, 0x13E}, {2224974, 0x13E}, &Spoof_SaveAuto,         "SaveAuto / WorkshopMenu dtor" },
+			{ {1231000, 0x18A}, {2225457, 0x1A4}, {2225457, 0x1A4}, &Spoof_SaveAuto,         "SaveAuto / PipboyManager::OnPipboyCloseAnim" },
+			{ {146861,  0x678}, {2232905, 0x6A1}, {2232905, 0x6A1}, &Spoof_SaveAuto,         "SaveAuto / PlayerCharacter::HandlePositionPlayerRequest" },
 
-			{ 1475119, 2220612, 0x017, 0x01B, &Spoof_CompassEnemies,   "CompassEnemies / HUDMarkerUtils::GetHostileEnemyMaxDistance" },
+			{ {1475119, 0x017}, {2220612, 0x01B}, {2220612, 0x01B}, &Spoof_CompassEnemies,   "CompassEnemies / HUDMarkerUtils::GetHostileEnemyMaxDistance" },
 
-			{ 1301956, 2220611, 0x00B, 0x00B, &Spoof_CompassLocations, "CompassLocations / HUDMarkerUtils::GetLocationMaxDistance" },
-			{ 1153736, 2220617, 0x0A2, 0x086, &Spoof_CompassLocations, "CompassLocations / CalculateCompassMarkersFunctor::UpdateLocationMarkers" },
+			{ {1301956, 0x00B}, {2220611, 0x00B}, {2220611, 0x00B}, &Spoof_CompassLocations, "CompassLocations / HUDMarkerUtils::GetLocationMaxDistance" },
+			{ {1153736, 0x0A2}, {2220617, 0x086}, {2220617, 0x086}, &Spoof_CompassLocations, "CompassLocations / CalculateCompassMarkersFunctor::UpdateLocationMarkers" },
 
-			{ 1321341, 2193446, 0x092, 0x08E, &Spoof_NoAlchWeight,     "Weight / TESWeightForm::GetFormWeight (alch)" },
-			{ 1321341, 2193446, 0x11C, 0x110, &Spoof_NoAmmoWeight,     "Weight / TESWeightForm::GetFormWeight (ammo)" },
+			{ {1321341, 0x092}, {2193446, 0x08E}, {2193446, 0x08E}, &Spoof_NoAlchWeight,     "Weight / TESWeightForm::GetFormWeight (alch)" },
+			{ {1321341, 0x11C}, {2193446, 0x110}, {2193446, 0x110}, &Spoof_NoAmmoWeight,     "Weight / TESWeightForm::GetFormWeight (ammo)" },
 		};
 
-		const VoidPCSite kVoidPCSites[] = {
-			{ 1397471, 2198697, 0x1B4, 0x1B4, &Replace_RequestQueueDoorAutosave,
+		const Site<VoidPCFn> kVoidPCSites[] = {
+			{ {1397471, 0x1B4}, {2198697, 0x1B4}, {2198697, 0x1B4}, &Replace_RequestQueueDoorAutosave,
 			  "SaveAuto / TESObjectDOOR::DoorTeleportPlayerArrivalCallback" },
 		};
 
@@ -267,17 +264,13 @@ namespace Hooks::Unlocks
 	void Install()
 	{
 		for (const auto& s : kGdlSites) {
-			std::uint64_t id;
-			std::size_t   off;
-			if (SelectSite(s.og_id, s.ng_id, s.og_off, s.ng_off, id, off)) {
-				AddHook<GDLHook>(id, off, s.spoof, s.label);
+			if (const auto* ra = SelectSite(s.og, s.ng, s.ae)) {
+				AddHook<GDLHook>(ra->id, ra->offset, s.fn, s.label);
 			}
 		}
 		for (const auto& s : kVoidPCSites) {
-			std::uint64_t id;
-			std::size_t   off;
-			if (SelectSite(s.og_id, s.ng_id, s.og_off, s.ng_off, id, off)) {
-				AddHook<VoidPCHook>(id, off, s.fn, s.label);
+			if (const auto* ra = SelectSite(s.og, s.ng, s.ae)) {
+				AddHook<VoidPCHook>(ra->id, ra->offset, s.fn, s.label);
 			}
 		}
 		InstallReenableSurvival();
