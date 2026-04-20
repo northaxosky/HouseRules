@@ -59,6 +59,19 @@ namespace Diagnostics::DumpDefaultObjects
 			return edid ? edid : "";
 		}
 
+		void LogMGEFDetail(const RE::EffectSetting* a_mgef, const char* a_indent)
+		{
+			if (!a_mgef) return;
+			const auto& d = a_mgef->data;
+			REX::INFO("{}baseCost={} primaryAV='{}' secondaryAV='{}' archetype={} flags=0x{:X}",
+				a_indent,
+				d.baseCost,
+				SafeEditorID(d.primaryAV),
+				SafeEditorID(d.secondaryAV),
+				static_cast<std::int32_t>(d.archetype.get()),
+				static_cast<std::uint32_t>(d.flags.get()));
+		}
+
 		void DumpKeywordMGEFs(const RE::BGSKeyword* a_keyword)
 		{
 			auto* dh = RE::TESDataHandler::GetSingleton();
@@ -69,18 +82,13 @@ namespace Diagnostics::DumpDefaultObjects
 				if (!mgef) continue;
 				if (!mgef->HasKeyword(a_keyword)) continue;
 				++matched;
-				const auto& d = mgef->data;
-				REX::INFO("    [MGEF] {:08X} edid='{}' baseCost={} primaryAV='{}' secondaryAV='{}' archetype={} flags=0x{:X}",
-					mgef->formID,
-					SafeEditorID(mgef),
-					d.baseCost,
-					SafeEditorID(d.primaryAV),
-					SafeEditorID(d.secondaryAV),
-					static_cast<std::int32_t>(d.archetype.get()),
-					static_cast<std::uint32_t>(d.flags.get()));
+				REX::INFO("    [MGEF] {:08X} edid='{}'", mgef->formID, SafeEditorID(mgef));
+				LogMGEFDetail(mgef, "        ");
 			}
 			REX::INFO("    ({} MGEFs tagged with this keyword)", matched);
 		}
+
+		void DetailMGEF(const RE::EffectSetting* m) { LogMGEFDetail(m, "    "); }
 
 		void DumpAlchemyEffects(const RE::AlchemyItem* a_alch)
 		{
@@ -166,7 +174,7 @@ namespace Diagnostics::DumpDefaultObjects
 		int alch  = DumpByEditorID<RE::AlchemyItem>  ("ALCH", filters, &DumpAlchemyEffects);
 		int flst  = DumpByEditorID<RE::BGSListForm>  ("FLST", filters, &DumpFormList);
 		int glob  = DumpByEditorID<RE::TESGlobal>    ("GLOB", filters, &DetailGlobal);
-		int mgef  = DumpByEditorID<RE::EffectSetting>("MGEF", filters, nullptr);
+		int mgef  = DumpByEditorID<RE::EffectSetting>("MGEF", filters, &DetailMGEF);
 
 		REX::INFO("--- DumpDefaultObjects done (KYWD={} ALCH={} FLST={} GLOB={} MGEF={}) ---",
 			kw, alch, flst, glob, mgef);
