@@ -2,6 +2,7 @@
 
 #include "Settings.h"
 
+#include "Hooks/GodMode.h"
 #include "Hooks/Unlocks.h"
 #include "Tweaks/NeedRates.h"
 
@@ -17,5 +18,6 @@ namespace MCM
 
 		Tweaks::NeedRates::Apply();
 		Hooks::Unlocks::RefreshRuntimePatches();
+		Hooks::GodMode::RefreshRuntimePatches();
 	}
 }

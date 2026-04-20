@@ -6,4 +6,5 @@
 namespace Hooks::GodMode
 {
 	void Install();
+	void RefreshRuntimePatches();
 }

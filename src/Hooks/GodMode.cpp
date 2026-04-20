@@ -132,6 +132,17 @@ namespace Hooks::GodMode
 
 	void Install()
 	{
+		// Sanity check: these addresses should resolve, and the flags should
+		// read as 0 at plugin load (no tgm/tim typed yet). Any non-zero value
+		// here means either a wrong offset or a game-memory pre-init state
+		// that needs resetting.
+		if (auto* g = GodModePtr()) {
+			REX::INFO("GodMode: godmode flag @ {} = {}", static_cast<const void*>(g), *g);
+		}
+		if (auto* i = ImmortalPtr()) {
+			REX::INFO("GodMode: immortal flag @ {} = {}", static_cast<const void*>(i), *i);
+		}
+
 		// Wholesale replacements. The OG IsGodMode and IsImmortal are each
 		// 0x40 bytes of real code; we write a 14-byte JMP14 + 0x31 bytes of
 		// INT3 padding, which fits comfortably in 0x3F.
@@ -163,5 +174,24 @@ namespace Hooks::GodMode
 			REX::INFO("GodMode: VFT hook PC::CheckClampDamageModifier enabled={}", enabled);
 			g_hooks.push_back(std::move(h));
 		}
+
+		// Start clean in case some other plugin or a prior session left the
+		// engine's tgm/tim bool set.
+		RefreshRuntimePatches();
+	}
+
+	// Called on pause-menu close after MCM settings reload. When the user
+	// disables bGodMode, clear the engine's tgm/tim flags — otherwise a
+	// previously-typed tgm would silently re-activate the moment the player
+	// leaves Survival (and the user would never connect the dots).
+	void RefreshRuntimePatches()
+	{
+		const bool enabled = MCM::Settings::General::bEnabled.GetValue() &&
+			MCM::Settings::Unlocks::bGodMode.GetValue();
+		if (enabled) {
+			return;  // user controls tgm/tim themselves
+		}
+		if (auto* g = GodModePtr()) *g = false;
+		if (auto* i = ImmortalPtr()) *i = false;
 	}
 }
