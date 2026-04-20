@@ -150,35 +150,35 @@
                     "text": "Stimpak Healing",
                     "type": "slider",
                     "help": "Scales the HP restored per stimpak. Vanilla magnitude is 6 HP/sec over 5s.",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.1, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fStimpakLimbRepair:Magnitudes",
                     "text": "Stimpak Limb Repair",
                     "type": "slider",
                     "help": "Scales the per-limb RestoreCondition effects on stimpak. Set to 0 to keep limbs broken after a stim.",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                    "valueOptions": { "min": 0, "max": 5, "step": 1, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fRadAwayStrength:Magnitudes",
                     "text": "RadAway Removal",
                     "type": "slider",
                     "help": "Scales the rads removed per RadAway. Vanilla magnitude is 60.",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.1, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fRadXPotency:Magnitudes",
                     "text": "RadX Protection",
                     "type": "slider",
                     "help": "Scales the rad resistance granted by RadX. Vanilla magnitude is 100 over 180s.",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.1, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fFoodHeal:Magnitudes",
                     "text": "Food / Drink Healing",
                     "type": "slider",
                     "help": "Scales the universal RestoreHealthFood magnitude. Every vanilla food and drink item uses this effect.",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.1, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fWaterSatiation:Magnitudes",
@@ -194,21 +194,21 @@
                     "text": "Hunger Penalty Severity",
                     "type": "slider",
                     "help": "Scales the SPECIAL penalties at each hunger tier (Peckish through Starving).",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                    "valueOptions": { "min": 0, "max": 5, "step": 1, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fThirstPenalty:Magnitudes",
                     "text": "Thirst Penalty Severity",
                     "type": "slider",
                     "help": "Scales the SPECIAL penalties at each thirst tier (Thirsty through Severely Dehydrated).",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                    "valueOptions": { "min": 0, "max": 5, "step": 1, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fSleepPenalty:Magnitudes",
                     "text": "Sleep Penalty Severity",
                     "type": "slider",
                     "help": "Scales the AP-regen and SPECIAL penalties at each sleep tier (Tired through Incapacitated).",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                    "valueOptions": { "min": 0, "max": 5, "step": 1, "sourceType": "ModSettingFloat" }
                 }
             ]
         }

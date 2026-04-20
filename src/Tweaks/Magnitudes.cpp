@@ -146,7 +146,18 @@ namespace Tweaks::Magnitudes
 			for (std::size_t i = 0; i < count; ++i) {
 				auto* eff = alch->listOfEffects[static_cast<std::uint32_t>(i)];
 				if (!eff) continue;
-				eff->data.magnitude = snap->baselines[i] * a_scaler(i);
+				const float wanted = snap->baselines[i] * a_scaler(i);
+				eff->data.magnitude = wanted;
+				// Readback + archetype so we can tell whether the engine honors
+				// the write. Archetype 31 (kStimpak), 4 (kAbsorb), 3 (kCureDisease)
+				// etc. are special-case handlers that may ignore data.magnitude.
+				const auto readback = eff->data.magnitude;
+				const int  archetype = eff->effectSetting
+					? static_cast<int>(eff->effectSetting->data.archetype.get())
+					: -1;
+				const char* mgef_edid = eff->effectSetting ? eff->effectSetting->GetFormEditorID() : "";
+				REX::INFO("  ALCH {:08X}[{}]: wrote={} readback={} archetype={} mgef='{}'",
+					a_formID, i, wanted, readback, archetype, mgef_edid ? mgef_edid : "");
 			}
 		}
 
@@ -156,7 +167,12 @@ namespace Tweaks::Magnitudes
 			if (!snap) return;
 			auto* mgef = LookupMgef(a_formID);
 			if (!mgef) return;
-			mgef->data.baseCost = snap->baseline * a_mult;
+			const float wanted = snap->baseline * a_mult;
+			mgef->data.baseCost = wanted;
+			const auto readback = mgef->data.baseCost;
+			const int  archetype = static_cast<int>(mgef->data.archetype.get());
+			REX::INFO("  MGEF {:08X}: wrote={} readback={} archetype={}",
+				a_formID, wanted, readback, archetype);
 		}
 	}
 
