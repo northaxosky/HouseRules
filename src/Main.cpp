@@ -22,12 +22,23 @@ namespace
 			const RE::MenuOpenCloseEvent&                 a_event,
 			RE::BSTEventSource<RE::MenuOpenCloseEvent>*) override
 		{
-			if (a_event.menuName == "PauseMenu" && !a_event.opening) {
+			if (a_event.opening) {
+				return RE::BSEventNotifyControl::kContinue;
+			}
+			// PauseMenu close: the player just changed MCM settings, re-apply
+			// all toggles / byte-patches / magnitudes.
+			if (a_event.menuName == "PauseMenu") {
 				MCM::Settings::Update();
-				// Form-touching module is only safe once the game is actually
-				// loaded into a save — pause-menu close is the earliest
-				// reliable signal we have for that.
 				Tweaks::Magnitudes::Apply();
+				return RE::BSEventNotifyControl::kContinue;
+			}
+			// LoadingMenu close: the player has fully spawned into a save /
+			// new game, meshes and the form DB are warm. This is the first
+			// reliable moment to touch forms on OG — the F4SE kPostLoadGame
+			// / kNewGame messages fire on worker threads mid-init and crash.
+			if (a_event.menuName == "LoadingMenu") {
+				Tweaks::Magnitudes::Apply();
+				return RE::BSEventNotifyControl::kContinue;
 			}
 			return RE::BSEventNotifyControl::kContinue;
 		}

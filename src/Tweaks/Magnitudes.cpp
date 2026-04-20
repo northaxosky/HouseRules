@@ -39,8 +39,6 @@ namespace Tweaks::Magnitudes
 		constexpr std::uint32_t kMgefRestoreHealthFood  = 0x0000397E;
 		constexpr std::uint32_t kMgefHCDrinkWaterEffect = 0x00000889;
 
-		constexpr std::string_view kMaster = "Fallout4.esm";
-
 		struct AlchSnapshot
 		{
 			std::uint32_t      formID;
@@ -56,18 +54,31 @@ namespace Tweaks::Magnitudes
 		std::vector<MgefSnapshot> g_mgef_snapshots;
 		bool                      g_snapshotted = false;
 
+		// Intentionally not using TESDataHandler::LookupForm — that path walks
+		// through the engine's form-by-ID hash in a way that triggers a lazy
+		// BSStaticTriShapeDB preload on OG, null-derefing at Fallout4.exe+0x405A
+		// whenever it runs before meshes are warm. Linear-scanning the typed
+		// form arrays (same path our Diagnostics dump uses successfully) stays
+		// clear of that trap. ~hundreds of entries per type — negligible on the
+		// once-per-save-load cadence this runs at.
 		RE::AlchemyItem* LookupAlch(std::uint32_t a_formID)
 		{
 			auto* dh = RE::TESDataHandler::GetSingleton();
 			if (!dh) return nullptr;
-			return dh->LookupForm<RE::AlchemyItem>(a_formID, kMaster);
+			for (auto* alch : dh->GetFormArray<RE::AlchemyItem>()) {
+				if (alch && alch->formID == a_formID) return alch;
+			}
+			return nullptr;
 		}
 
 		RE::EffectSetting* LookupMgef(std::uint32_t a_formID)
 		{
 			auto* dh = RE::TESDataHandler::GetSingleton();
 			if (!dh) return nullptr;
-			return dh->LookupForm<RE::EffectSetting>(a_formID, kMaster);
+			for (auto* mgef : dh->GetFormArray<RE::EffectSetting>()) {
+				if (mgef && mgef->formID == a_formID) return mgef;
+			}
+			return nullptr;
 		}
 
 		void SnapshotAlch(std::uint32_t a_formID)
