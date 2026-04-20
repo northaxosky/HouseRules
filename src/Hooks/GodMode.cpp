@@ -77,19 +77,21 @@ namespace Hooks::GodMode
 		bool IsImmortal_Impl() { return AllowImmortal(); }
 
 		// --- MagicTarget::IsInvulnerable (vtable slot 4 via VTABLE[8]) ---------
-		// Also keeps the two PC-specific short-circuits vanilla's IsInvulnerable
-		// cares about: ghost mode and the teleport-door cooldown window.
+		// Hook is on PlayerCharacter's vtable, so the caller is always the
+		// player — we skip RE::fallout_cast (which needs RTTI::MagicTarget,
+		// an ID missing from OG's AddressLib) and read PC directly from its
+		// singleton. Keeps the two PC-specific short-circuits vanilla's
+		// IsInvulnerable cares about: ghost mode and teleport-door cooldown.
 
-		bool IsInvulnerable_Impl(RE::MagicTarget* a_this)
+		bool IsInvulnerable_Impl(RE::MagicTarget* /*a_this*/)
 		{
 			if (AllowGodMode()) {
 				return true;
 			}
-			if (auto* pc = RE::fallout_cast<RE::PlayerCharacter*>(a_this)) {
-				if (pc->GetGhost() ||
-					pc->usingTeleportDoorTimeStamp.timeStamp - RE::AITimer::fTimer() > 0.0f) {
-					return true;
-				}
+			auto* pc = RE::PlayerCharacter::GetSingleton();
+			if (pc && (pc->GetGhost() ||
+					pc->usingTeleportDoorTimeStamp.timeStamp - RE::AITimer::fTimer() > 0.0f)) {
+				return true;
 			}
 			return false;
 		}
