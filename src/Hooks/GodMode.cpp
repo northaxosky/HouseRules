@@ -106,9 +106,11 @@ namespace Hooks::GodMode
 		}
 
 		// --- PC::CheckClampDamageModifier (vtable slot 0x131 via VTABLE[0]) ---
-		// formID 0x2D4 is the Health actor value; immortal clamps damage when
-		// health would go to zero. kGodModeNoDamage is a flag on specific
-		// actor values (Health, Rads, etc.) that godmode should shield.
+		// God mode clamps every negative delta: vanilla tgm is total invincibility
+		// (including limbs, which use their own ActorValues without the
+		// kGodModeNoDamage flag). Immortal stays surgical — formID 0x2D4 is the
+		// Health AV, and tim only blocks what would be the killing blow so you
+		// can still take limb damage.
 
 		float CheckClampDamageModifier_Impl(RE::PlayerCharacter* a_this,
 			const RE::ActorValueInfo& a_info, float a_delta)
@@ -117,8 +119,7 @@ namespace Hooks::GodMode
 				a_this->GetActorValue(a_info) + a_delta <= 0.0f) {
 				return Actor_CheckClampDamageModifier(a_this, a_info, 0.0f);
 			}
-			if (AllowGodMode() && a_delta < 0.0f &&
-				a_info.flags.all(RE::ActorValue::Flags::kGodModeNoDamage)) {
+			if (AllowGodMode() && a_delta < 0.0f) {
 				return Actor_CheckClampDamageModifier(a_this, a_info, 0.0f);
 			}
 			return Actor_CheckClampDamageModifier(a_this, a_info, a_delta);
