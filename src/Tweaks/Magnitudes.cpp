@@ -155,6 +155,14 @@ namespace Tweaks::Magnitudes
 			return;
 		}
 
+		// Must only be called from a safe context (pause-menu close inside a
+		// loaded save). On OG, kGameDataReady runs inside Main_InitGameData
+		// on the InitGameDataThread while mesh/UI subsystems are still warming
+		// up; TESDataHandler::LookupForm and UI::GetMenu both trigger lazy
+		// preloads there and null-deref in BSStaticTriShapeDB::Force (crashes
+		// 2851eb7 and its MainMenu-gated follow-up). Hook the pause-menu sink
+		// instead of Settings::Update.
+
 		if (!g_snapshotted) {
 			SnapshotAll();
 			g_snapshotted = true;

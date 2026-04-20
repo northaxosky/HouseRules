@@ -4,6 +4,7 @@
 #include "Hooks/GodMode.h"
 #include "Hooks/Unlocks.h"
 #include "Settings.h"
+#include "Tweaks/Magnitudes.h"
 
 namespace
 {
@@ -23,6 +24,10 @@ namespace
 		{
 			if (a_event.menuName == "PauseMenu" && !a_event.opening) {
 				MCM::Settings::Update();
+				// Form-touching module is only safe once the game is actually
+				// loaded into a save — pause-menu close is the earliest
+				// reliable signal we have for that.
+				Tweaks::Magnitudes::Apply();
 			}
 			return RE::BSEventNotifyControl::kContinue;
 		}

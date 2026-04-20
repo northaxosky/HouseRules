@@ -4,7 +4,6 @@
 
 #include "Hooks/GodMode.h"
 #include "Hooks/Unlocks.h"
-#include "Tweaks/Magnitudes.h"
 
 namespace MCM
 {
@@ -16,8 +15,10 @@ namespace MCM
 			"Data/MCM/Settings/SurvivalArchitect.ini");
 		ini->Load();
 
-		Tweaks::Magnitudes::Apply();
 		Hooks::Unlocks::RefreshRuntimePatches();
 		Hooks::GodMode::RefreshRuntimePatches();
+		// Magnitudes::Apply is NOT called here: on kGameDataReady, forms /
+		// UI are mid-init on the worker thread and touching them crashes.
+		// Main.cpp's PauseMenu-close sink handles it (safe context).
 	}
 }
