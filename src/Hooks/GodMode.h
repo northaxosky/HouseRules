@@ -1,8 +1,8 @@
 #pragma once
 
-// God-mode / immortal re-enablement in Survival. Replaces PC::IsGodMode and
-// PC::IsImmortal wholesale (replace_func) and hooks two PC vtable slots so
-// damage actually stops when the cheat is active under our toggle.
+// God-mode / immortal re-enablement in Survival. This still uses validated
+// byte patches in PlayerCharacter::IsGodMode / IsImmortal so the console's
+// ToggleGodModeFunction continues to observe vanilla state transitions.
 namespace Hooks::GodMode
 {
 	void Install();

@@ -41,13 +41,13 @@ jobs:
               run: |
                   $plugins = "artifact/Data/F4SE/Plugins"
                   New-Item -ItemType Directory -Path $plugins -Force | Out-Null
-                  Copy-Item build/windows/x64/releasedbg/SurvivalArchitect.dll $plugins
+                  Copy-Item build/windows/x64/releasedbg/HouseRules.dll $plugins
                   Copy-Item -Recurse Data/MCM artifact/Data/
 
             - name: Upload artifact
               uses: actions/upload-artifact@v4
               with:
-                  name: SurvivalArchitect-${{ github.sha }}
+                  name: HouseRules-${{ github.sha }}
                   path: artifact
                   if-no-files-found: error
 
@@ -61,16 +61,16 @@ jobs:
             - name: Download build artifact
               uses: actions/download-artifact@v4
               with:
-                  name: SurvivalArchitect-${{ github.sha }}
+                  name: HouseRules-${{ github.sha }}
                   path: artifact
 
             - name: Zip release payload
               run: |
                   cd artifact
-                  zip -r ../SurvivalArchitect-${{ github.ref_name }}.zip .
+                  zip -r ../HouseRules-${{ github.ref_name }}.zip .
 
             - name: Create GitHub Release
               uses: softprops/action-gh-release@v2
               with:
-                  files: SurvivalArchitect-${{ github.ref_name }}.zip
+                  files: HouseRules-${{ github.ref_name }}.zip
                   generate_release_notes: true

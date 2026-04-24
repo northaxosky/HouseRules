@@ -9,7 +9,7 @@ local commonlib_path = os.getenv("COMMONLIBF4_PATH") or "lib/commonlibf4"
 includes(commonlib_path)
 
 -- set project
-set_project("SurvivalArchitect")
+set_project("HouseRules")
 set_version("0.2.0")
 set_license("MIT")
 
@@ -34,7 +34,7 @@ option("deploy_dir")
 option_end()
 
 -- targets
-target("SurvivalArchitect")
+target("HouseRules")
     set_kind("shared")
     set_arch("x64")
 
@@ -53,7 +53,7 @@ target("SurvivalArchitect")
             return
         end
         local plugins_dir = path.join(deploy_dir, "F4SE/Plugins")
-        local mcm_dir     = path.join(deploy_dir, "MCM/Config/SurvivalArchitect")
+        local mcm_dir     = path.join(deploy_dir, "MCM/Config/HouseRules")
         os.mkdir(plugins_dir)
         os.mkdir(mcm_dir)
         os.cp(target:targetfile(), plugins_dir)
@@ -61,6 +61,6 @@ target("SurvivalArchitect")
         if os.isfile(pdb) then
             os.cp(pdb, plugins_dir)
         end
-        os.cp("Data/MCM/Config/SurvivalArchitect/*", mcm_dir)
+        os.cp("Data/MCM/Config/HouseRules/*", mcm_dir)
         cprint("${bright green}deploy: ${clear}copied to %s", deploy_dir)
     end)

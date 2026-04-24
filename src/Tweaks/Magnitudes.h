@@ -1,12 +1,9 @@
 #pragma once
 
-// Runtime magnitude scaling for vanilla FO4 survival forms. On first call
-// snapshots the vanilla EffectItem::data.magnitude / EffectSetting::data.baseCost
-// values for a fixed set of AlchemyItems and MagicEffects (stimpak, radaway,
-// radx, food heal MGEF, hunger/thirst/sleep stage ALCHs, drink-water MGEF).
-// On every subsequent call — including refreshes triggered by pause-menu
-// close — writes snapshot * MCM multiplier. Idempotent; never reads the
-// already-scaled current value.
+// Runtime magnitude scaling for the evidence-backed vanilla survival effects.
+// On first call, snapshots EffectItem::data.magnitude for the proven ALCH /
+// consumable entries we touch, then reapplies baseline * MCM multiplier on
+// later refreshes. Unproven paths stay inert rather than guessing.
 namespace Tweaks::Magnitudes
 {
 	void Apply();

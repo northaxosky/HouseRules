@@ -6,7 +6,7 @@ of seconds, then kill it and check for crashes / REL::ID errors / missing log
 markers. Used as a pre-in-game-test gate after every DLL change.
 
 PASS conditions (all must hold):
- - SurvivalArchitect.log grew since launch and contains the "Survival Architect
+ - HouseRules.log grew since launch and contains the "House Rules
    loaded" marker (plugin finished Install).
  - Magnitudes / Unlocks / GodMode expected success lines are present and do not
    contain "failed" or "ERROR".
@@ -37,10 +37,10 @@ MO2_EXE = MO2_DIR / "ModOrganizer.exe"
 PROFILE = "Testing - OG"
 EXE_LABEL = "F4SE - OG"
 F4SE_LOG_DIR = pathlib.Path.home() / "Documents" / "My Games" / "Fallout4" / "F4SE"
-PLUGIN_LOG = F4SE_LOG_DIR / "SurvivalArchitect.log"
+PLUGIN_LOG = F4SE_LOG_DIR / "HouseRules.log"
 
 EXPECTED_MARKERS = [
-    "Survival Architect loaded",
+    "House Rules loaded",
 ]
 FAILURE_MARKERS = [
     "failed to find offset for address library id",  # REL::IDDB popup text (case-insensitive)
@@ -144,7 +144,7 @@ def main() -> int:
     log = read_plugin_log_after(launch_epoch)
     if not log:
         ok = False
-        notes.append(f"SurvivalArchitect.log not updated since launch (checked: {PLUGIN_LOG})")
+        notes.append(f"HouseRules.log not updated since launch (checked: {PLUGIN_LOG})")
     else:
         missing = [m for m in EXPECTED_MARKERS if m not in log]
         if missing:

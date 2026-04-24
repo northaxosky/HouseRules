@@ -13,7 +13,7 @@ namespace
 F4SE_EXPORT constinit auto F4SEPlugin_Version = []() noexcept {
 	F4SE::PluginVersionData v{};
 	v.PluginVersion({ 0, 2, 0, 0 });
-	v.PluginName("SurvivalArchitect");
+	v.PluginName("HouseRules");
 	v.AuthorName("Kuz");
 	v.UsesAddressLibrary(true);   // 1.11.137+ AddressLib
 	v.UsesSigScanning(false);
@@ -35,7 +35,7 @@ F4SE_EXPORT bool F4SEPlugin_Query(const F4SE::QueryInterface* a_f4se, F4SE::Plug
 	}
 
 	a_info->infoVersion = F4SE::PluginInfo::kVersion;
-	a_info->name        = "SurvivalArchitect";
+	a_info->name        = "HouseRules";
 	a_info->version     = kPluginVersion;
 	return true;
 }

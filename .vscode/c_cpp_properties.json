@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "SurvivalArchitect (MSVC x64)",
+            "name": "HouseRules (MSVC x64)",
             "intelliSenseMode": "windows-msvc-x64",
             "compilerPath": "cl.exe",
             "cStandard": "c17",
@@ -28,7 +28,7 @@
             ]
         },
         {
-            "name": "SurvivalArchitect (Linux clang)",
+            "name": "HouseRules (Linux clang)",
             "intelliSenseMode": "linux-clang-x64",
             "compilerPath": "/usr/bin/clang++",
             "cStandard": "c17",

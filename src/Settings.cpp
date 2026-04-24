@@ -11,8 +11,8 @@ namespace MCM
 	{
 		const auto ini = REX::INI::SettingStore::GetSingleton();
 		ini->Init(
-			"Data/MCM/Config/SurvivalArchitect/settings.ini",
-			"Data/MCM/Settings/SurvivalArchitect.ini");
+			"Data/MCM/Config/HouseRules/settings.ini",
+			"Data/MCM/Settings/HouseRules.ini");
 		ini->Load();
 
 		Hooks::Unlocks::RefreshRuntimePatches();

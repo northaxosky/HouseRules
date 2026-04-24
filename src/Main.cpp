@@ -1,9 +1,11 @@
 #include "PCH.h"
 
 #include "Diagnostics/DumpDefaultObjects.h"
+#include "Diagnostics/SurvivalObserver.h"
 #include "Hooks/GodMode.h"
 #include "Hooks/Unlocks.h"
 #include "Settings.h"
+#include "SleepWait/Integration.h"
 #include "Tweaks/Magnitudes.h"
 
 namespace
@@ -23,6 +25,8 @@ namespace
 			RE::BSTEventSource<RE::MenuOpenCloseEvent>*) override
 		{
 			if (a_event.opening) {
+				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
+				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
 			}
 			// PauseMenu close: the player just changed MCM settings, re-apply
@@ -30,6 +34,8 @@ namespace
 			if (a_event.menuName == "PauseMenu") {
 				MCM::Settings::Update();
 				Tweaks::Magnitudes::Apply();
+				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
+				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
 			}
 			// LoadingMenu close: the player has fully spawned into a save /
@@ -38,8 +44,12 @@ namespace
 			// / kNewGame messages fire on worker threads mid-init and crash.
 			if (a_event.menuName == "LoadingMenu") {
 				Tweaks::Magnitudes::Apply();
+				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
+				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
 			}
+			Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
+			SleepWait::Integration::OnMenuOpenClose(a_event);
 			return RE::BSEventNotifyControl::kContinue;
 		}
 	};
@@ -67,6 +77,8 @@ namespace
 				break;
 			case F4SE::MessagingInterface::kGameLoaded:
 				RegisterMenuSink();
+				Diagnostics::SurvivalObserver::OnF4SEMessage(a_msg->type);
+				SleepWait::Integration::OnF4SEMessage(a_msg->type);
 				break;
 			default:
 				break;
@@ -77,12 +89,12 @@ namespace
 F4SE_EXPORT bool F4SEPlugin_Load(const F4SE::LoadInterface* a_f4se)
 {
 	F4SE::Init(a_f4se, {
-		.logName        = "SurvivalArchitect",
+		.logName        = "HouseRules",
 		.trampoline     = true,
 		.trampolineSize = 64 * 1024,  // 15 hooks × small branches; 64 KB is generous headroom
 	});
 
-	REX::INFO("Survival Architect loading");
+	REX::INFO("House Rules loading");
 
 	const auto messaging = F4SE::GetMessagingInterface();
 	if (!messaging || !messaging->RegisterListener(MessageHandler)) {
@@ -90,9 +102,11 @@ F4SE_EXPORT bool F4SEPlugin_Load(const F4SE::LoadInterface* a_f4se)
 		return false;
 	}
 
+	Diagnostics::SurvivalObserver::Install();
 	Hooks::Unlocks::Install();
 	Hooks::GodMode::Install();
+	SleepWait::Integration::Install();
 
-	REX::INFO("Survival Architect loaded");
+	REX::INFO("House Rules loaded");
 	return true;
 }

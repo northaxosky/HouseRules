@@ -4,7 +4,6 @@
 
 #include "Settings.h"
 
-#include <cstring>
 #include <memory>
 #include <vector>
 
@@ -18,18 +17,20 @@ namespace Hooks::Unlocks
 		using VoidPCFn = void(RE::PlayerCharacter*);
 		using VoidPCHook = REL::Hook<VoidPCFn>;
 
-		using MenuDLFn = RE::DifficultyLevel(RE::StartMenuBase*);
-		using MenuDLHook = REL::Hook<MenuDLFn>;
+		using QueueSaveLoadTaskFn = void(RE::BGSSaveLoadManager*, RE::BGSSaveLoadManager::QUEUED_TASK);
+		using QueueSaveLoadTaskHook = REL::Hook<QueueSaveLoadTaskFn>;
 
-		using SetMemberFn = bool(void*, void*, const char*, Scaleform::GFx::Value&, bool);
-		using SetMemberHook = REL::Hook<SetMemberFn>;
+		using QueueFastTravelFn = void(RE::PlayerCharacter*, RE::ObjectRefHandle, bool);
+		using QueueFastTravelHook = REL::Hook<QueueFastTravelFn>;
+
+		using QueryStatFn = bool(const RE::BSFixedString&, std::int32_t&);
+		using QueryStatHook = REL::Hook<QueryStatFn>;
 
 		std::vector<std::unique_ptr<REL::HookObject>> g_hooks;
 
 		// Typed back-pointers for hooks whose spoof calls through to the original
 		// via Hook::operator(). Aliases into the heap-allocated hook inside g_hooks.
-		MenuDLHook*    g_menudl_hook    = nullptr;
-		SetMemberHook* g_setmember_hook = nullptr;
+		QueryStatHook* g_querystat_hook = nullptr;
 
 		template <class HookT, class FnT>
 		HookT* AddHook(std::uint64_t a_id, std::size_t a_offset, FnT* a_fn, const char* a_label)
@@ -74,93 +75,106 @@ namespace Hooks::Unlocks
 			return real(a_this);
 		}
 
-		bool ShouldSpoof(bool a_toggle)
+		bool OverridesEnabled(bool a_toggle)
 		{
 			return MCM::Settings::General::bEnabled.GetValue() && a_toggle;
 		}
 
+		bool IsRealSurvival(RE::PlayerCharacter* a_this = RE::PlayerCharacter::GetSingleton())
+		{
+			return a_this && RealDifficulty(a_this) == RE::DifficultyLevel::kTrueSurvival;
+		}
+
+		bool ShouldSpoof(bool a_toggle, RE::PlayerCharacter* a_this = RE::PlayerCharacter::GetSingleton())
+		{
+			return OverridesEnabled(a_toggle) && IsRealSurvival(a_this);
+		}
+
+		bool AllowRestrictedAction(
+			bool                  a_toggle,
+			RE::PlayerCharacter*  a_this = RE::PlayerCharacter::GetSingleton())
+		{
+			return !IsRealSurvival(a_this) || OverridesEnabled(a_toggle);
+		}
+
 		RE::DifficultyLevel Spoof_Console(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bConsole.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bConsole.GetValue(), a_this)
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
 
 		RE::DifficultyLevel Spoof_SaveSelf(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bSaveSelf.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bSaveSelf.GetValue(), a_this)
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
 
 		RE::DifficultyLevel Spoof_FastTravel(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bFastTravel.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bFastTravel.GetValue(), a_this)
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
 
 		RE::DifficultyLevel Spoof_SaveAuto(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bSaveAuto.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bSaveAuto.GetValue(), a_this)
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
 
 		RE::DifficultyLevel Spoof_CompassEnemies(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bCompassEnemies.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bCompassEnemies.GetValue(), a_this)
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
 
 		RE::DifficultyLevel Spoof_CompassLocations(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bCompassLocations.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bCompassLocations.GetValue(), a_this)
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
 
 		RE::DifficultyLevel Spoof_NoAlchWeight(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bNoAlchWeight.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bNoAlchWeight.GetValue(), a_this)
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
 
 		RE::DifficultyLevel Spoof_NoAmmoWeight(RE::PlayerCharacter* a_this)
 		{
-			return ShouldSpoof(MCM::Settings::Unlocks::bNoAmmoWeight.GetValue())
+			return ShouldSpoof(MCM::Settings::Unlocks::bNoAmmoWeight.GetValue(), a_this)
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
 		}
 
-		// SendGameplayOptions Hook 1: spoof the GetMenuDifficultyLevel CALL so the
-		// main menu's "autosave enabled" indicator tracks bSaveAuto. We always
-		// invoke the original first — it caches the result on StartMenuBase
-		// (currentDisplayDifficultyLevel at offset 0x1F8) and skipping would leave
-		// the cache stale.
-		RE::DifficultyLevel Spoof_SaveAuto_MenuDL(RE::StartMenuBase* a_this)
+		void Queue_SaveSelf(RE::BGSSaveLoadManager* a_this, RE::BGSSaveLoadManager::QUEUED_TASK a_task)
 		{
-			const auto real = (*g_menudl_hook)(a_this);
-			return ShouldSpoof(MCM::Settings::Unlocks::bSaveAuto.GetValue())
-				? RE::DifficultyLevel::kVeryEasy
-				: real;
+			if (!a_this || !AllowRestrictedAction(MCM::Settings::Unlocks::bSaveSelf.GetValue())) {
+				return;
+			}
+			a_this->QueueSaveLoadTask(a_task);
 		}
 
-		// SendGameplayOptions Hook 2: the engine builds a Scaleform value from a
-		// separately-computed difficulty and pushes it into the Flash object via
-		// SetMember. We re-read it from MainMenu (now spoofed by Hook 1) so the
-		// UI stays consistent with what the rest of the engine sees.
-		bool Spoof_SaveAuto_SetMember(void* a_this, void* a_data, const char* a_name,
-			Scaleform::GFx::Value& a_value, bool a_isObj)
+		void Queue_SaveAuto(RE::BGSSaveLoadManager* a_this, RE::BGSSaveLoadManager::QUEUED_TASK a_task)
 		{
-			if (auto* ui = RE::UI::GetSingleton()) {
-				if (auto menu = ui->GetMenu<RE::MainMenu>()) {
-					a_value = std::to_underlying(menu->GetMenuDifficultyLevel());
-				}
+			if (!a_this || !AllowRestrictedAction(MCM::Settings::Unlocks::bSaveAuto.GetValue())) {
+				return;
 			}
-			return (*g_setmember_hook)(a_this, a_data, a_name, a_value, a_isObj);
+			a_this->QueueSaveLoadTask(a_task);
+		}
+
+		void Queue_FastTravel(RE::PlayerCharacter* a_this, RE::ObjectRefHandle a_marker, bool a_allowAutoSave)
+		{
+			if (!a_this || !AllowRestrictedAction(MCM::Settings::Unlocks::bFastTravel.GetValue(), a_this)) {
+				return;
+			}
+			a_this->QueueFastTravel(a_marker, a_allowAutoSave);
 		}
 
 		void Replace_RequestQueueDoorAutosave(RE::PlayerCharacter* a_this)
@@ -168,14 +182,23 @@ namespace Hooks::Unlocks
 			if (!a_this) {
 				return;
 			}
-			if (RealDifficulty(a_this) != RE::DifficultyLevel::kTrueSurvival) {
+			if (!IsRealSurvival(a_this)) {
 				a_this->doorAutosaveQueued = true;
 				return;
 			}
-			if (MCM::Settings::General::bEnabled.GetValue() &&
-				MCM::Settings::Unlocks::bSaveAuto.GetValue()) {
+			if (OverridesEnabled(MCM::Settings::Unlocks::bSaveAuto.GetValue())) {
 				a_this->doorAutosaveQueued = true;
 			}
+		}
+
+		bool Spoof_ReenableSurvival_QueryStat(const RE::BSFixedString& a_name, std::int32_t& a_value)
+		{
+			if (!OverridesEnabled(MCM::Settings::Unlocks::bReenableSurvival.GetValue())) {
+				return (*g_querystat_hook)(a_name, a_value);
+			}
+
+			a_value = 0;
+			return false;
 		}
 
 		template <class Fn>
@@ -199,19 +222,11 @@ namespace Hooks::Unlocks
 		const Site<GDLFn> kGdlSites[] = {
 			{ {927099,  0x20A}, {2249425, 0x1AA}, {2249425, 0x1AA}, &Spoof_Console,          "Console / MenuOpenHandler" },
 
-			{ {1470086, 0x06C}, {2249427, 0x06C}, {2249427, 0x06C}, &Spoof_SaveSelf,         "SaveSelf / QuickSaveLoadHandler" },
 			{ {425422,  0x047}, {2223965, 0x04D}, {2223965, 0x04D}, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::CheckIfSaveLoadPossible" },
 			{ {1330449, 0x0C1}, {2223964, 0x0C6}, {2223964, 0x0C6}, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::InitMainList" },
 
 			{ {712982,  0x31E}, {2224179, 0x347}, {2224179, 0x34C}, &Spoof_FastTravel,       "FastTravel / PipboyMenu::PipboyMenu" },
 			{ {1327120, 0x013}, {2224206, 0x014}, {2224206, 0x014}, &Spoof_FastTravel,       "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
-
-			{ {1158548, 0x04E}, {2223294, 0x04E}, {2223294, 0x04E}, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor" },
-			// NG/AE have a second LevelUpMenu call site OG doesn't expose.
-			{ {0,       0    }, {2223327, 0x057}, {2223327, 0x057}, &Spoof_SaveAuto,         "SaveAuto / LevelUpMenu dtor (NG/AE extra)" },
-			{ {98443,   0x193}, {2224974, 0x13E}, {2224974, 0x13E}, &Spoof_SaveAuto,         "SaveAuto / WorkshopMenu dtor" },
-			{ {1231000, 0x18A}, {2225457, 0x1A4}, {2225457, 0x1A4}, &Spoof_SaveAuto,         "SaveAuto / PipboyManager::OnPipboyCloseAnim" },
-			{ {146861,  0x678}, {2232905, 0x6A1}, {2232905, 0x6A1}, &Spoof_SaveAuto,         "SaveAuto / PlayerCharacter::HandlePositionPlayerRequest" },
 
 			{ {1475119, 0x017}, {2220612, 0x01B}, {2220612, 0x01B}, &Spoof_CompassEnemies,   "CompassEnemies / HUDMarkerUtils::GetHostileEnemyMaxDistance" },
 
@@ -227,79 +242,46 @@ namespace Hooks::Unlocks
 			  "SaveAuto / TESObjectDOOR::DoorTeleportPlayerArrivalCallback" },
 		};
 
-		// --- Re-enable Survival (byte patch) -----------------------------------
-		//
-		// Vanilla blocks re-entering Survival mode after you leave it by calling
-		// `MiscStatManager::QueryStat` inside `PauseMenu::CheckIfSaveLoadPossible`
-		// to check a save-tied "has left survival" stat. USM NOPs that call; we
-		// do the same, but sig-scan so one patch handles OG/NG/AE.
-		//
-		// Pattern: E8 ?? ?? ?? ?? 44 39 75 67  (CALL rel32 + cmp [rbp+0x67], r14d)
-		// Confirmed at OG RVA 0xB7FE2D.
+		const Site<QueueSaveLoadTaskFn> kQueueSaveLoadSites[] = {
+			// Quicksave/quicksave load hotkeys should be gated at the queue point;
+			// PauseMenu still needs the old GetDifficultyLevel hooks for UI state.
+			{ {1470086, 0x082}, {2249427, 0x082}, {2249427, 0x082}, &Queue_SaveSelf,
+			  "SaveSelf / QuickSaveLoadHandler (QueueSaveLoadTask #1)" },
+			{ {1470086, 0x0C3}, {2249427, 0x0C3}, {2249427, 0x0C3}, &Queue_SaveSelf,
+			  "SaveSelf / QuickSaveLoadHandler (QueueSaveLoadTask #2)" },
 
-		std::uintptr_t g_reenable_addr      = 0;
-		std::uint8_t   g_reenable_original[5]{};
-		bool           g_reenable_saved     = false;
-		bool           g_reenable_patched   = false;
+			// These autosaves already converge on BGSSaveLoadManager; hook there
+			// instead of spoofing difficulty in each caller.
+			{ {1158548, 0x07E}, {2223294, 0x07E}, {2223294, 0x07E}, &Queue_SaveAuto,
+			  "SaveAuto / LevelUpMenu dtor" },
+			{ {0,       0    }, {2223327, 0x087}, {2223327, 0x087}, &Queue_SaveAuto,
+			  "SaveAuto / LevelUpMenu dtor (NG/AE extra)" },
+			{ {98443,   0x1A9}, {2224974, 0x154}, {2224974, 0x154}, &Queue_SaveAuto,
+			  "SaveAuto / WorkshopMenu dtor" },
+			{ {592088,  0x12C}, {2225458, 0x1C4}, {2225458, 0x1C4}, &Queue_SaveAuto,
+			  "SaveAuto / PipboyManager::OnPipboyClosed" },
+			{ {146861,  0x1000}, {2232905, 0x10EA}, {2232905, 0x10EA}, &Queue_SaveAuto,
+			  "SaveAuto / PlayerCharacter::HandlePositionPlayerRequest" },
+		};
 
-		std::uintptr_t FindReenableSignature()
-		{
-			const auto mod = REL::Module::GetSingleton();
-			if (!mod) {
-				return 0;
-			}
-			const auto text = mod->segment(REL::Segment::text);
-			const auto base = text.pointer<std::uint8_t>();
-			const auto size = text.size();
-			for (std::size_t i = 0; i + 9 <= size; ++i) {
-				if (base[i] == 0xE8 &&
-					base[i + 5] == 0x44 &&
-					base[i + 6] == 0x39 &&
-					base[i + 7] == 0x75 &&
-					base[i + 8] == 0x67) {
-					return reinterpret_cast<std::uintptr_t>(base + i);
-				}
-			}
-			return 0;
-		}
+		const Site<QueueFastTravelFn> kQueueFastTravelSites[] = {
+			// Keep the Pip-Boy UI difficulty spoofs for presentation, but gate the
+			// final transport request on the real queue surface.
+			{ {592088,  0x185}, {2225458, 0x2E4}, {2225458, 0x2E4}, &Queue_FastTravel,
+			  "FastTravel / PipboyManager::OnPipboyClosed" },
+		};
 
-		void ApplyReenablePatchState()
-		{
-			if (g_reenable_addr == 0 || !g_reenable_saved) {
-				return;
-			}
-			const bool want_patched =
-				MCM::Settings::General::bEnabled.GetValue() &&
-				MCM::Settings::Unlocks::bReenableSurvival.GetValue();
-			if (want_patched == g_reenable_patched) {
-				return;
-			}
-			constexpr std::uint8_t nops[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
-			const void* src = want_patched ? static_cast<const void*>(nops)
-			                               : static_cast<const void*>(g_reenable_original);
-			if (REL::WriteSafe(g_reenable_addr, src, 5)) {
-				g_reenable_patched = want_patched;
-				REX::INFO("ReenableSurvival: {} patch at 0x{:X}",
-					want_patched ? "applied" : "reverted", g_reenable_addr);
-			} else {
-				REX::ERROR("ReenableSurvival: WriteSafe failed at 0x{:X}", g_reenable_addr);
-			}
-		}
-
-		void InstallReenableSurvival()
-		{
-			g_reenable_addr = FindReenableSignature();
-			if (!g_reenable_addr) {
-				REX::WARN("ReenableSurvival: signature not found; feature unavailable on this runtime");
-				return;
-			}
-			std::memcpy(g_reenable_original,
-				reinterpret_cast<const void*>(g_reenable_addr), 5);
-			g_reenable_saved = true;
-			REX::INFO("ReenableSurvival: sig found at 0x{:X}, original bytes cached",
-				g_reenable_addr);
-			ApplyReenablePatchState();
-		}
+		// Re-enable Survival: hook the actual `MiscStatManager::QueryStat` call in
+		// `PauseMenu::CheckIfSaveLoadPossible` instead of signature-scanning and
+		// NOPing the call instruction. Proof/verification:
+		//   - OG: tools/find_call_sites.py reports QueryStat at 425422 +0x14D.
+		//   - NG: local disassembly of 2223965 shows the stat-query call at +0x153.
+		//   - AE: local disassembly of 2223965 shows the same call shifted to +0x14E.
+		// If any runtime drifts again, re-run those audits before changing offsets.
+		const Site<QueryStatFn> kQueryStatSites[] = {
+			{ {425422, 0x14D}, {2223965, 0x153}, {2223965, 0x14E}, &Spoof_ReenableSurvival_QueryStat,
+			  "ReenableSurvival / PauseMenu::CheckIfSaveLoadPossible (MiscStatManager::QueryStat)" },
+		};
 	}
 
 	void Install()
@@ -314,24 +296,25 @@ namespace Hooks::Unlocks
 				AddHook<VoidPCHook>(ra->id, ra->offset, s.fn, s.label);
 			}
 		}
-		// StartMenuBase::SendGameplayOptions — two call sites inside the same
-		// function. AE ID 4483089 was added after NG's AddressLib was published,
-		// so each runtime has its own ID.
-		if (const auto* ra = SelectSite(
-				{ 1103363, 0x036 }, { 2224576, 0x03A }, { 4483089, 0x03A })) {
-			g_menudl_hook = AddHook<MenuDLHook>(ra->id, ra->offset, &Spoof_SaveAuto_MenuDL,
-				"SaveAuto / StartMenuBase::SendGameplayOptions (GetMenuDifficultyLevel)");
+		for (const auto& s : kQueueSaveLoadSites) {
+			if (const auto* ra = SelectSite(s.og, s.ng, s.ae)) {
+				AddHook<QueueSaveLoadTaskHook>(ra->id, ra->offset, s.fn, s.label);
+			}
 		}
-		if (const auto* ra = SelectSite(
-				{ 1103363, 0x0D6 }, { 2224576, 0x0DB }, { 4483089, 0x0DB })) {
-			g_setmember_hook = AddHook<SetMemberHook>(ra->id, ra->offset, &Spoof_SaveAuto_SetMember,
-				"SaveAuto / StartMenuBase::SendGameplayOptions (SetMember)");
+		for (const auto& s : kQueueFastTravelSites) {
+			if (const auto* ra = SelectSite(s.og, s.ng, s.ae)) {
+				AddHook<QueueFastTravelHook>(ra->id, ra->offset, s.fn, s.label);
+			}
 		}
-		InstallReenableSurvival();
+		for (const auto& s : kQueryStatSites) {
+			if (const auto* ra = SelectSite(s.og, s.ng, s.ae)) {
+				g_querystat_hook = AddHook<QueryStatHook>(ra->id, ra->offset, s.fn, s.label);
+			}
+		}
 	}
 
 	void RefreshRuntimePatches()
 	{
-		ApplyReenablePatchState();
+		// No byte patches remain in Unlocks; hooks read settings live.
 	}
 }

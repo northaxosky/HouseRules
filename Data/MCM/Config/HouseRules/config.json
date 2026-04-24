@@ -1,12 +1,12 @@
 {
     "$schema": "https://raw.githubusercontent.com/Neanka/mcm/master/doc/mcm.schema.json",
     "minMcmVersion": 2,
-    "modName": "SurvivalArchitect",
-    "displayName": "Survival Architect",
+    "modName": "HouseRules",
+    "displayName": "House Rules",
     "pluginRequirements": [],
     "content": [
         {
-            "text": "<font size='30'><p align='center'>Survival Architect</p></font>",
+            "text": "<font size='30'><p align='center'>House Rules</p></font>",
             "html": true,
             "type": "text"
         },
@@ -25,7 +25,7 @@
             "id": "bEnabled:General",
             "text": "Enable Plugin",
             "type": "switcher",
-            "help": "Master on/off. When OFF, every unlock/tweak falls back to vanilla Survival behavior.",
+            "help": "Master on/off. When OFF, every unlock and magnitude tweak falls back to vanilla Survival behavior. Dev-only diagnostics remain controlled separately via settings.ini.",
             "valueOptions": { "sourceType": "ModSettingBool" }
         }
     ],
@@ -59,14 +59,14 @@
                     "id": "bSaveSelf:Unlocks",
                     "text": "Allow Manual Saves",
                     "type": "switcher",
-                    "help": "ON re-enables F5 quicksave and the Save/Load menu entries in Survival.",
+                    "help": "ON re-enables F5 quicksave and the pause-menu Save/Load surfaces in Survival.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
                     "id": "bSaveAuto:Unlocks",
                     "text": "Allow Auto-Saves",
                     "type": "switcher",
-                    "help": "ON re-enables vanilla auto-saves (menu-close autosaves, pause-menu autosave setting).",
+                    "help": "ON re-enables queued vanilla auto-saves, including menu-close and door-arrival paths where the game requests them.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 { "type": "spacer" },
@@ -78,7 +78,7 @@
                     "id": "bFastTravel:Unlocks",
                     "text": "Allow Fast Travel",
                     "type": "switcher",
-                    "help": "ON re-enables fast travel from the Pipboy map while in Survival.",
+                    "help": "ON re-enables Pip-Boy fast travel in Survival, including the final queued travel request.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
@@ -115,6 +115,13 @@
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
+                    "id": "bNoSurvivalCarryWeight:Unlocks",
+                    "text": "Remove Survival Carry-Weight Penalty",
+                    "type": "switcher",
+                    "help": "ON neutralizes the -100 carry-weight ability Survival applies to the player, companions, and Dogmeat by zeroing the effect magnitudes on HC_ReduceCarryWeightAbility. Takes effect on the next pause-menu close; Papyrus may re-add the ability, but the zeroed magnitudes stay in effect until you toggle this OFF.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
                     "id": "bGodMode:Unlocks",
                     "text": "Allow God Mode",
                     "type": "switcher",
@@ -139,7 +146,7 @@
                     "type": "text"
                 },
                 {
-                    "text": "<font color='#AAAAAA'><p align='center'>Each slider multiplies the vanilla value. 1.00 = vanilla, 0.00 = effect nulled.</p></font>",
+                    "text": "<font color='#AAAAAA'><p align='center'>Implemented sliders multiply proven vanilla magnitudes. 1.00 = vanilla; see each setting for caveats.</p></font>",
                     "html": true,
                     "type": "text"
                 },
@@ -156,8 +163,8 @@
                     "id": "fStimpakLimbRepair:Magnitudes",
                     "text": "Stimpak Limb Repair",
                     "type": "slider",
-                    "help": "Scales the per-limb RestoreCondition effects on stimpak. Set to 0 to keep limbs broken after a stim.",
-                    "valueOptions": { "min": 0, "max": 5, "step": 1, "sourceType": "ModSettingFloat" }
+                    "help": "Per-limb RestoreCondition strength (1.0 = vanilla full heal, 0.5 = heal half, 0 = keep limbs broken). Vanilla limb condition is clamped to max after a stimpak, so values above 1.0 have no effect.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.1, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fRadAwayStrength:Magnitudes",
@@ -177,15 +184,8 @@
                     "id": "fFoodHeal:Magnitudes",
                     "text": "Food / Drink Healing",
                     "type": "slider",
-                    "help": "Scales the universal RestoreHealthFood magnitude. Every vanilla food and drink item uses this effect.",
+                    "help": "Scales per-consumable RestoreHealthFood effect magnitudes. Changes apply to items you haven't eaten yet in the current session; the Pip-Boy tooltip may keep its cached number until the item is consumed or re-equipped.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.1, "sourceType": "ModSettingFloat" }
-                },
-                {
-                    "id": "fWaterSatiation:Magnitudes",
-                    "text": "Water Satiation (experimental)",
-                    "type": "slider",
-                    "help": "Scales the HC_DrinkWaterEffect magnitude. Unknown whether the engine's script honors this — treat as an experiment.",
-                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.5, "sourceType": "ModSettingFloat" }
                 },
                 { "type": "spacer" },
                 { "text": "Survival Stage Penalties", "type": "section" },
