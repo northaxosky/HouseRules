@@ -243,6 +243,48 @@ namespace Tweaks::Magnitudes
 			return edid && std::string_view{ edid } == "CarryWeight";
 		}
 
+		bool SpellEdidMatchesCarryReducer(const RE::SpellItem* a_spell)
+		{
+			if (!a_spell) return false;
+			const char* edid = a_spell->GetFormEditorID();
+			if (!edid) return false;
+			std::string_view sv{ edid };
+			// Vanilla Survival ability (Fallout4.esm). Matching by EDID is
+			// robust against archetype/AV shape changes — the Papyrus loop
+			// in HC_ManagerScript resolves this by name-bound property too.
+			return sv == "HC_ReduceCarryWeightAbility";
+		}
+
+		void DumpSpellDiagnostic(const RE::SpellItem* a_spell, const char* a_reason)
+		{
+			if (!a_spell) return;
+			const char* spelEdid = a_spell->GetFormEditorID();
+			REX::INFO("Magnitudes: [carry-diag:{}] SPEL {:08X} edid='{}' effects={}",
+				a_reason,
+				a_spell->formID,
+				spelEdid ? spelEdid : "",
+				a_spell->listOfEffects.size());
+			for (std::uint32_t i = 0; i < a_spell->listOfEffects.size(); ++i) {
+				const auto* eff = a_spell->listOfEffects[i];
+				if (!eff) { REX::INFO("  [{}] <null eff>", i); continue; }
+				const auto* mgef = eff->effectSetting;
+				const char* mgefEdid   = mgef ? mgef->GetFormEditorID() : "";
+				const char* primaryAV  = (mgef && mgef->data.primaryAV)   ? mgef->data.primaryAV->GetFormEditorID()   : "";
+				const char* secondaryAV = (mgef && mgef->data.secondaryAV) ? mgef->data.secondaryAV->GetFormEditorID() : "";
+				const auto archetype    = mgef ? mgef->data.archetype.underlying() : -1;
+				const auto flags        = mgef ? mgef->data.flags.underlying() : 0u;
+				REX::INFO("  [{}] mgef={:08X} edid='{}' arch={} flags=0x{:X} mag={} primaryAV='{}' secondaryAV='{}'",
+					i,
+					mgef ? mgef->formID : 0,
+					mgefEdid   ? mgefEdid   : "",
+					archetype,
+					flags,
+					eff->data.magnitude,
+					primaryAV  ? primaryAV  : "",
+					secondaryAV ? secondaryAV : "");
+			}
+		}
+
 		void SnapshotCarryWeightSpells()
 		{
 			auto* dh = RE::TESDataHandler::GetSingleton();
@@ -250,45 +292,77 @@ namespace Tweaks::Magnitudes
 				REX::WARN("Magnitudes: TESDataHandler unavailable; carry-weight unlock inert");
 				return;
 			}
+			std::size_t matched_by_edid = 0;
+			std::size_t matched_by_av   = 0;
 			for (auto* spel : dh->GetFormArray<RE::SpellItem>()) {
 				if (!spel) continue;
+
+				// Diagnostic: dump every SPEL that looks carry-weight-related
+				// by name, regardless of whether the AV heuristic catches it.
+				const char* spelEdid = spel->GetFormEditorID();
+				if (spelEdid) {
+					std::string_view sv{ spelEdid };
+					if (sv.find("CarryWeight") != std::string_view::npos
+						|| sv.find("Encumber")  != std::string_view::npos
+						|| sv.find("ReduceCarry") != std::string_view::npos) {
+						DumpSpellDiagnostic(spel, "edid-candidate");
+					}
+				}
+
+				const bool edid_match = SpellEdidMatchesCarryReducer(spel);
+
 				for (std::uint32_t i = 0; i < spel->listOfEffects.size(); ++i) {
 					const auto* eff = spel->listOfEffects[i];
-					if (!EffectTargetsCarryWeight(eff)) continue;
+					if (!eff) continue;
 					const auto* mgef = eff->effectSetting;
-					const bool  detrimental = mgef
-						? (mgef->data.flags.underlying() & static_cast<std::uint32_t>(RE::EffectSetting::EffectSettingData::Flag::kDetrimental)) != 0
-						: false;
-					const float magnitude = eff->data.magnitude;
-					// Only neutralize true reducers: effects with negative magnitude OR
-					// MGEFs flagged kDetrimental (which subtract even with positive magnitude).
-					// Positive bonuses (Strong Back, power armor, workshop, etc.) are left alone.
-					const bool reducer = (magnitude < 0.0f) || detrimental;
-					const char* spelEdid = spel->GetFormEditorID();
+
+					bool snapshot_this = false;
+					const char* reason = "";
+
+					if (edid_match) {
+						// Vanilla HC_ReduceCarryWeightAbility — neutralize
+						// every effect regardless of AV/sign; this is the
+						// survival penalty by definition.
+						snapshot_this = true;
+						reason = "edid";
+						++matched_by_edid;
+					} else if (EffectTargetsCarryWeight(eff)) {
+						const bool detrimental = mgef
+							? (mgef->data.flags.underlying() & static_cast<std::uint32_t>(RE::EffectSetting::EffectSettingData::Flag::kDetrimental)) != 0
+							: false;
+						const bool reducer = (eff->data.magnitude < 0.0f) || detrimental;
+						if (reducer) {
+							snapshot_this = true;
+							reason = "av-detrimental";
+							++matched_by_av;
+						}
+					}
+
+					if (!snapshot_this) continue;
+
 					const char* mgefEdid = mgef ? mgef->GetFormEditorID() : "";
-					REX::INFO("Magnitudes: CarryWeight SPEL {:08X} edid='{}'[{}] MGEF {:08X} edid='{}' magnitude={} detrimental={} -> {}",
+					REX::INFO("Magnitudes: carry-weight snapshot SPEL {:08X} edid='{}'[{}] mgef={:08X} edid='{}' mag={} reason={}",
 						spel->formID,
 						spelEdid ? spelEdid : "",
 						i,
 						mgef ? mgef->formID : 0,
 						mgefEdid ? mgefEdid : "",
-						magnitude,
-						detrimental,
-						reducer ? "neutralize" : "skip");
-					if (!reducer) continue;
+						eff->data.magnitude,
+						reason);
+
 					g_carry_weight_snapshots.push_back({
 						spel->formID,
 						i,
 						mgef ? mgef->formID : 0,
-						magnitude
+						eff->data.magnitude
 					});
 				}
 			}
 			if (g_carry_weight_snapshots.empty()) {
-				REX::WARN("Magnitudes: no carry-weight reducers found (checked negative magnitude + kDetrimental flag); unlock will be inert");
+				REX::WARN("Magnitudes: no carry-weight reducers found (edid+av scan); unlock will be inert");
 			} else {
-				REX::INFO("Magnitudes: snapshotted {} CarryWeight reducer(s)",
-					g_carry_weight_snapshots.size());
+				REX::INFO("Magnitudes: snapshotted {} carry-weight reducer effect(s) [edid={}, av={}]",
+					g_carry_weight_snapshots.size(), matched_by_edid, matched_by_av);
 			}
 		}
 
