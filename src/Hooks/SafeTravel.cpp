@@ -9,6 +9,7 @@ namespace Hooks::SafeTravel
 		bool  g_have_snapshot   = false;
 		float g_snap_health     = 0.0f;
 		float g_snap_max_health = 0.0f;
+		float g_snap_rads       = 0.0f;
 
 		// Minimum effective HP the player should have on resume. 1.0 is the
 		// "barely alive" floor the engine treats as not-yet-dead.
@@ -24,7 +25,26 @@ namespace Hooks::SafeTravel
 
 			g_snap_health     = pc->GetActorValue(*avs->health);
 			g_snap_max_health = pc->GetPermanentActorValue(*avs->health);
+			g_snap_rads       = avs->rads ? pc->GetActorValue(*avs->rads) : 0.0f;
 			g_have_snapshot   = true;
+		}
+
+		void RestoreLoadScreenRads(RE::PlayerCharacter& a_player, const RE::ActorValue& a_actorValues)
+		{
+			if (!a_actorValues.rads) {
+				return;
+			}
+
+			const float current_rads = a_player.GetActorValue(*a_actorValues.rads);
+			if (current_rads <= g_snap_rads) {
+				return;
+			}
+
+			const float delta = current_rads - g_snap_rads;
+			a_player.RestoreActorValue(*a_actorValues.rads, delta);
+			const float readback = a_player.GetActorValue(*a_actorValues.rads);
+			REX::INFO("SafeTravel: restored load-screen rads; rads {} -> {} (pre-load was {})",
+				current_rads, readback, g_snap_rads);
 		}
 
 		void RestoreIfLethal()
@@ -39,6 +59,8 @@ namespace Hooks::SafeTravel
 			if (!pc || !avs || !avs->health) {
 				return;
 			}
+
+			RestoreLoadScreenRads(*pc, *avs);
 
 			const float current = pc->GetActorValue(*avs->health);
 			if (current >= kSafeFloor) {

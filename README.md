@@ -1,6 +1,6 @@
 # House Rules
 
-An F4SE plugin that exposes high-impact vanilla Fallout 4 settings through a single, well-documented MCM menu. Its goal is to give players the tools they need to tune vanilla mechanics so they fit a modded playthrough — not to add new gameplay.
+An F4SE plugin that exposes high-impact vanilla Fallout 4 settings through a single, well-documented MCM menu. Its goal is to give players the tools they need to tune vanilla mechanics so they fit a modded playthrough - not to add new gameplay.
 
 > "Their game, their rules."
 
@@ -34,9 +34,9 @@ All toggles default OFF (vanilla behavior). Turning one ON applies that tweak wh
 | Show Locations on Compass | Restores vanilla undiscovered-location markers |
 | Remove Chem/Aid Weight | Strips Survival's added weight from consumables |
 | Remove Ammo Weight | Strips Survival's added weight from ammunition |
-| Remove Survival Carry-Weight Penalty | Neutralizes `HC_ReduceCarryWeightAbility` on the player and companions |
+| Remove Survival Carry-Weight Penalty | ESP-backed toggle that neutralizes `HC_ReduceCarryWeightAbility` on the player and companions |
 | Allow God Mode | `tgm` / `tim` console cheats work in Survival via validated byte patches |
-| Allow Re-entering Survival | Removes vanilla's one-way gate — switch Survival on and off freely |
+| Allow Re-entering Survival | Removes vanilla's one-way gate - switch Survival on and off freely |
 
 `Allow Re-entering Survival` is live-toggleable; the others apply when the pause menu closes.
 
@@ -46,7 +46,7 @@ Conservative sliders targeting proven vanilla records:
 
 - Stimpak healing, limb repair, RadAway, Rad-X, food/drink healing, hunger/thirst/sleep penalty severity.
 
-Magnitude edits touch base records, so changes take effect the next time an item is consumed or re-evaluated — the Pip-Boy tooltip value caches until then.
+Magnitude edits touch base records, so changes take effect the next time an item is consumed or re-evaluated - the Pip-Boy tooltip value caches until then.
 
 ### Developer Diagnostics
 
@@ -67,7 +67,7 @@ Magnitude edits touch base records, so changes take effect the next time an item
 
 1. Download the latest zip from the [Releases page](https://github.com/northaxosky/HouseRules/releases).
 2. Install through your mod manager (MO2, Vortex) or unzip into `<Fallout 4>/Data/`.
-3. Configure in-game under Settings → Mod Configuration Menu → House Rules.
+3. Configure in-game under Settings > Mod Configuration Menu > House Rules.
 
 ## Build
 
@@ -84,4 +84,4 @@ Set `COMMONLIBF4_PATH` to reuse an existing CommonLibF4 checkout instead of init
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT - see [LICENSE](LICENSE).

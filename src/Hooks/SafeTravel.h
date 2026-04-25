@@ -6,7 +6,7 @@ namespace RE
 }
 
 // Vanilla bug: in Survival, the time-skip that happens during fast travel
-// (and any other LoadingMenu transition that advances the world clock —
+// (and any other LoadingMenu transition that advances the world clock -
 // door autosaves, sleep, wait) ticks the survival systems forward without
 // the player's HP being safe. Two known kill paths:
 //
@@ -15,13 +15,11 @@ namespace RE
 //   2. Active rad damage (rad storm) keeps accumulating during the time
 //      skip; rads >= max HP at resume = instant rad death.
 //
-// We can't actually predict which one triggered any given death, but the
-// fix is the same: ensure the player can't return to player control with
-// effective HP <= 0. This module snapshots the player's effective health
-// when a LoadingMenu opens and, on close, if HP has dropped to a lethal
-// value, restores enough damage modifier to leave the player at 1 HP. The
-// player still feels every other AV change from the time skip; only the
-// killing blow is suppressed. No immortality byte-patch, no IsDead lying.
+// This module snapshots effective health and rads when a LoadingMenu opens.
+// On close, it removes rads accumulated during that load-screen window, then
+// restores enough health damage modifier to leave the player at 1 HP if the
+// remaining Survival time-skip effects would otherwise be lethal. No
+// immortality byte-patch, no IsDead lying.
 namespace Hooks::SafeTravel
 {
 	void OnMenuOpenClose(const RE::MenuOpenCloseEvent& a_event);

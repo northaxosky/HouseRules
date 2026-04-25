@@ -118,7 +118,7 @@
                     "id": "bNoSurvivalCarryWeight:Unlocks",
                     "text": "Remove Survival Carry-Weight Penalty",
                     "type": "switcher",
-                    "help": "ON neutralizes the -100 carry-weight ability Survival applies to the player, companions, and Dogmeat. Requires HouseRules.esp; takes effect on the next pause-menu close after the plugin is installed.",
+                    "help": "ON neutralizes the -100 carry-weight ability Survival applies to the player, companions, and Dogmeat. Verified ESP-backed toggle; requires HouseRules.esp enabled and takes effect on the next pause-menu close.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
