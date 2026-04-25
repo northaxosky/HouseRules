@@ -2,6 +2,8 @@
 
 #include "Hooks/SafeTravel.h"
 
+#include <algorithm>
+
 namespace Hooks::SafeTravel
 {
 	namespace
@@ -16,7 +18,7 @@ namespace Hooks::SafeTravel
 		// "barely alive" floor the engine treats as not-yet-dead.
 		constexpr float kSafeFloor = 1.0f;
 
-		void Snapshot()
+		void SnapshotAndProtect()
 		{
 			if (!g_world_ready) {
 				return;
@@ -32,27 +34,69 @@ namespace Hooks::SafeTravel
 			g_snap_max_health = pc->GetPermanentActorValue(*avs->health);
 			g_snap_rads       = avs->rads ? pc->GetActorValue(*avs->rads) : 0.0f;
 			g_have_snapshot   = true;
+
+			if (avs->rads && g_snap_rads > 0.0f) {
+				pc->RestoreActorValue(*avs->rads, g_snap_rads);
+				REX::INFO("SafeTravel: temporarily cleared rads for load-screen travel; rads {} -> {}",
+					g_snap_rads, pc->GetActorValue(*avs->rads));
+			}
+
+			if (g_snap_max_health > g_snap_health) {
+				pc->RestoreActorValue(*avs->health, g_snap_max_health - g_snap_health);
+				REX::INFO("SafeTravel: temporarily restored HP for load-screen travel; HP {} -> {}",
+					g_snap_health, pc->GetActorValue(*avs->health));
+			}
 		}
 
-		void RestoreLoadScreenRads(RE::PlayerCharacter& a_player, const RE::ActorValue& a_actorValues)
+		void RestoreSnapshotRads(RE::PlayerCharacter& a_player, const RE::ActorValue& a_actorValues)
 		{
 			if (!a_actorValues.rads) {
 				return;
 			}
 
 			const float current_rads = a_player.GetActorValue(*a_actorValues.rads);
-			if (current_rads <= g_snap_rads) {
+			if (current_rads > g_snap_rads) {
+				a_player.RestoreActorValue(*a_actorValues.rads, current_rads - g_snap_rads);
+			} else if (current_rads < g_snap_rads) {
+				a_player.ModActorValue(
+					RE::ACTOR_VALUE_MODIFIER::kDamage,
+					*a_actorValues.rads,
+					g_snap_rads - current_rads);
+			} else {
 				return;
 			}
 
-			const float delta = current_rads - g_snap_rads;
-			a_player.RestoreActorValue(*a_actorValues.rads, delta);
 			const float readback = a_player.GetActorValue(*a_actorValues.rads);
-			REX::INFO("SafeTravel: restored load-screen rads; rads {} -> {} (pre-load was {})",
+			REX::INFO("SafeTravel: restored pre-travel rads; rads {} -> {} (pre-travel was {})",
 				current_rads, readback, g_snap_rads);
 		}
 
-		void RestoreIfLethal()
+		void RestoreSnapshotHealth(RE::PlayerCharacter& a_player, const RE::ActorValue& a_actorValues)
+		{
+			const float current = a_player.GetActorValue(*a_actorValues.health);
+			const float target = std::max(kSafeFloor, g_snap_health);
+
+			if (current > target) {
+				a_player.ModActorValue(
+					RE::ACTOR_VALUE_MODIFIER::kDamage,
+					*a_actorValues.health,
+					current - target);
+				REX::INFO("SafeTravel: removed temporary load-screen HP; HP {} -> {} (pre-travel was {})",
+					current, a_player.GetActorValue(*a_actorValues.health), g_snap_health);
+				return;
+			}
+
+			if (current >= kSafeFloor) {
+				return;
+			}
+
+			a_player.RestoreActorValue(*a_actorValues.health, kSafeFloor - current);
+			REX::INFO(
+				"SafeTravel: clamped lethal load-screen damage; HP {} -> {} (pre-travel was {}, max {})",
+				current, kSafeFloor, g_snap_health, g_snap_max_health);
+		}
+
+		void RestoreAfterTravel()
 		{
 			if (!g_have_snapshot) {
 				return;
@@ -65,23 +109,8 @@ namespace Hooks::SafeTravel
 				return;
 			}
 
-			RestoreLoadScreenRads(*pc, *avs);
-
-			const float current = pc->GetActorValue(*avs->health);
-			if (current >= kSafeFloor) {
-				return;
-			}
-
-			// Lift effective HP back to kSafeFloor. RestoreActorValue is the
-			// engine's own "heal" path -- same one Papyrus's `RestoreActorValue`
-			// resolves to -- so it walks through the proper damage/permanent
-			// modifier stack rather than us guessing the sign convention.
-			const float delta = kSafeFloor - current;
-			pc->RestoreActorValue(*avs->health, delta);
-
-			REX::INFO(
-				"SafeTravel: clamped lethal load-screen damage; HP {} -> {} (pre-load was {}, max {})",
-				current, kSafeFloor, g_snap_health, g_snap_max_health);
+			RestoreSnapshotRads(*pc, *avs);
+			RestoreSnapshotHealth(*pc, *avs);
 		}
 	}
 
@@ -97,14 +126,14 @@ namespace Hooks::SafeTravel
 			return;
 		}
 		if (a_event.opening) {
-			Snapshot();
+			SnapshotAndProtect();
 		} else {
 			if (!g_world_ready) {
 				g_world_ready = true;
 				g_have_snapshot = false;
 				return;
 			}
-			RestoreIfLethal();
+			RestoreAfterTravel();
 		}
 	}
 }

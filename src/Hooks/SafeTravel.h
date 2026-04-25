@@ -15,13 +15,12 @@ namespace RE
 //   2. Active rad damage (rad storm) keeps accumulating during the time
 //      skip; rads >= max HP at resume = instant rad death.
 //
-// This module becomes active after the first world load completes, then
-// snapshots effective health and rads when later LoadingMenu transitions open.
-// On close, it removes rads accumulated during that load-screen window, then
-// restores enough health damage modifier to leave the player at 1 HP if the
-// remaining Survival time-skip effects would otherwise be lethal. Initial save
-// loads are ignored so saved radiation is never rewritten. No immortality
-// byte-patch, no IsDead lying.
+// This module becomes active after the first world load completes. For later
+// LoadingMenu transitions, it temporarily clears rads and heals the player
+// before the time skip can mark them dead. On close, it restores pre-travel
+// rads and removes temporary HP while keeping a 1 HP floor if the time skip
+// would otherwise be lethal. Initial save loads are ignored so saved radiation
+// is never rewritten. No immortality byte-patch, no IsDead lying.
 namespace Hooks::SafeTravel
 {
 	void OnMenuOpenClose(const RE::MenuOpenCloseEvent& a_event);
