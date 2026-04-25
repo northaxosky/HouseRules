@@ -29,7 +29,7 @@ All toggles default OFF (vanilla behavior). Turning one ON applies that tweak wh
 | Allow Console | Re-enables the developer console |
 | Allow Manual Saves | Re-enables F5 quicksave plus the pause-menu Save/Load surfaces |
 | Allow Auto-Saves | Re-enables queued vanilla autosaves such as menu-close and door-arrival saves |
-| Allow Fast Travel | Re-enables Pip-Boy map fast travel eligibility; load-screen protection uses a targeted HP/rads guard, not God Mode or Immortal Mode |
+| Allow Fast Travel | Re-enables Pip-Boy map fast travel eligibility; fast-travel load screens use a targeted HP/rads guard, not God Mode or Immortal Mode |
 | Show Enemies on Compass | Restores vanilla red-dot enemy markers |
 | Show Locations on Compass | Restores vanilla undiscovered-location markers |
 | Remove Chem/Aid Weight | Strips Survival's added weight from consumables |

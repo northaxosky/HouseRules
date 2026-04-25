@@ -2,6 +2,7 @@
 
 #include "Hooks/Unlocks.h"
 
+#include "Hooks/SafeTravel.h"
 #include "Settings.h"
 
 #include <memory>
@@ -108,11 +109,20 @@ namespace Hooks::Unlocks
 				: RealDifficulty(a_this);
 		}
 
-		RE::DifficultyLevel Spoof_FastTravel(RE::PlayerCharacter* a_this)
+		RE::DifficultyLevel Spoof_FastTravelEligibility(RE::PlayerCharacter* a_this)
 		{
 			return ShouldSpoof(MCM::Settings::Unlocks::bFastTravel.GetValue(), a_this)
 				? RE::DifficultyLevel::kVeryEasy
 				: RealDifficulty(a_this);
+		}
+
+		RE::DifficultyLevel Spoof_FastTravelRequest(RE::PlayerCharacter* a_this)
+		{
+			if (ShouldSpoof(MCM::Settings::Unlocks::bFastTravel.GetValue(), a_this)) {
+				Hooks::SafeTravel::ArmFastTravel();
+				return RE::DifficultyLevel::kVeryEasy;
+			}
+			return RealDifficulty(a_this);
 		}
 
 		RE::DifficultyLevel Spoof_SaveAuto(RE::PlayerCharacter* a_this)
@@ -214,8 +224,8 @@ namespace Hooks::Unlocks
 			{ {425422,  0x047}, {2223965, 0x04D}, {2223965, 0x04D}, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::CheckIfSaveLoadPossible" },
 			{ {1330449, 0x0C1}, {2223964, 0x0C6}, {2223964, 0x0C6}, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::InitMainList" },
 
-			{ {712982,  0x31E}, {2224179, 0x347}, {2224179, 0x34C}, &Spoof_FastTravel,       "FastTravel / PipboyMenu::PipboyMenu" },
-			{ {1327120, 0x013}, {2224206, 0x014}, {2224206, 0x014}, &Spoof_FastTravel,       "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
+			{ {712982,  0x31E}, {2224179, 0x347}, {2224179, 0x34C}, &Spoof_FastTravelEligibility, "FastTravel / PipboyMenu::PipboyMenu" },
+			{ {1327120, 0x013}, {2224206, 0x014}, {2224206, 0x014}, &Spoof_FastTravelRequest,     "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
 
 			{ {1475119, 0x017}, {2220612, 0x01B}, {2220612, 0x01B}, &Spoof_CompassEnemies,   "CompassEnemies / HUDMarkerUtils::GetHostileEnemyMaxDistance" },
 

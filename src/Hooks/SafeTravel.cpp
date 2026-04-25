@@ -9,6 +9,7 @@ namespace Hooks::SafeTravel
 	namespace
 	{
 		bool  g_have_snapshot   = false;
+		bool  g_fast_travel_armed = false;
 		bool  g_world_ready     = false;
 		float g_snap_health     = 0.0f;
 		float g_snap_max_health = 0.0f;
@@ -114,11 +115,23 @@ namespace Hooks::SafeTravel
 		}
 	}
 
+	void ArmFastTravel()
+	{
+		if (!g_world_ready) {
+			return;
+		}
+		if (!g_fast_travel_armed) {
+			REX::INFO("SafeTravel: armed for next fast-travel load screen");
+		}
+		g_fast_travel_armed = true;
+	}
+
 	void OnMenuOpenClose(const RE::MenuOpenCloseEvent& a_event)
 	{
 		if (a_event.menuName == "MainMenu" && a_event.opening) {
 			g_world_ready = false;
 			g_have_snapshot = false;
+			g_fast_travel_armed = false;
 			return;
 		}
 
@@ -126,11 +139,15 @@ namespace Hooks::SafeTravel
 			return;
 		}
 		if (a_event.opening) {
-			SnapshotAndProtect();
+			if (g_fast_travel_armed) {
+				g_fast_travel_armed = false;
+				SnapshotAndProtect();
+			}
 		} else {
 			if (!g_world_ready) {
 				g_world_ready = true;
 				g_have_snapshot = false;
+				g_fast_travel_armed = false;
 				return;
 			}
 			RestoreAfterTravel();
