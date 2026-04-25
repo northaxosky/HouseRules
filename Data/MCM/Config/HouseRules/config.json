@@ -78,7 +78,7 @@
                     "id": "bFastTravel:Unlocks",
                     "text": "Allow Fast Travel",
                     "type": "switcher",
-                    "help": "ON re-enables Pip-Boy fast travel in Survival by spoofing the vanilla UI/eligibility checks. Fast-travel load screens use a targeted HP/rads guard only; ordinary door/cell loads are not touched, and God Mode / Immortal Mode is not enabled.",
+                    "help": "ON re-enables Pip-Boy fast travel in Survival by spoofing the vanilla UI/eligibility checks. Fast-travel load screens use targeted HP/rads/rad-resistance protection; ordinary door/cell loads are not touched, and God Mode / Immortal Mode is not enabled.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {

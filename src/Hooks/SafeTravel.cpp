@@ -3,21 +3,101 @@
 #include "Hooks/SafeTravel.h"
 
 #include <algorithm>
+#include <chrono>
 
 namespace Hooks::SafeTravel
 {
 	namespace
 	{
-		bool  g_have_snapshot   = false;
-		bool  g_fast_travel_armed = false;
-		bool  g_world_ready     = false;
-		float g_snap_health     = 0.0f;
-		float g_snap_max_health = 0.0f;
-		float g_snap_rads       = 0.0f;
+		using Clock = std::chrono::steady_clock;
+
+		bool              g_have_snapshot           = false;
+		bool              g_fast_travel_armed       = false;
+		bool              g_rad_exposure_shielded   = false;
+		bool              g_rad_ingestion_shielded  = false;
+		bool              g_world_ready             = false;
+		Clock::time_point g_fast_travel_armed_at{};
+		float             g_snap_health             = 0.0f;
+		float             g_snap_max_health         = 0.0f;
+		float             g_snap_rads               = 0.0f;
 
 		// Minimum effective HP the player should have on resume. 1.0 is the
 		// "barely alive" floor the engine treats as not-yet-dead.
 		constexpr float kSafeFloor = 1.0f;
+		constexpr float kRadShield = 1000000.0f;
+		constexpr auto  kArmTimeout = std::chrono::seconds(15);
+
+		void ClearArm()
+		{
+			g_fast_travel_armed = false;
+			g_fast_travel_armed_at = {};
+		}
+
+		bool ConsumeFreshArm()
+		{
+			if (!g_fast_travel_armed) {
+				return false;
+			}
+
+			g_fast_travel_armed = false;
+			const auto age = Clock::now() - g_fast_travel_armed_at;
+			if (age > kArmTimeout) {
+				const auto age_ms = std::chrono::duration_cast<std::chrono::milliseconds>(age).count();
+				REX::INFO("SafeTravel: ignored stale fast-travel arm (age={}ms)", age_ms);
+				return false;
+			}
+			return true;
+		}
+
+		void ApplyRadiationShield(RE::PlayerCharacter& a_player, const RE::ActorValue& a_actorValues)
+		{
+			if (a_actorValues.radExposureResistance) {
+				const float before = a_player.GetActorValue(*a_actorValues.radExposureResistance);
+				a_player.ModActorValue(
+					RE::ACTOR_VALUE_MODIFIER::kTemporary,
+					*a_actorValues.radExposureResistance,
+					kRadShield);
+				g_rad_exposure_shielded = true;
+				REX::INFO("SafeTravel: temporarily boosted rad exposure resistance; {} -> {}",
+					before, a_player.GetActorValue(*a_actorValues.radExposureResistance));
+			}
+
+			if (a_actorValues.radIngestionResistance) {
+				const float before = a_player.GetActorValue(*a_actorValues.radIngestionResistance);
+				a_player.ModActorValue(
+					RE::ACTOR_VALUE_MODIFIER::kTemporary,
+					*a_actorValues.radIngestionResistance,
+					kRadShield);
+				g_rad_ingestion_shielded = true;
+				REX::INFO("SafeTravel: temporarily boosted rad ingestion resistance; {} -> {}",
+					before, a_player.GetActorValue(*a_actorValues.radIngestionResistance));
+			}
+		}
+
+		void RemoveRadiationShield(RE::PlayerCharacter& a_player, const RE::ActorValue& a_actorValues)
+		{
+			if (g_rad_exposure_shielded && a_actorValues.radExposureResistance) {
+				const float before = a_player.GetActorValue(*a_actorValues.radExposureResistance);
+				a_player.ModActorValue(
+					RE::ACTOR_VALUE_MODIFIER::kTemporary,
+					*a_actorValues.radExposureResistance,
+					-kRadShield);
+				REX::INFO("SafeTravel: removed rad exposure resistance shield; {} -> {}",
+					before, a_player.GetActorValue(*a_actorValues.radExposureResistance));
+			}
+			g_rad_exposure_shielded = false;
+
+			if (g_rad_ingestion_shielded && a_actorValues.radIngestionResistance) {
+				const float before = a_player.GetActorValue(*a_actorValues.radIngestionResistance);
+				a_player.ModActorValue(
+					RE::ACTOR_VALUE_MODIFIER::kTemporary,
+					*a_actorValues.radIngestionResistance,
+					-kRadShield);
+				REX::INFO("SafeTravel: removed rad ingestion resistance shield; {} -> {}",
+					before, a_player.GetActorValue(*a_actorValues.radIngestionResistance));
+			}
+			g_rad_ingestion_shielded = false;
+		}
 
 		void SnapshotAndProtect()
 		{
@@ -35,6 +115,8 @@ namespace Hooks::SafeTravel
 			g_snap_max_health = pc->GetPermanentActorValue(*avs->health);
 			g_snap_rads       = avs->rads ? pc->GetActorValue(*avs->rads) : 0.0f;
 			g_have_snapshot   = true;
+
+			ApplyRadiationShield(*pc, *avs);
 
 			if (avs->rads && g_snap_rads > 0.0f) {
 				pc->RestoreActorValue(*avs->rads, g_snap_rads);
@@ -87,14 +169,14 @@ namespace Hooks::SafeTravel
 				return;
 			}
 
-			if (current >= kSafeFloor) {
+			if (current >= target) {
 				return;
 			}
 
-			a_player.RestoreActorValue(*a_actorValues.health, kSafeFloor - current);
+			a_player.RestoreActorValue(*a_actorValues.health, target - current);
 			REX::INFO(
-				"SafeTravel: clamped lethal load-screen damage; HP {} -> {} (pre-travel was {}, max {})",
-				current, kSafeFloor, g_snap_health, g_snap_max_health);
+				"SafeTravel: restored load-screen HP loss; HP {} -> {} (pre-travel was {}, max {})",
+				current, a_player.GetActorValue(*a_actorValues.health), g_snap_health, g_snap_max_health);
 		}
 
 		void RestoreAfterTravel()
@@ -112,6 +194,7 @@ namespace Hooks::SafeTravel
 
 			RestoreSnapshotRads(*pc, *avs);
 			RestoreSnapshotHealth(*pc, *avs);
+			RemoveRadiationShield(*pc, *avs);
 		}
 	}
 
@@ -124,6 +207,7 @@ namespace Hooks::SafeTravel
 			REX::INFO("SafeTravel: armed for next fast-travel load screen");
 		}
 		g_fast_travel_armed = true;
+		g_fast_travel_armed_at = Clock::now();
 	}
 
 	void OnMenuOpenClose(const RE::MenuOpenCloseEvent& a_event)
@@ -131,7 +215,7 @@ namespace Hooks::SafeTravel
 		if (a_event.menuName == "MainMenu" && a_event.opening) {
 			g_world_ready = false;
 			g_have_snapshot = false;
-			g_fast_travel_armed = false;
+			ClearArm();
 			return;
 		}
 
@@ -139,15 +223,14 @@ namespace Hooks::SafeTravel
 			return;
 		}
 		if (a_event.opening) {
-			if (g_fast_travel_armed) {
-				g_fast_travel_armed = false;
+			if (ConsumeFreshArm()) {
 				SnapshotAndProtect();
 			}
 		} else {
 			if (!g_world_ready) {
 				g_world_ready = true;
 				g_have_snapshot = false;
-				g_fast_travel_armed = false;
+				ClearArm();
 				return;
 			}
 			RestoreAfterTravel();
