@@ -7,6 +7,7 @@ namespace Hooks::SafeTravel
 	namespace
 	{
 		bool  g_have_snapshot   = false;
+		bool  g_world_ready     = false;
 		float g_snap_health     = 0.0f;
 		float g_snap_max_health = 0.0f;
 		float g_snap_rads       = 0.0f;
@@ -17,6 +18,10 @@ namespace Hooks::SafeTravel
 
 		void Snapshot()
 		{
+			if (!g_world_ready) {
+				return;
+			}
+
 			auto* pc  = RE::PlayerCharacter::GetSingleton();
 			auto* avs = RE::ActorValue::GetSingleton();
 			if (!pc || !avs || !avs->health) {
@@ -82,12 +87,23 @@ namespace Hooks::SafeTravel
 
 	void OnMenuOpenClose(const RE::MenuOpenCloseEvent& a_event)
 	{
+		if (a_event.menuName == "MainMenu" && a_event.opening) {
+			g_world_ready = false;
+			g_have_snapshot = false;
+			return;
+		}
+
 		if (a_event.menuName != "LoadingMenu") {
 			return;
 		}
 		if (a_event.opening) {
 			Snapshot();
 		} else {
+			if (!g_world_ready) {
+				g_world_ready = true;
+				g_have_snapshot = false;
+				return;
+			}
 			RestoreIfLethal();
 		}
 	}
