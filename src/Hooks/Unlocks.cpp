@@ -20,9 +20,6 @@ namespace Hooks::Unlocks
 		using QueueSaveLoadTaskFn = void(RE::BGSSaveLoadManager*, RE::BGSSaveLoadManager::QUEUED_TASK);
 		using QueueSaveLoadTaskHook = REL::Hook<QueueSaveLoadTaskFn>;
 
-		using QueueFastTravelFn = void(RE::PlayerCharacter*, RE::ObjectRefHandle, bool);
-		using QueueFastTravelHook = REL::Hook<QueueFastTravelFn>;
-
 		using QueryStatFn = bool(const RE::BSFixedString&, std::int32_t&);
 		using QueryStatHook = REL::Hook<QueryStatFn>;
 
@@ -169,14 +166,6 @@ namespace Hooks::Unlocks
 			a_this->QueueSaveLoadTask(a_task);
 		}
 
-		void Queue_FastTravel(RE::PlayerCharacter* a_this, RE::ObjectRefHandle a_marker, bool a_allowAutoSave)
-		{
-			if (!a_this || !AllowRestrictedAction(MCM::Settings::Unlocks::bFastTravel.GetValue(), a_this)) {
-				return;
-			}
-			a_this->QueueFastTravel(a_marker, a_allowAutoSave);
-		}
-
 		void Replace_RequestQueueDoorAutosave(RE::PlayerCharacter* a_this)
 		{
 			if (!a_this) {
@@ -264,13 +253,6 @@ namespace Hooks::Unlocks
 			  "SaveAuto / PlayerCharacter::HandlePositionPlayerRequest" },
 		};
 
-		const Site<QueueFastTravelFn> kQueueFastTravelSites[] = {
-			// Keep the Pip-Boy UI difficulty spoofs for presentation, but gate the
-			// final transport request on the real queue surface.
-			{ {592088,  0x185}, {2225458, 0x2E4}, {2225458, 0x2E4}, &Queue_FastTravel,
-			  "FastTravel / PipboyManager::OnPipboyClosed" },
-		};
-
 		// Re-enable Survival: hook the actual `MiscStatManager::QueryStat` call in
 		// `PauseMenu::CheckIfSaveLoadPossible` instead of signature-scanning and
 		// NOPing the call instruction. Proof/verification:
@@ -299,11 +281,6 @@ namespace Hooks::Unlocks
 		for (const auto& s : kQueueSaveLoadSites) {
 			if (const auto* ra = SelectSite(s.og, s.ng, s.ae)) {
 				AddHook<QueueSaveLoadTaskHook>(ra->id, ra->offset, s.fn, s.label);
-			}
-		}
-		for (const auto& s : kQueueFastTravelSites) {
-			if (const auto* ra = SelectSite(s.og, s.ng, s.ae)) {
-				AddHook<QueueFastTravelHook>(ra->id, ra->offset, s.fn, s.label);
 			}
 		}
 		for (const auto& s : kQueryStatSites) {

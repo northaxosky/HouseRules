@@ -78,7 +78,7 @@
                     "id": "bFastTravel:Unlocks",
                     "text": "Allow Fast Travel",
                     "type": "switcher",
-                    "help": "ON re-enables Pip-Boy fast travel in Survival, including the final queued travel request.",
+                    "help": "ON re-enables Pip-Boy fast travel in Survival by spoofing the vanilla UI/eligibility checks.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
