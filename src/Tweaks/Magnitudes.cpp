@@ -34,11 +34,10 @@ namespace Tweaks::Magnitudes
 			0x00000818, 0x0000081A, 0x0000081C, 0x0000081E, 0x00000820
 		};
 
-		// Vanilla's HC_ReduceCarryWeightAbility is a SPEL with an effect whose MGEF
-		// has primaryAV == CarryWeight. We discover it at runtime rather than
-		// hardcoding a FormID (previous FormID 0x00249A37 was wrong and the lookup
-		// failed). This approach also catches any mod-added abilities that reduce
-		// CarryWeight via the same archetype.
+		// Vanilla's HC_ReduceCarryWeightAbility is ESP-owned now (see
+		// HouseRules.esp -- condition-gated on HR_NoCarryWeight global).
+		// The DLL writes that global from MCM via Globals::WriteBool in
+		// Settings::Update. No runtime SPEL scan / snapshot is needed here.
 
 		// MGEFs (EffectSetting records) recovered from the archived survival dumps.
 		constexpr std::uint32_t kEffectRestoreHealthFood          = 0x0000397E;
@@ -71,21 +70,9 @@ namespace Tweaks::Magnitudes
 			float         baseline;
 		};
 
-		struct SpellEffectSnapshot
-		{
-			std::uint32_t spellFormID;
-			std::uint32_t effectIndex;
-			std::uint32_t effectSettingFormID;
-			float         baseline;
-		};
-
-		std::vector<AlchSnapshot>               g_alch_snapshots;
+		std::vector<AlchSnapshot>                 g_alch_snapshots;
 		std::vector<MatchedAlchemyEffectSnapshot> g_food_heal_snapshots;
-		std::vector<SpellEffectSnapshot>        g_carry_weight_snapshots;
-		bool                                    g_snapshotted = false;
-
-		void SnapshotCarryWeightSpells();
-		void ApplyCarryWeightSpells(bool a_unlock);
+		bool                                      g_snapshotted = false;
 
 		// Intentionally not using TESDataHandler::LookupForm — that path walks
 		// through the engine's form-by-ID hash in a way that triggers a lazy
@@ -156,7 +143,6 @@ namespace Tweaks::Magnitudes
 			for (auto id : kAlchThirstStages) SnapshotAlch(id);
 			for (auto id : kAlchSleepStages)  SnapshotAlch(id);
 			SnapshotAlchemyEffectsBySetting(kEffectRestoreHealthFood);
-			SnapshotCarryWeightSpells();
 			REX::INFO("Magnitudes: snapshotted {} ALCH baselines and {} RestoreHealthFood entries",
 				g_alch_snapshots.size(), g_food_heal_snapshots.size());
 		}
@@ -223,174 +209,6 @@ namespace Tweaks::Magnitudes
 				eff->data.magnitude = wanted;
 			}
 		}
-		RE::SpellItem* LookupSpell(std::uint32_t a_formID)
-		{
-			auto* dh = RE::TESDataHandler::GetSingleton();
-			if (!dh) return nullptr;
-			for (auto* spel : dh->GetFormArray<RE::SpellItem>()) {
-				if (spel && spel->formID == a_formID) return spel;
-			}
-			return nullptr;
-		}
-
-		bool EffectTargetsCarryWeight(const RE::EffectItem* a_eff)
-		{
-			if (!a_eff || !a_eff->effectSetting) return false;
-			const auto* mgef = a_eff->effectSetting;
-			const auto* av = mgef->data.primaryAV;
-			if (!av) return false;
-			const char* edid = av->GetFormEditorID();
-			return edid && std::string_view{ edid } == "CarryWeight";
-		}
-
-		bool SpellEdidMatchesCarryReducer(const RE::SpellItem* a_spell)
-		{
-			if (!a_spell) return false;
-			const char* edid = a_spell->GetFormEditorID();
-			if (!edid) return false;
-			std::string_view sv{ edid };
-			// Vanilla Survival ability (Fallout4.esm). Matching by EDID is
-			// robust against archetype/AV shape changes — the Papyrus loop
-			// in HC_ManagerScript resolves this by name-bound property too.
-			return sv == "HC_ReduceCarryWeightAbility";
-		}
-
-		void DumpSpellDiagnostic(const RE::SpellItem* a_spell, const char* a_reason)
-		{
-			if (!a_spell) return;
-			const char* spelEdid = a_spell->GetFormEditorID();
-			REX::INFO("Magnitudes: [carry-diag:{}] SPEL {:08X} edid='{}' effects={}",
-				a_reason,
-				a_spell->formID,
-				spelEdid ? spelEdid : "",
-				a_spell->listOfEffects.size());
-			for (std::uint32_t i = 0; i < a_spell->listOfEffects.size(); ++i) {
-				const auto* eff = a_spell->listOfEffects[i];
-				if (!eff) { REX::INFO("  [{}] <null eff>", i); continue; }
-				const auto* mgef = eff->effectSetting;
-				const char* mgefEdid   = mgef ? mgef->GetFormEditorID() : "";
-				const char* primaryAV  = (mgef && mgef->data.primaryAV)   ? mgef->data.primaryAV->GetFormEditorID()   : "";
-				const char* secondaryAV = (mgef && mgef->data.secondaryAV) ? mgef->data.secondaryAV->GetFormEditorID() : "";
-				const auto archetype    = mgef ? mgef->data.archetype.underlying() : -1;
-				const auto flags        = mgef ? mgef->data.flags.underlying() : 0u;
-				REX::INFO("  [{}] mgef={:08X} edid='{}' arch={} flags=0x{:X} mag={} primaryAV='{}' secondaryAV='{}'",
-					i,
-					mgef ? mgef->formID : 0,
-					mgefEdid   ? mgefEdid   : "",
-					archetype,
-					flags,
-					eff->data.magnitude,
-					primaryAV  ? primaryAV  : "",
-					secondaryAV ? secondaryAV : "");
-			}
-		}
-
-		void SnapshotCarryWeightSpells()
-		{
-			auto* dh = RE::TESDataHandler::GetSingleton();
-			if (!dh) {
-				REX::WARN("Magnitudes: TESDataHandler unavailable; carry-weight unlock inert");
-				return;
-			}
-			std::size_t matched_by_edid = 0;
-			std::size_t matched_by_av   = 0;
-			for (auto* spel : dh->GetFormArray<RE::SpellItem>()) {
-				if (!spel) continue;
-
-				// Diagnostic: dump every SPEL that looks carry-weight-related
-				// by name, regardless of whether the AV heuristic catches it.
-				const char* spelEdid = spel->GetFormEditorID();
-				if (spelEdid) {
-					std::string_view sv{ spelEdid };
-					if (sv.find("CarryWeight") != std::string_view::npos
-						|| sv.find("Encumber")  != std::string_view::npos
-						|| sv.find("ReduceCarry") != std::string_view::npos) {
-						DumpSpellDiagnostic(spel, "edid-candidate");
-					}
-				}
-
-				const bool edid_match = SpellEdidMatchesCarryReducer(spel);
-
-				for (std::uint32_t i = 0; i < spel->listOfEffects.size(); ++i) {
-					const auto* eff = spel->listOfEffects[i];
-					if (!eff) continue;
-					const auto* mgef = eff->effectSetting;
-
-					bool snapshot_this = false;
-					const char* reason = "";
-
-					if (edid_match) {
-						// Vanilla HC_ReduceCarryWeightAbility — neutralize
-						// every effect regardless of AV/sign; this is the
-						// survival penalty by definition.
-						snapshot_this = true;
-						reason = "edid";
-						++matched_by_edid;
-					} else if (EffectTargetsCarryWeight(eff)) {
-						const bool detrimental = mgef
-							? (mgef->data.flags.underlying() & static_cast<std::uint32_t>(RE::EffectSetting::EffectSettingData::Flag::kDetrimental)) != 0
-							: false;
-						const bool reducer = (eff->data.magnitude < 0.0f) || detrimental;
-						if (reducer) {
-							snapshot_this = true;
-							reason = "av-detrimental";
-							++matched_by_av;
-						}
-					}
-
-					if (!snapshot_this) continue;
-
-					const char* mgefEdid = mgef ? mgef->GetFormEditorID() : "";
-					REX::INFO("Magnitudes: carry-weight snapshot SPEL {:08X} edid='{}'[{}] mgef={:08X} edid='{}' mag={} reason={}",
-						spel->formID,
-						spelEdid ? spelEdid : "",
-						i,
-						mgef ? mgef->formID : 0,
-						mgefEdid ? mgefEdid : "",
-						eff->data.magnitude,
-						reason);
-
-					g_carry_weight_snapshots.push_back({
-						spel->formID,
-						i,
-						mgef ? mgef->formID : 0,
-						eff->data.magnitude
-					});
-				}
-			}
-			if (g_carry_weight_snapshots.empty()) {
-				REX::WARN("Magnitudes: no carry-weight reducers found (edid+av scan); unlock will be inert");
-			} else {
-				REX::INFO("Magnitudes: snapshotted {} carry-weight reducer effect(s) [edid={}, av={}]",
-					g_carry_weight_snapshots.size(), matched_by_edid, matched_by_av);
-			}
-		}
-
-		void ApplyCarryWeightSpells(bool a_unlock)
-		{
-			if (g_carry_weight_snapshots.empty()) {
-				return;
-			}
-			std::size_t applied = 0;
-			for (const auto& snap : g_carry_weight_snapshots) {
-				auto* spel = LookupSpell(snap.spellFormID);
-				if (!spel || snap.effectIndex >= spel->listOfEffects.size()) continue;
-				auto* eff = spel->listOfEffects[snap.effectIndex];
-				if (!eff) continue;
-				const auto currentSettingFormID = eff->effectSetting ? eff->effectSetting->formID : 0;
-				if (snap.effectSettingFormID != currentSettingFormID) {
-					REX::WARN("Magnitudes: carry-weight SPEL {:08X}[{}] effect changed {:08X} -> {:08X}; skipping",
-						snap.spellFormID, snap.effectIndex,
-						snap.effectSettingFormID, currentSettingFormID);
-					continue;
-				}
-				eff->data.magnitude = a_unlock ? 0.0f : snap.baseline;
-				++applied;
-			}
-			REX::INFO("Magnitudes: carry-weight {} ({} effect(s))",
-				a_unlock ? "neutralized" : "restored",
-				applied);
-		}
 	}
 
 	void Apply()
@@ -454,8 +272,6 @@ namespace Tweaks::Magnitudes
 		}
 
 		ApplyFoodHeal(food);
-		ApplyCarryWeightSpells(
-			MCM::Settings::Unlocks::bNoSurvivalCarryWeight.GetValue());
 
 		REX::INFO("Magnitudes: applied (stim_heal={} stim_limb={} radaway={} radx={} food={} hunger={} thirst={} sleep={})",
 			stim_heal, stim_limb, radaway, radx, food, hunger_pen, thirst_pen, sleep_pen);

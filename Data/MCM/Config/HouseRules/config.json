@@ -118,7 +118,7 @@
                     "id": "bNoSurvivalCarryWeight:Unlocks",
                     "text": "Remove Survival Carry-Weight Penalty",
                     "type": "switcher",
-                    "help": "ON neutralizes the -100 carry-weight ability Survival applies to the player, companions, and Dogmeat by zeroing the effect magnitudes on HC_ReduceCarryWeightAbility. Takes effect on the next pause-menu close; Papyrus may re-add the ability, but the zeroed magnitudes stay in effect until you toggle this OFF.",
+                    "help": "ON neutralizes the -100 carry-weight ability Survival applies to the player, companions, and Dogmeat. Requires HouseRules.esp; takes effect on the next pause-menu close after the plugin is installed.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {

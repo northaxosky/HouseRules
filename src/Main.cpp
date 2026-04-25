@@ -3,6 +3,7 @@
 #include "Diagnostics/DumpDefaultObjects.h"
 #include "Diagnostics/SurvivalObserver.h"
 #include "Hooks/GodMode.h"
+#include "Hooks/SafeTravel.h"
 #include "Hooks/Unlocks.h"
 #include "Settings.h"
 #include "SleepWait/Integration.h"
@@ -24,6 +25,10 @@ namespace
 			const RE::MenuOpenCloseEvent&                 a_event,
 			RE::BSTEventSource<RE::MenuOpenCloseEvent>*) override
 		{
+			// SafeTravel needs both edges of LoadingMenu (snapshot on open,
+			// clamp on close) so route it before the opening/closing split.
+			Hooks::SafeTravel::OnMenuOpenClose(a_event);
+
 			if (a_event.opening) {
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);

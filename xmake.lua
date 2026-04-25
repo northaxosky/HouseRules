@@ -61,6 +61,9 @@ target("HouseRules")
         if os.isfile(pdb) then
             os.cp(pdb, plugins_dir)
         end
+        for _, esp in ipairs(os.files("Data/*.esp")) do
+            os.cp(esp, deploy_dir)
+        end
         os.cp("Data/MCM/Config/HouseRules/*", mcm_dir)
         cprint("${bright green}deploy: ${clear}copied to %s", deploy_dir)
     end)
