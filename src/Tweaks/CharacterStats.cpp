@@ -29,8 +29,8 @@ namespace Tweaks::CharacterStats
 		// preserveBaselineAtNeutral keeps any existing baseline edits from
 		// other mods until the user moves the slider off 0.
 		const std::array<FloatTarget, 2> kRegenTargets = { {
-			{ "fHealrate",              &MCM::Settings::Character::fHealRate,              Mode::Direct, 0.0f },
-			{ "fCombatHealthRegenMult", &MCM::Settings::Character::fCombatHealthRegenMult, Mode::Direct, 0.0f },
+			{ "HealRate",              &MCM::Settings::Character::fHealRate,              Mode::Direct, 0.0f },
+			{ "CombatHealthRegenMult", &MCM::Settings::Character::fCombatHealthRegenMult, Mode::Direct, 0.0f },
 		} };
 	}
 
