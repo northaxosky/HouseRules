@@ -2,8 +2,6 @@
 
 An F4SE plugin that exposes high-impact vanilla Fallout 4 settings through a single, well-documented MCM menu. Its goal is to give players the tools they need to tune vanilla mechanics so they fit a modded playthrough - not to add new gameplay.
 
-> "Their game, their rules."
-
 ## Compatibility
 
 All three main Fallout 4 runtimes:
