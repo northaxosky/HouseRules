@@ -223,6 +223,7 @@ namespace Hooks::Unlocks
 
 			{ {425422,  0x047}, {2223965, 0x04D}, {2223965, 0x04D}, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::CheckIfSaveLoadPossible" },
 			{ {1330449, 0x0C1}, {2223964, 0x0C6}, {2223964, 0x0C6}, &Spoof_SaveSelf,         "SaveSelf / PauseMenu::InitMainList" },
+			{ {1470086, 0x06C}, {2249427, 0x06C}, {2249427, 0x06C}, &Spoof_SaveSelf,         "SaveSelf / QuickSaveLoadHandler::HandleEvent" },
 
 			{ {712982,  0x31E}, {2224179, 0x347}, {2224179, 0x34C}, &Spoof_FastTravelEligibility, "FastTravel / PipboyMenu::PipboyMenu" },
 			{ {1327120, 0x013}, {2224206, 0x014}, {2224206, 0x014}, &Spoof_FastTravelRequest,     "FastTravel / nsPipboyMenu::CheckHardcoreFastTravel" },
@@ -242,8 +243,8 @@ namespace Hooks::Unlocks
 		};
 
 		const Site<QueueSaveLoadTaskFn> kQueueSaveLoadSites[] = {
-			// Quicksave/quicksave load hotkeys should be gated at the queue point;
-			// PauseMenu still needs the old GetDifficultyLevel hooks for UI state.
+			// Belt-and-braces queue gates: F5 has an earlier GDL gate above,
+			// while menu surfaces still need their PauseMenu GDL hooks for UI state.
 			{ {1470086, 0x082}, {2249427, 0x082}, {2249427, 0x082}, &Queue_SaveSelf,
 			  "SaveSelf / QuickSaveLoadHandler (QueueSaveLoadTask #1)" },
 			{ {1470086, 0x0C3}, {2249427, 0x0C3}, {2249427, 0x0C3}, &Queue_SaveSelf,

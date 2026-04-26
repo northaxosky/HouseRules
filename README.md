@@ -48,6 +48,14 @@ Conservative sliders targeting proven vanilla records:
 
 Magnitude edits touch base records, so changes take effect the next time an item is consumed or re-evaluated - the Pip-Boy tooltip value caches until then.
 
+### Difficulty Multipliers
+
+Runtime GMST sliders for each vanilla difficulty tier:
+
+- Incoming damage, outgoing damage, base XP rate, Intelligence XP bonus, legendary spawn chance, and legendary rarity.
+
+`1.00` means the engine's current baseline. House Rules snapshots each GMST on first safe apply and writes `baseline * slider`, so changes do not compound during a session.
+
 ### Developer Diagnostics
 
 `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:

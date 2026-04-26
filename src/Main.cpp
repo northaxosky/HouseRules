@@ -99,7 +99,7 @@ F4SE_EXPORT bool F4SEPlugin_Load(const F4SE::LoadInterface* a_f4se)
 	F4SE::Init(a_f4se, {
 		.logName        = "HouseRules",
 		.trampoline     = true,
-		.trampolineSize = 64 * 1024,  // 15 hooks × small branches; 64 KB is generous headroom
+		.trampolineSize = 4 * 1024,  // enough for current call hooks without exhausting F4SE's branch pool
 	});
 
 	REX::INFO("House Rules loading");

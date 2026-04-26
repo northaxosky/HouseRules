@@ -25,13 +25,13 @@
             "id": "bEnabled:General",
             "text": "Enable Plugin",
             "type": "switcher",
-            "help": "Master on/off. When OFF, every unlock and magnitude tweak falls back to vanilla Survival behavior. Dev-only diagnostics remain controlled separately via settings.ini.",
+            "help": "Master switch for gameplay tweaks. Diagnostics still use settings.ini.",
             "valueOptions": { "sourceType": "ModSettingBool" }
         }
     ],
     "pages": [
         {
-            "pageDisplayName": "Unlocks",
+            "pageDisplayName": "Survival Unlocks",
             "content": [
                 {
                     "text": "<font size='24'><p align='center'>Survival Unlocks</p></font>",
@@ -59,14 +59,14 @@
                     "id": "bSaveSelf:Unlocks",
                     "text": "Allow Manual Saves",
                     "type": "switcher",
-                    "help": "ON re-enables F5 quicksave and the pause-menu Save/Load surfaces in Survival.",
+                    "help": "ON allows pause-menu saves and F5 quicksave in Survival.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
                     "id": "bSaveAuto:Unlocks",
                     "text": "Allow Auto-Saves",
                     "type": "switcher",
-                    "help": "ON re-enables queued vanilla auto-saves, including menu-close and door-arrival paths where the game requests them.",
+                    "help": "ON allows queued vanilla auto-saves in Survival.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 { "type": "spacer" },
@@ -78,7 +78,7 @@
                     "id": "bFastTravel:Unlocks",
                     "text": "Allow Fast Travel",
                     "type": "switcher",
-                    "help": "ON re-enables Pip-Boy fast travel in Survival by spoofing the vanilla UI/eligibility checks. Fast-travel load screens use targeted HP/rads/rad-resistance protection; ordinary door/cell loads are not touched, and God Mode / Immortal Mode is not enabled.",
+                    "help": "ON allows Pip-Boy fast travel in Survival. Fast-travel loads get targeted protection.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
@@ -118,21 +118,21 @@
                     "id": "bNoSurvivalCarryWeight:Unlocks",
                     "text": "Remove Survival Carry-Weight Penalty",
                     "type": "switcher",
-                    "help": "ON neutralizes the -100 carry-weight ability Survival applies to the player, companions, and Dogmeat. Verified ESP-backed toggle; requires HouseRules.esp enabled and takes effect on the next pause-menu close.",
+                    "help": "ON neutralizes Survival's -100 carry-weight ability for player and companions.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
                     "id": "bGodMode:Unlocks",
                     "text": "Allow God Mode",
                     "type": "switcher",
-                    "help": "ON lets the tgm and tim console cheats take effect in Survival (damage is blocked while the cheat is active).",
+                    "help": "ON lets tgm and tim console cheats work in Survival.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {
                     "id": "bReenableSurvival:Unlocks",
                     "text": "Allow Re-entering Survival",
                     "type": "switcher",
-                    "help": "ON removes vanilla's one-way gate so you can switch Survival on and off freely. Live-toggleable via MCM.",
+                    "help": "ON lets you turn Survival back on after leaving it.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 }
             ]
@@ -163,7 +163,7 @@
                     "id": "fStimpakLimbRepair:Magnitudes",
                     "text": "Stimpak Limb Repair",
                     "type": "slider",
-                    "help": "Per-limb RestoreCondition strength (1.0 = vanilla full heal, 0.5 = heal half, 0 = keep limbs broken). Vanilla limb condition is clamped to max after a stimpak, so values above 1.0 have no effect.",
+                    "help": "Scales limb repair from stimpaks. Values above 1.0 are clamped by vanilla.",
                     "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.1, "sourceType": "ModSettingFloat" }
                 },
                 {
@@ -184,7 +184,7 @@
                     "id": "fFoodHeal:Magnitudes",
                     "text": "Food / Drink Healing",
                     "type": "slider",
-                    "help": "Scales per-consumable RestoreHealthFood effect magnitudes. Changes apply to items you haven't eaten yet in the current session; the Pip-Boy tooltip may keep its cached number until the item is consumed or re-equipped.",
+                    "help": "Scales HP restored by food and drink. Tooltips may cache old values.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.1, "sourceType": "ModSettingFloat" }
                 },
                 { "type": "spacer" },
@@ -231,42 +231,42 @@
                     "id": "fIncomingDamageVeryEasy:Difficulty",
                     "text": "Incoming Damage (Very Easy)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPToPCVE. 1.00 = vanilla.",
+                    "help": "Multiplies damage you take on Very Easy. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fIncomingDamageEasy:Difficulty",
                     "text": "Incoming Damage (Easy)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPToPCE. 1.00 = vanilla.",
+                    "help": "Multiplies damage you take on Easy. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fIncomingDamageNormal:Difficulty",
                     "text": "Incoming Damage (Normal)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPToPCN. 1.00 = vanilla.",
+                    "help": "Multiplies damage you take on Normal. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fIncomingDamageHard:Difficulty",
                     "text": "Incoming Damage (Hard)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPToPCH. 1.00 = vanilla.",
+                    "help": "Multiplies damage you take on Hard. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fIncomingDamageVeryHard:Difficulty",
                     "text": "Incoming Damage (Very Hard)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPToPCVH. 1.00 = vanilla.",
+                    "help": "Multiplies damage you take on Very Hard. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fIncomingDamageSurvival:Difficulty",
                     "text": "Incoming Damage (Survival)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPToPCTSV. 1.00 = vanilla.",
+                    "help": "Multiplies damage you take on Survival. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 { "type": "spacer" },
@@ -275,58 +275,58 @@
                     "id": "fOutgoingDamageVeryEasy:Difficulty",
                     "text": "Outgoing Damage (Very Easy)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPByPCVE. 1.00 = vanilla.",
+                    "help": "Multiplies damage you deal on Very Easy. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fOutgoingDamageEasy:Difficulty",
                     "text": "Outgoing Damage (Easy)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPByPCE. 1.00 = vanilla.",
+                    "help": "Multiplies damage you deal on Easy. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fOutgoingDamageNormal:Difficulty",
                     "text": "Outgoing Damage (Normal)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPByPCN. 1.00 = vanilla.",
+                    "help": "Multiplies damage you deal on Normal. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fOutgoingDamageHard:Difficulty",
                     "text": "Outgoing Damage (Hard)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPByPCH. 1.00 = vanilla.",
+                    "help": "Multiplies damage you deal on Hard. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fOutgoingDamageVeryHard:Difficulty",
                     "text": "Outgoing Damage (Very Hard)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPByPCVH. 1.00 = vanilla.",
+                    "help": "Multiplies damage you deal on Very Hard. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fOutgoingDamageSurvival:Difficulty",
                     "text": "Outgoing Damage (Survival)",
                     "type": "slider",
-                    "help": "Scales fDiffMultHPByPCTSV. 1.00 = vanilla.",
+                    "help": "Multiplies damage you deal on Survival. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 { "type": "spacer" },
                 { "text": "Progression", "type": "section" },
                 {
                     "id": "fXPBase:Difficulty",
-                    "text": "XP Base",
+                    "text": "Base XP Rate",
                     "type": "slider",
-                    "help": "Scales fXPModBase, the flat XP grant component. 1.00 = vanilla.",
+                    "help": "Scales base XP before Intelligence bonus. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fXPMult:Difficulty",
-                    "text": "XP Multiplier",
+                    "text": "Intelligence XP Bonus",
                     "type": "slider",
-                    "help": "Scales fXPModMult, the difficulty-scaled XP multiplier. 1.00 = vanilla.",
+                    "help": "Scales the XP bonus from Intelligence. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 { "type": "spacer" },
@@ -335,42 +335,42 @@
                     "id": "fLegendaryChanceVeryEasy:Difficulty",
                     "text": "Legendary Chance (Very Easy)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryChance_VE. 1.00 = vanilla.",
+                    "help": "How often eligible enemies become legendary. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryChanceEasy:Difficulty",
                     "text": "Legendary Chance (Easy)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryChance_E. 1.00 = vanilla.",
+                    "help": "How often eligible enemies become legendary. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryChanceNormal:Difficulty",
                     "text": "Legendary Chance (Normal)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryChance_N. 1.00 = vanilla.",
+                    "help": "How often eligible enemies become legendary. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryChanceHard:Difficulty",
                     "text": "Legendary Chance (Hard)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryChance_H. 1.00 = vanilla.",
+                    "help": "How often eligible enemies become legendary. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryChanceVeryHard:Difficulty",
                     "text": "Legendary Chance (Very Hard)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryChance_VH. 1.00 = vanilla.",
+                    "help": "How often eligible enemies become legendary. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryChanceSurvival:Difficulty",
                     "text": "Legendary Chance (Survival)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryChance_TSV. 1.00 = vanilla.",
+                    "help": "How often eligible enemies become legendary. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 { "type": "spacer" },
@@ -379,42 +379,42 @@
                     "id": "fLegendaryRarityVeryEasy:Difficulty",
                     "text": "Legendary Rarity (Very Easy)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryRarity_VE. 1.00 = vanilla.",
+                    "help": "Weights rarer legendary rolls after a legendary spawns. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryRarityEasy:Difficulty",
                     "text": "Legendary Rarity (Easy)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryRarity_E. 1.00 = vanilla.",
+                    "help": "Weights rarer legendary rolls after a legendary spawns. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryRarityNormal:Difficulty",
                     "text": "Legendary Rarity (Normal)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryRarity_N. 1.00 = vanilla.",
+                    "help": "Weights rarer legendary rolls after a legendary spawns. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryRarityHard:Difficulty",
                     "text": "Legendary Rarity (Hard)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryRarity_H. 1.00 = vanilla.",
+                    "help": "Weights rarer legendary rolls after a legendary spawns. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryRarityVeryHard:Difficulty",
                     "text": "Legendary Rarity (Very Hard)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryRarity_VH. 1.00 = vanilla.",
+                    "help": "Weights rarer legendary rolls after a legendary spawns. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLegendaryRaritySurvival:Difficulty",
                     "text": "Legendary Rarity (Survival)",
                     "type": "slider",
-                    "help": "Scales fDiffMultLegendaryRarity_TSV. 1.00 = vanilla.",
+                    "help": "Weights rarer legendary rolls after a legendary spawns. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 }
             ]

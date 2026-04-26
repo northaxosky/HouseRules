@@ -2,6 +2,7 @@
 
 #include "Globals/Globals.h"
 
+#include <cmath>
 #include <string_view>
 #include <unordered_set>
 
@@ -44,8 +45,10 @@ namespace Globals
 			return;
 		}
 
-		glob->value = a_value;
-		REX::INFO("Globals: wrote '{}' = {} (FormID {:08X})",
-			a_editorID, a_value, glob->formID);
+		if (std::abs(glob->value - a_value) > 1e-6f) {
+			glob->value = a_value;
+			REX::INFO("Globals: wrote '{}' = {} (FormID {:08X})",
+				a_editorID, a_value, glob->formID);
+		}
 	}
 }
