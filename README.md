@@ -86,6 +86,16 @@ Runtime GMST sliders for the raw damage and armor-reduction terms shared by ever
 
 Each slider's neutral value is the vanilla default (`0.15` for damage factors, `0.365` for armor exponents). Leaving a slider on neutral preserves whatever baseline another mod has written; moving it off neutral writes the literal value to the GMST.
 
+### Power Armor & Jetpack
+
+Runtime GMST sliders for jetpack feel, fusion-core drain, and Power Armor durability:
+
+- **Jetpack**: initial and sustained fuel drain (multiplier), initial and sustained thrust (multiplier), minimum fuel required to ignite (vanilla 3), and seconds before sustained mode (vanilla 0.15).
+- **Fusion Core Drain**: drain per AP spent and per second running (multiplier), and direct per-jump / per-melee-attack / per-hard-landing drain entries (vanilla 0 for all three).
+- **Durability**: player PA condition damage multiplier (1.0 vanilla, 0 = unbreakable) and NPC PA condition damage multiplier (vanilla 3).
+
+Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla default as their neutral value; leaving a Direct slider on its default preserves whatever baseline another mod has written.
+
 ### Developer Diagnostics
 
 `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:

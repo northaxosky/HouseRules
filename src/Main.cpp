@@ -13,6 +13,7 @@
 #include "Tweaks/Difficulty.h"
 #include "Tweaks/DifficultyEffects.h"
 #include "Tweaks/Magnitudes.h"
+#include "Tweaks/PowerArmor.h"
 
 namespace
 {
@@ -49,6 +50,7 @@ namespace
 				Tweaks::ActionPoints::Apply();
 				Tweaks::CharacterStats::Apply();
 				Tweaks::DamageFormulas::Apply();
+				Tweaks::PowerArmor::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
@@ -64,6 +66,7 @@ namespace
 				Tweaks::ActionPoints::Apply();
 				Tweaks::CharacterStats::Apply();
 				Tweaks::DamageFormulas::Apply();
+				Tweaks::PowerArmor::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;

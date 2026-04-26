@@ -704,6 +704,118 @@
                     "valueOptions": { "min": 0.0, "max": 1.5, "step": 0.005, "sourceType": "ModSettingFloat" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Power Armor",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Power Armor</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Jetpack, fusion-core drain, and PA durability. Multiplier sliders show 1.00 = vanilla; Direct sliders show the vanilla default as their neutral value.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Jetpack", "type": "section" },
+                {
+                    "id": "fJetpackInitialDrainMult:PowerArmor",
+                    "text": "Initial Drain",
+                    "type": "slider",
+                    "help": "Fusion-core fuel consumed when a jetpack burst starts.",
+                    "valueOptions": { "min": 0.25, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fJetpackSustainedDrainMult:PowerArmor",
+                    "text": "Sustained Drain",
+                    "type": "slider",
+                    "help": "Continuous jetpack fuel drain.",
+                    "valueOptions": { "min": 0.25, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fJetpackMinFuelRequired:PowerArmor",
+                    "text": "Min Fuel to Ignite",
+                    "type": "slider",
+                    "help": "Minimum core charge required to ignite. Vanilla 3.",
+                    "valueOptions": { "min": 0.0, "max": 25.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fJetpackInitialThrustMult:PowerArmor",
+                    "text": "Initial Thrust",
+                    "type": "slider",
+                    "help": "Upward kick at ignition.",
+                    "valueOptions": { "min": 0.25, "max": 3.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fJetpackSustainedThrustMult:PowerArmor",
+                    "text": "Sustained Thrust",
+                    "type": "slider",
+                    "help": "Continuous upward thrust.",
+                    "valueOptions": { "min": 0.25, "max": 3.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fJetpackTimeToSustained:PowerArmor",
+                    "text": "Time to Sustained",
+                    "type": "slider",
+                    "help": "Seconds before sustained jetpack mode. Vanilla 0.15.",
+                    "valueOptions": { "min": 0.0, "max": 1.5, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Fusion Core Drain", "type": "section" },
+                {
+                    "id": "fPAPowerDrainPerAPMult:PowerArmor",
+                    "text": "Drain per AP",
+                    "type": "slider",
+                    "help": "Core drain per AP spent.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fPAPowerDrainRunningMult:PowerArmor",
+                    "text": "Drain While Running",
+                    "type": "slider",
+                    "help": "Core drain while running.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fPAPowerDrainPerJump:PowerArmor",
+                    "text": "Drain per Jump",
+                    "type": "slider",
+                    "help": "Core drain per jump. Vanilla 0.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fPAPowerDrainPerMeleeAttack:PowerArmor",
+                    "text": "Drain per Melee Attack",
+                    "type": "slider",
+                    "help": "Core drain per melee attack. Vanilla 0.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fPAPowerDrainPerImpactLand:PowerArmor",
+                    "text": "Drain on Hard Landing",
+                    "type": "slider",
+                    "help": "Core drain on hard landing. Vanilla 0.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Durability", "type": "section" },
+                {
+                    "id": "fPAPlayerArmorDamageMultiplier:PowerArmor",
+                    "text": "Player PA Damage",
+                    "type": "slider",
+                    "help": "Player PA condition damage multiplier. Vanilla 1. 0 = unbreakable.",
+                    "valueOptions": { "min": 0.0, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fPANPCArmorDamageMultiplier:PowerArmor",
+                    "text": "NPC PA Damage",
+                    "type": "slider",
+                    "help": "NPC PA condition damage multiplier. Vanilla 3.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.1, "sourceType": "ModSettingFloat" }
+                }
+            ]
         }
     ]
 }

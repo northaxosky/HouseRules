@@ -160,6 +160,37 @@ namespace MCM
 			inline static REX::INI::F32<> fEnergyArmorReductionExponent{ "DamageFormulas", "fEnergyArmorReductionExponent", 0.365f };
 		};
 
+		// Power Armor v0.3 -- Jetpack, fusion-core drain, and PA
+		// durability GMSTs. Multiplier defaults at 1.0; Direct defaults
+		// match each vanilla GMST baseline so preserveBaselineAtNeutral
+		// keeps other mods' edits until the user moves the slider off.
+		class PowerArmor
+		{
+		public:
+			// Jetpack (Multiplier mode; 1.0 = vanilla)
+			inline static REX::INI::F32<> fJetpackInitialDrainMult   { "PowerArmor", "fJetpackInitialDrainMult",    1.0f };
+			inline static REX::INI::F32<> fJetpackSustainedDrainMult { "PowerArmor", "fJetpackSustainedDrainMult",  1.0f };
+			inline static REX::INI::F32<> fJetpackInitialThrustMult  { "PowerArmor", "fJetpackInitialThrustMult",   1.0f };
+			inline static REX::INI::F32<> fJetpackSustainedThrustMult{ "PowerArmor", "fJetpackSustainedThrustMult", 1.0f };
+
+			// Jetpack (Direct mode; vanilla defaults as neutral)
+			inline static REX::INI::F32<> fJetpackMinFuelRequired    { "PowerArmor", "fJetpackMinFuelRequired",     3.0f };
+			inline static REX::INI::F32<> fJetpackTimeToSustained    { "PowerArmor", "fJetpackTimeToSustained",     0.15f };
+
+			// Fusion core drain (Multiplier mode; 1.0 = vanilla)
+			inline static REX::INI::F32<> fPAPowerDrainPerAPMult     { "PowerArmor", "fPAPowerDrainPerAPMult",      1.0f };
+			inline static REX::INI::F32<> fPAPowerDrainRunningMult   { "PowerArmor", "fPAPowerDrainRunningMult",    1.0f };
+
+			// Fusion core drain (Direct mode; vanilla 0)
+			inline static REX::INI::F32<> fPAPowerDrainPerJump       { "PowerArmor", "fPAPowerDrainPerJump",        0.0f };
+			inline static REX::INI::F32<> fPAPowerDrainPerMeleeAttack{ "PowerArmor", "fPAPowerDrainPerMeleeAttack", 0.0f };
+			inline static REX::INI::F32<> fPAPowerDrainPerImpactLand { "PowerArmor", "fPAPowerDrainPerImpactLand",  0.0f };
+
+			// Durability (Direct mode; vanilla defaults as neutral)
+			inline static REX::INI::F32<> fPAPlayerArmorDamageMultiplier{ "PowerArmor", "fPAPlayerArmorDamageMultiplier", 1.0f };
+			inline static REX::INI::F32<> fPANPCArmorDamageMultiplier   { "PowerArmor", "fPANPCArmorDamageMultiplier",    3.0f };
+		};
+
 		// Developer-only. Not exposed in MCM. Edit settings.ini directly.
 		class Diagnostic
 		{
