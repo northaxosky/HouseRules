@@ -112,10 +112,9 @@ namespace MCM
 		class Character
 		{
 		public:
-			// AP pool / regen
+			// AP pool / regen delays
 			inline static REX::INI::F32<> fAPBaseMult             { "Character", "fAPBaseMult",              1.0f };
 			inline static REX::INI::F32<> fAPPerAgilityMult       { "Character", "fAPPerAgilityMult",        1.0f };
-			inline static REX::INI::F32<> fAPRegenRateMult        { "Character", "fAPRegenRateMult",         1.0f };
 			inline static REX::INI::F32<> fCombatAPRegenMult      { "Character", "fCombatAPRegenMult",       0.75f };
 			inline static REX::INI::F32<> fAPRegenDelay           { "Character", "fAPRegenDelay",            1.0f };
 			inline static REX::INI::F32<> fOutOfBreathAPRegenDelay{ "Character", "fOutOfBreathAPRegenDelay", 2.0f };
@@ -134,9 +133,6 @@ namespace MCM
 			inline static REX::INI::F32<> fHealthPerEnduranceMult    { "Character", "fHealthPerEnduranceMult",    1.0f };
 			inline static REX::INI::F32<> fHealthPerLevelMult        { "Character", "fHealthPerLevelMult",        1.0f };
 
-			// Health regen (Direct mode; vanilla 0)
-			inline static REX::INI::F32<> fHealRate                  { "Character", "fHealRate",                  0.0f };
-			inline static REX::INI::F32<> fCombatHealthRegenMult     { "Character", "fCombatHealthRegenMult",     0.0f };
 		};
 
 		// Damage Formulas v0.3 -- raw damage factors and armor reduction
@@ -191,7 +187,8 @@ namespace MCM
 			inline static REX::INI::F32<> fPANPCArmorDamageMultiplier   { "PowerArmor", "fPANPCArmorDamageMultiplier",    3.0f };
 		};
 
-		// Developer-only. Not exposed in MCM. Edit settings.ini directly.
+		// Diagnostics. Some values are exposed in MCM; developer-only toggles
+		// remain INI-only.
 		class Diagnostic
 		{
 		public:
@@ -238,8 +235,13 @@ namespace MCM
 			inline static REX::INI::Bool<> bGameSettingsTrace{
 				"Diagnostic", "bGameSettingsTrace", false
 			};
-			// Central log verbosity. Accepted: Quiet, Normal, Verbose, Trace
-			// (case-insensitive). Invalid values fall back to Normal.
+			// Central log verbosity for MCM. 0=Quiet, 1=Normal, 2=Verbose,
+			// 3=Trace. Invalid values fall back to sLogLevel.
+			inline static REX::INI::I32<> iLogLevel{
+				"Diagnostic", "iLogLevel", 1
+			};
+			// Legacy/manual fallback. Accepted: Quiet, Normal, Verbose, Trace
+			// (case-insensitive). Used only when iLogLevel is out of range.
 			inline static REX::INI::Str<> sLogLevel{
 				"Diagnostic", "sLogLevel", std::string{ "Normal" }
 			};

@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <cctype>
+#include <cstdint>
 #include <string>
 #include <string_view>
 
@@ -40,6 +41,19 @@ namespace Diagnostics::Logging
 			}
 			return spdlog::level::info;
 		}
+
+		Level ParseLevelIndex(std::int32_t a_value, bool& a_recognized)
+		{
+			a_recognized = true;
+			switch (a_value) {
+				case 0: return Level::Quiet;
+				case 1: return Level::Normal;
+				case 2: return Level::Verbose;
+				case 3: return Level::Trace;
+			}
+			a_recognized = false;
+			return Level::Normal;
+		}
 	}
 
 	Level ParseLevel(std::string_view a_value, bool& a_recognized)
@@ -66,13 +80,16 @@ namespace Diagnostics::Logging
 
 	void ApplyLogLevel()
 	{
-		const auto& levelStr = MCM::Settings::Diagnostic::sLogLevel.GetValue();
 		bool levelOk = false;
-		const auto level = ParseLevel(levelStr, levelOk);
-		if (!levelOk && !g_warnedBadLevel) {
-			REX::WARN("Diagnostic.sLogLevel='{}' not recognized; using Normal "
-			          "(accepted: Quiet, Normal, Verbose, Trace)", levelStr);
-			g_warnedBadLevel = true;
+		auto level = ParseLevelIndex(MCM::Settings::Diagnostic::iLogLevel.GetValue(), levelOk);
+		if (!levelOk) {
+			const auto& levelStr = MCM::Settings::Diagnostic::sLogLevel.GetValue();
+			level = ParseLevel(levelStr, levelOk);
+			if (!levelOk && !g_warnedBadLevel) {
+				REX::WARN("Diagnostic.iLogLevel={} and sLogLevel='{}' are not recognized; using Normal",
+					MCM::Settings::Diagnostic::iLogLevel.GetValue(), levelStr);
+				g_warnedBadLevel = true;
+			}
 		}
 
 		if (auto* logger = spdlog::default_logger_raw()) {

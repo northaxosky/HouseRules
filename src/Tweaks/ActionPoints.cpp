@@ -17,10 +17,9 @@ namespace Tweaks::ActionPoints
 		// AP pool / regen GMSTs. Multiplier targets snapshot vanilla and
 		// write baseline*user; Direct targets preserve the baseline while
 		// the user value matches the vanilla default (neutral).
-		const std::array<FloatTarget, 7> kAPTargets = { {
+		const std::array<FloatTarget, 6> kAPTargets = { {
 			{ "fAVDActionPointsBase",              &MCM::Settings::Character::fAPBaseMult,           Mode::Multiplier, 1.0f },
 			{ "fAVDActionPointsMult",              &MCM::Settings::Character::fAPPerAgilityMult,     Mode::Multiplier, 1.0f },
-			{ "ActionPointsRate",                  &MCM::Settings::Character::fAPRegenRateMult,      Mode::Multiplier, 1.0f },
 			{ "fCombatActionPointsRegenRateMult", &MCM::Settings::Character::fCombatAPRegenMult,    Mode::Direct,     0.75f },
 			{ "fDamagedAPRegenDelay",              &MCM::Settings::Character::fAPRegenDelay,         Mode::Direct,     1.0f },
 			{ "fOutOfBreathActionPointsRegenDelay",&MCM::Settings::Character::fOutOfBreathAPRegenDelay, Mode::Direct,  2.0f },

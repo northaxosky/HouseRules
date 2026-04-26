@@ -61,12 +61,12 @@ Survival's Difficulty II baselines are unusual: vanilla `fDiffMultEffectDuration
 
 Runtime GMST sliders for AP feel, sprint cost, carry capacity, and health:
 
-- **Action Points**: AP pool base, AP per Agility, AP regen rate, combat regen multiplier, regen delay, out-of-breath delay, regen delay cap.
+- **Action Points**: AP pool base, AP per Agility, combat regen multiplier, regen delay, out-of-breath delay, regen delay cap.
 - **Sprint**: drain base term, Endurance term, overall drain multiplier.
 - **Carry Weight**: base carry capacity and capacity per Strength.
-- **Health**: max health per Endurance, max health per level, passive heal rate, combat health regen multiplier.
+- **Health**: max health per Endurance and max health per level.
 
-Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla default as their neutral value (e.g. `0.75` combat AP regen, `-0.05` Endurance term, `0` heal rates); leaving a Direct slider on its default preserves whatever baseline another mod has written.
+Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla default as their neutral value (e.g. `0.75` combat AP regen and `-0.05` Endurance term); leaving a Direct slider on its default preserves whatever baseline another mod has written.
 
 AP pool changes (`AP Pool Base`, `AP per Agility`), carry-weight formula changes, and max-health formula changes (`Health per Endurance`, `Health per Level`) edit the actor-value formula but the player's *current* derived value may not refresh until the engine recomputes actor values - typically on level-up, equip change, fast-travel, or save/load.
 
@@ -96,11 +96,11 @@ Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla defaul
 
 ### Developer Diagnostics
 
-`settings.ini` also exposes dev-only diagnostics that are not shown in MCM:
+The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`). `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:
 
 - `SurvivalObserver` for correlating survival actor values / active effects with vanilla behavior.
 - `SleepWait` integration logging for sit/wait/sleep boundaries.
-- `sLogLevel` controls plugin log verbosity: `Quiet`, `Normal`, `Verbose`, or `Trace`.
+- `iLogLevel` controls plugin log verbosity from MCM: `0=Quiet`, `1=Normal`, `2=Verbose`, `3=Trace`. `sLogLevel` remains as a manual fallback for invalid integer values.
 - `bValidationAudit=1` emits structured `HRVERIFY_SUMMARY` lines for GMST writes; set `sValidationAuditMode=Full` to include per-target `HRVERIFY` lines.
 
 To validate an audit log after launching through F4SE and loading a save:

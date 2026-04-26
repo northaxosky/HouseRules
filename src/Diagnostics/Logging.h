@@ -18,8 +18,8 @@ namespace Diagnostics::Logging
 		Full,
 	};
 
-	// Re-read sLogLevel from MCM::Settings::Diagnostic and push the result to
-	// the spdlog default logger. Safe to call repeatedly (after every Update).
+	// Re-read log settings from MCM::Settings::Diagnostic and push the result
+	// to the spdlog default logger. Safe to call repeatedly.
 	void ApplyLogLevel();
 
 	// Cached audit toggles, refreshed inside ApplyLogLevel(). Hot paths can

@@ -25,13 +25,6 @@ namespace Tweaks::CharacterStats
 			{ "fHealthEnduranceOffset",   &MCM::Settings::Character::fHealthPerLevelMult,         Mode::Multiplier, 1.0f },
 		} };
 
-		// Health regen GMSTs. Vanilla is 0 for both; Direct mode with
-		// preserveBaselineAtNeutral keeps any existing baseline edits from
-		// other mods until the user moves the slider off 0.
-		const std::array<FloatTarget, 2> kRegenTargets = { {
-			{ "HealRate",              &MCM::Settings::Character::fHealRate,              Mode::Direct, 0.0f },
-			{ "CombatHealthRegenMult", &MCM::Settings::Character::fCombatHealthRegenMult, Mode::Direct, 0.0f },
-		} };
 	}
 
 	void Apply()
@@ -41,6 +34,5 @@ namespace Tweaks::CharacterStats
 		}
 
 		GameSettings::Apply("Character", std::span<const FloatTarget>{ kFormulaTargets });
-		GameSettings::Apply("Character", std::span<const FloatTarget>{ kRegenTargets });
 	}
 }

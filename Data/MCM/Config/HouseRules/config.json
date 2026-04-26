@@ -25,8 +25,28 @@
             "id": "bEnabled:General",
             "text": "Enable Plugin",
             "type": "switcher",
-            "help": "Master switch for gameplay tweaks. Diagnostics still use settings.ini.",
+            "help": "Master switch for gameplay tweaks. Diagnostics can still run while disabled.",
             "valueOptions": { "sourceType": "ModSettingBool" }
+        },
+        { "type": "spacer" },
+        {
+            "text": "Diagnostics",
+            "type": "section"
+        },
+        {
+            "id": "iLogLevel:Diagnostic",
+            "text": "Log Level",
+            "type": "stepper",
+            "help": "Controls House Rules log verbosity. Normal is recommended.",
+            "valueOptions": {
+                "sourceType": "ModSettingInt",
+                "options": [
+                    "Quiet",
+                    "Normal",
+                    "Verbose",
+                    "Trace"
+                ]
+            }
         }
     ],
     "pages": [
@@ -537,13 +557,6 @@
                     "valueOptions": { "min": 0.0, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
-                    "id": "fAPRegenRateMult:Character",
-                    "text": "AP Regen Rate",
-                    "type": "slider",
-                    "help": "AP refill speed.",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
-                },
-                {
                     "id": "fCombatAPRegenMult:Character",
                     "text": "Combat AP Regen",
                     "type": "slider",
@@ -625,20 +638,6 @@
                     "type": "slider",
                     "help": "Max health gained per level. May need actor-value refresh.",
                     "valueOptions": { "min": 0.25, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
-                },
-                {
-                    "id": "fHealRate:Character",
-                    "text": "Passive Health Regen",
-                    "type": "slider",
-                    "help": "Passive health regen. Vanilla 0.",
-                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
-                },
-                {
-                    "id": "fCombatHealthRegenMult:Character",
-                    "text": "Combat Health Regen",
-                    "type": "slider",
-                    "help": "Combat multiplier for passive regen. Vanilla 0.",
-                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 }
             ]
         },
