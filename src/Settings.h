@@ -238,6 +238,21 @@ namespace MCM
 			inline static REX::INI::Bool<> bGameSettingsTrace{
 				"Diagnostic", "bGameSettingsTrace", false
 			};
+			// Central log verbosity. Accepted: Quiet, Normal, Verbose, Trace
+			// (case-insensitive). Invalid values fall back to Normal.
+			inline static REX::INI::Str<> sLogLevel{
+				"Diagnostic", "sLogLevel", std::string{ "Normal" }
+			};
+			// Validation audit emits structured HRVERIFY[_SUMMARY] lines from
+			// Tweaks::GameSettings so post-run scripts can confirm GMST writes
+			// landed. Off by default; orthogonal to bGameSettingsTrace.
+			inline static REX::INI::Bool<> bValidationAudit{
+				"Diagnostic", "bValidationAudit", false
+			};
+			// Summary = HRVERIFY_SUMMARY only; Full = per-target HRVERIFY too.
+			inline static REX::INI::Str<> sValidationAuditMode{
+				"Diagnostic", "sValidationAuditMode", std::string{ "Summary" }
+			};
 			inline static REX::INI::Str<> sDumpFilter{
 				"Diagnostic", "sDumpFilter",
 				std::string{ "Hardcore,Survival,Hunger,Thirst,Sleep,Fatigue,Stimpak,RadAway,RadX,Peckish,Weary,Parched,Dehydr,Starv" }

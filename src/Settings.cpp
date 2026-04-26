@@ -2,6 +2,7 @@
 
 #include "Settings.h"
 
+#include "Diagnostics/Logging.h"
 #include "Globals/Globals.h"
 #include "Hooks/GodMode.h"
 #include "Hooks/Unlocks.h"
@@ -15,6 +16,8 @@ namespace MCM
 			"Data/MCM/Config/HouseRules/settings.ini",
 			"Data/MCM/Settings/HouseRules.ini");
 		ini->Load();
+
+		Diagnostics::Logging::ApplyLogLevel();
 
 		Hooks::Unlocks::RefreshRuntimePatches();
 		Hooks::GodMode::RefreshRuntimePatches();

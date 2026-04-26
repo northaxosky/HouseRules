@@ -102,6 +102,14 @@ Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla defaul
 
 - `SurvivalObserver` for correlating survival actor values / active effects with vanilla behavior.
 - `SleepWait` integration logging for sit/wait/sleep boundaries.
+- `sLogLevel` controls plugin log verbosity: `Quiet`, `Normal`, `Verbose`, or `Trace`.
+- `bValidationAudit=1` emits structured `HRVERIFY_SUMMARY` lines for GMST writes; set `sValidationAuditMode=Full` to include per-target `HRVERIFY` lines.
+
+To validate an audit log after launching through F4SE and loading a save:
+
+```powershell
+python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module DamageFormulas --require-module PowerArmor
+```
 
 ## Design Principles
 

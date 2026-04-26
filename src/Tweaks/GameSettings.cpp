@@ -2,6 +2,7 @@
 
 #include "Tweaks/GameSettings.h"
 
+#include "Diagnostics/Logging.h"
 #include "Settings.h"
 
 #include <algorithm>
@@ -107,12 +108,23 @@ namespace Tweaks::GameSettings
 	{
 		ApplyResult result;
 		const bool  trace = MCM::Settings::Diagnostic::bGameSettingsTrace.GetValue();
+		const bool  audit = Diagnostics::Logging::ValidationAuditEnabled();
+		const bool  auditFull = audit &&
+			Diagnostics::Logging::ValidationAuditMode() == Diagnostics::Logging::AuditMode::Full;
+
+		std::size_t passed = 0;
+		std::size_t failed = 0;
 
 		for (const auto& t : a_targets) {
 			auto* s = LookupSetting(t.gmst);
 			if (!s || s->GetType() != RE::Setting::SETTING_TYPE::kFloat) {
 				WarnKey(a_module, t.gmst, "GMST missing or non-float; skipping");
 				++result.skipped;
+				if (auditFull) {
+					REX::INFO("HRVERIFY module={} target={} type=float mode={} result=SKIP reason=missing_or_wrong_type",
+						a_module, t.gmst,
+						t.mode == Mode::Multiplier ? "mult" : "direct");
+				}
 				continue;
 			}
 
@@ -143,6 +155,10 @@ namespace Tweaks::GameSettings
 			s->SetFloat(wanted);
 			++result.applied;
 
+			const float readback = s->GetFloat();
+			const bool  pass = NearlyEqual(readback, wanted);
+			if (pass) ++passed; else ++failed;
+
 			if (!state.hasLast || MaterialDelta(state.lastUser, user)) {
 				++result.changed;
 				state.lastUser = user;
@@ -153,13 +169,28 @@ namespace Tweaks::GameSettings
 				REX::INFO("  GameSettings[{}] {} mode={} baseline={} user={} wrote={} readback={}",
 					a_module, t.gmst,
 					t.mode == Mode::Multiplier ? "mult" : "direct",
-					state.baseline, user, wanted, s->GetFloat());
+					state.baseline, user, wanted, readback);
+			}
+
+			if (auditFull) {
+				REX::INFO("HRVERIFY module={} target={} type=float mode={} baseline={:g} user={:g} expected={:g} readback={:g} result={}",
+					a_module, t.gmst,
+					t.mode == Mode::Multiplier ? "mult" : "direct",
+					state.baseline, user, wanted, readback,
+					pass ? "PASS" : "FAIL");
 			}
 		}
 
 		if (result.changed > 0 || trace) {
 			REX::INFO("GameSettings[{}]: applied {} target(s), {} changed, {} skipped",
 				a_module, result.applied, result.changed, result.skipped);
+		}
+
+		if (audit) {
+			const bool overallPass = (failed == 0) && (result.skipped == 0);
+			REX::INFO("HRVERIFY_SUMMARY module={} type=float applied={} passed={} failed={} skipped={} result={}",
+				a_module, result.applied, passed, failed, result.skipped,
+				overallPass ? "PASS" : "FAIL");
 		}
 		return result;
 	}
@@ -168,12 +199,23 @@ namespace Tweaks::GameSettings
 	{
 		ApplyResult result;
 		const bool  trace = MCM::Settings::Diagnostic::bGameSettingsTrace.GetValue();
+		const bool  audit = Diagnostics::Logging::ValidationAuditEnabled();
+		const bool  auditFull = audit &&
+			Diagnostics::Logging::ValidationAuditMode() == Diagnostics::Logging::AuditMode::Full;
+
+		std::size_t passed = 0;
+		std::size_t failed = 0;
 
 		for (const auto& t : a_targets) {
 			auto* s = LookupSetting(t.gmst);
 			if (!s || s->GetType() != RE::Setting::SETTING_TYPE::kInt) {
 				WarnKey(a_module, t.gmst, "GMST missing or non-int; skipping");
 				++result.skipped;
+				if (auditFull) {
+					REX::INFO("HRVERIFY module={} target={} type=int mode={} result=SKIP reason=missing_or_wrong_type",
+						a_module, t.gmst,
+						t.mode == Mode::Multiplier ? "mult" : "direct");
+				}
 				continue;
 			}
 
@@ -212,6 +254,10 @@ namespace Tweaks::GameSettings
 			s->SetInt(wanted);
 			++result.applied;
 
+			const std::int32_t readback = s->GetInt();
+			const bool         pass = (readback == wanted);
+			if (pass) ++passed; else ++failed;
+
 			if (!state.hasLast || MaterialDelta(state.lastUser, user)) {
 				++result.changed;
 				state.lastUser = user;
@@ -222,13 +268,28 @@ namespace Tweaks::GameSettings
 				REX::INFO("  GameSettings[{}] {} mode={} baseline={} user={} wrote={} readback={}",
 					a_module, t.gmst,
 					t.mode == Mode::Multiplier ? "mult" : "direct",
-					state.baseline, user, wanted, s->GetInt());
+					state.baseline, user, wanted, readback);
+			}
+
+			if (auditFull) {
+				REX::INFO("HRVERIFY module={} target={} type=int mode={} baseline={} user={} expected={} readback={} result={}",
+					a_module, t.gmst,
+					t.mode == Mode::Multiplier ? "mult" : "direct",
+					state.baseline, user, wanted, readback,
+					pass ? "PASS" : "FAIL");
 			}
 		}
 
 		if (result.changed > 0 || trace) {
 			REX::INFO("GameSettings[{}]: applied {} target(s), {} changed, {} skipped",
 				a_module, result.applied, result.changed, result.skipped);
+		}
+
+		if (audit) {
+			const bool overallPass = (failed == 0) && (result.skipped == 0);
+			REX::INFO("HRVERIFY_SUMMARY module={} type=int applied={} passed={} failed={} skipped={} result={}",
+				a_module, result.applied, passed, failed, result.skipped,
+				overallPass ? "PASS" : "FAIL");
 		}
 		return result;
 	}
