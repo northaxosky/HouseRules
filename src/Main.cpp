@@ -12,8 +12,10 @@
 #include "Tweaks/DamageFormulas.h"
 #include "Tweaks/Difficulty.h"
 #include "Tweaks/DifficultyEffects.h"
+#include "Tweaks/Economy.h"
 #include "Tweaks/Magnitudes.h"
 #include "Tweaks/PowerArmor.h"
+#include "Tweaks/Progression.h"
 
 namespace
 {
@@ -51,6 +53,8 @@ namespace
 				Tweaks::CharacterStats::Apply();
 				Tweaks::DamageFormulas::Apply();
 				Tweaks::PowerArmor::Apply();
+				Tweaks::Economy::Apply();
+				Tweaks::Progression::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
@@ -67,6 +71,8 @@ namespace
 				Tweaks::CharacterStats::Apply();
 				Tweaks::DamageFormulas::Apply();
 				Tweaks::PowerArmor::Apply();
+				Tweaks::Economy::Apply();
+				Tweaks::Progression::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;

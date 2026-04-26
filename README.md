@@ -94,6 +94,26 @@ Runtime GMST sliders for jetpack feel, fusion-core drain, and Power Armor durabi
 
 Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla default as their neutral value; leaving a Direct slider on its default preserves whatever baseline another mod has written.
 
+### Economy
+
+Runtime GMST sliders for vendor buy/sell pricing:
+
+- **Buy Price Floor** (`fBarterMin`, vanilla 2.0): minimum price multiplier when buying. Higher values mean vendors charge more.
+- **Sell Price Floor** (`fBarterMax`, vanilla 3.5): divisor applied when selling. Higher values mean vendors pay less.
+- **Max Buy Multiplier** (`fBarterBuyMax`, vanilla 1.2) and **Max Sell Multiplier** (`fBarterSellMax`, vanilla 0.8): caps on the value multiplier the Barter perk / Charisma curve can reach in either direction.
+
+The two "floor" sliders read inversely: raising `fBarterMin` pushes buy prices up, raising `fBarterMax` pushes sell payouts down. All four are Direct sliders; leaving one on its vanilla default preserves whatever baseline another mod has written.
+
+### Progression
+
+Runtime GMST sliders for non-difficulty XP sources:
+
+- **Crafting XP** for Cooking (`fCookingExp{Base,Max,Mult}`, vanilla 1 / 10 / 0.15), Weapon/Armor Workbench (`fWorkbenchExperience{Base,Max,Mult}`, vanilla 2 / 50 / 0.03), and Settlement Workshop (`fWorkshopExperience{Base,Max,Mult}`, vanilla 2 / 25 / 0.10). Engine clamps computed XP between Base and Max; if you invert a pair (Base > Max) House Rules logs a one-shot warning rather than mutating the values.
+- **Lockpick XP** per pick at Apprentice / Adept / Expert / Master (`fLockpickXPReward{Easy,Average,Hard,VeryHard}`, vanilla 5 / 10 / 15 / 20).
+- **Mine Disarm XP** (`iMineDisarmExperience`, vanilla 5): XP per disarmed mine or trap.
+
+All sliders are Direct with the vanilla default as their neutral value; leaving a slider on neutral preserves whatever baseline another mod has written.
+
 ### Developer Diagnostics
 
 The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`). `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:
@@ -106,7 +126,7 @@ The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`)
 To validate an audit log after launching through F4SE and loading a save:
 
 ```powershell
-python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module DamageFormulas --require-module PowerArmor
+python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression
 ```
 
 ## Design Principles

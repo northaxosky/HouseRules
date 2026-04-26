@@ -815,6 +815,174 @@
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.1, "sourceType": "ModSettingFloat" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Economy",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Economy</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Vendor buy/sell pricing. Direct sliders show the vanilla default as their neutral value.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Buy / Sell Pricing", "type": "section" },
+                {
+                    "id": "fBarterMin:Economy",
+                    "text": "Buy Price Floor",
+                    "type": "slider",
+                    "help": "Higher = vendors charge more. Vanilla 2.0.",
+                    "valueOptions": { "min": 0.5, "max": 6.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fBarterMax:Economy",
+                    "text": "Sell Price Floor",
+                    "type": "slider",
+                    "help": "Higher = vendors pay less. Vanilla 3.5.",
+                    "valueOptions": { "min": 0.5, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fBarterBuyMax:Economy",
+                    "text": "Max Buy Multiplier",
+                    "type": "slider",
+                    "help": "Cap on item value when buying. Vanilla 1.2.",
+                    "valueOptions": { "min": 0.5, "max": 3.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fBarterSellMax:Economy",
+                    "text": "Max Sell Multiplier",
+                    "type": "slider",
+                    "help": "Cap on item value when selling. Vanilla 0.8.",
+                    "valueOptions": { "min": 0.1, "max": 2.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                }
+            ]
+        },
+        {
+            "pageDisplayName": "Progression",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Progression</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Non-difficulty XP sources: crafting, lockpicking, mine disarm. Direct sliders show the vanilla default as their neutral value.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Crafting XP \u2014 Cooking", "type": "section" },
+                {
+                    "id": "fCookingExpBase:Progression",
+                    "text": "Cooking \u2014 Base XP",
+                    "type": "slider",
+                    "help": "Flat XP per cook. Vanilla 1.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCookingExpMax:Progression",
+                    "text": "Cooking \u2014 Max XP",
+                    "type": "slider",
+                    "help": "Cap on cook XP. Vanilla 10.",
+                    "valueOptions": { "min": 0.0, "max": 500.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCookingExpMult:Progression",
+                    "text": "Cooking \u2014 Value Mult",
+                    "type": "slider",
+                    "help": "XP scaler from recipe value. Vanilla 0.15.",
+                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Crafting XP \u2014 Weapon/Armor Workbench", "type": "section" },
+                {
+                    "id": "fWorkbenchExpBase:Progression",
+                    "text": "Workbench \u2014 Base XP",
+                    "type": "slider",
+                    "help": "Flat XP per craft. Vanilla 2.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fWorkbenchExpMax:Progression",
+                    "text": "Workbench \u2014 Max XP",
+                    "type": "slider",
+                    "help": "Cap on craft XP. Vanilla 50.",
+                    "valueOptions": { "min": 0.0, "max": 1000.0, "step": 5.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fWorkbenchExpMult:Progression",
+                    "text": "Workbench \u2014 Value Mult",
+                    "type": "slider",
+                    "help": "XP scaler from craft value. Vanilla 0.03.",
+                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Crafting XP \u2014 Settlement Workshop", "type": "section" },
+                {
+                    "id": "fWorkshopExpBase:Progression",
+                    "text": "Workshop \u2014 Base XP",
+                    "type": "slider",
+                    "help": "Flat XP per build. Vanilla 2.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fWorkshopExpMax:Progression",
+                    "text": "Workshop \u2014 Max XP",
+                    "type": "slider",
+                    "help": "Cap on build XP. Vanilla 25.",
+                    "valueOptions": { "min": 0.0, "max": 1000.0, "step": 5.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fWorkshopExpMult:Progression",
+                    "text": "Workshop \u2014 Value Mult",
+                    "type": "slider",
+                    "help": "XP scaler from build value. Vanilla 0.10.",
+                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Lockpick XP", "type": "section" },
+                {
+                    "id": "fLockpickXPApprentice:Progression",
+                    "text": "Lockpick \u2014 Apprentice",
+                    "type": "slider",
+                    "help": "XP per Apprentice pick. Vanilla 5.",
+                    "valueOptions": { "min": 0.0, "max": 200.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLockpickXPAdept:Progression",
+                    "text": "Lockpick \u2014 Adept",
+                    "type": "slider",
+                    "help": "XP per Adept pick. Vanilla 10.",
+                    "valueOptions": { "min": 0.0, "max": 200.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLockpickXPExpert:Progression",
+                    "text": "Lockpick \u2014 Expert",
+                    "type": "slider",
+                    "help": "XP per Expert pick. Vanilla 15.",
+                    "valueOptions": { "min": 0.0, "max": 200.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLockpickXPMaster:Progression",
+                    "text": "Lockpick \u2014 Master",
+                    "type": "slider",
+                    "help": "XP per Master pick. Vanilla 20.",
+                    "valueOptions": { "min": 0.0, "max": 200.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Other", "type": "section" },
+                {
+                    "id": "iMineDisarmXP:Progression",
+                    "text": "Mine Disarm XP",
+                    "type": "slider",
+                    "help": "XP per disarmed mine/object. Vanilla 5.",
+                    "valueOptions": { "min": 0, "max": 200, "step": 1, "sourceType": "ModSettingInt" }
+                }
+            ]
         }
     ]
 }

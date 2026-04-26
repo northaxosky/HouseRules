@@ -187,6 +187,50 @@ namespace MCM
 			inline static REX::INI::F32<> fPANPCArmorDamageMultiplier   { "PowerArmor", "fPANPCArmorDamageMultiplier",    3.0f };
 		};
 
+		// Economy v0.4 -- Buy/sell pricing GMSTs. All Direct mode with
+		// vanilla defaults as neutral; preserveBaselineAtNeutral keeps
+		// any other mod's edits until the user moves a slider off the
+		// vanilla default.
+		class Economy
+		{
+		public:
+			inline static REX::INI::F32<> fBarterMin    { "Economy", "fBarterMin",     2.0f };
+			inline static REX::INI::F32<> fBarterMax    { "Economy", "fBarterMax",     3.5f };
+			inline static REX::INI::F32<> fBarterBuyMax { "Economy", "fBarterBuyMax",  1.2f };
+			inline static REX::INI::F32<> fBarterSellMax{ "Economy", "fBarterSellMax", 0.8f };
+		};
+
+		// Progression v0.4 -- Non-difficulty XP source GMSTs: cooking,
+		// workbench, workshop, lockpick rewards, mine disarm. All Direct
+		// mode with vanilla defaults as neutral.
+		class Progression
+		{
+		public:
+			// Cooking
+			inline static REX::INI::F32<> fCookingExpBase{ "Progression", "fCookingExpBase",  1.0f  };
+			inline static REX::INI::F32<> fCookingExpMax { "Progression", "fCookingExpMax",  10.0f  };
+			inline static REX::INI::F32<> fCookingExpMult{ "Progression", "fCookingExpMult",  0.15f };
+
+			// Weapon/Armor Workbench
+			inline static REX::INI::F32<> fWorkbenchExpBase{ "Progression", "fWorkbenchExpBase",  2.0f  };
+			inline static REX::INI::F32<> fWorkbenchExpMax { "Progression", "fWorkbenchExpMax",  50.0f  };
+			inline static REX::INI::F32<> fWorkbenchExpMult{ "Progression", "fWorkbenchExpMult",  0.03f };
+
+			// Settlement Workshop
+			inline static REX::INI::F32<> fWorkshopExpBase{ "Progression", "fWorkshopExpBase",  2.0f  };
+			inline static REX::INI::F32<> fWorkshopExpMax { "Progression", "fWorkshopExpMax",  25.0f  };
+			inline static REX::INI::F32<> fWorkshopExpMult{ "Progression", "fWorkshopExpMult",  0.10f };
+
+			// Lockpick rewards (XP per successful pick at each tier)
+			inline static REX::INI::F32<> fLockpickXPApprentice{ "Progression", "fLockpickXPApprentice",  5.0f };
+			inline static REX::INI::F32<> fLockpickXPAdept     { "Progression", "fLockpickXPAdept",      10.0f };
+			inline static REX::INI::F32<> fLockpickXPExpert    { "Progression", "fLockpickXPExpert",     15.0f };
+			inline static REX::INI::F32<> fLockpickXPMaster    { "Progression", "fLockpickXPMaster",     20.0f };
+
+			// Mine disarm (int)
+			inline static REX::INI::I32<> iMineDisarmXP{ "Progression", "iMineDisarmXP", 5 };
+		};
+
 		// Diagnostics. Some values are exposed in MCM; developer-only toggles
 		// remain INI-only.
 		class Diagnostic
