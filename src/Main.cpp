@@ -7,6 +7,7 @@
 #include "Hooks/Unlocks.h"
 #include "Settings.h"
 #include "SleepWait/Integration.h"
+#include "Tweaks/ActionPoints.h"
 #include "Tweaks/Difficulty.h"
 #include "Tweaks/DifficultyEffects.h"
 #include "Tweaks/Magnitudes.h"
@@ -43,6 +44,7 @@ namespace
 				Tweaks::Magnitudes::Apply();
 				Tweaks::Difficulty::Apply();
 				Tweaks::DifficultyEffects::Apply();
+				Tweaks::ActionPoints::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
@@ -55,6 +57,7 @@ namespace
 				Tweaks::Magnitudes::Apply();
 				Tweaks::Difficulty::Apply();
 				Tweaks::DifficultyEffects::Apply();
+				Tweaks::ActionPoints::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;

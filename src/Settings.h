@@ -105,6 +105,28 @@ namespace MCM
 			inline static REX::INI::F32<> fEffectMagnitudeSurvival{ "Difficulty", "fEffectMagnitudeSurvival", 1.0f };
 		};
 
+		// Character v0.3 -- AP pool/regen + sprint-drain sliders. Defaults
+		// reflect vanilla; with preserveBaselineAtNeutral, Direct entries
+		// preserve any baseline edits from other mods until the user moves
+		// the slider off the vanilla default.
+		class Character
+		{
+		public:
+			// AP pool / regen
+			inline static REX::INI::F32<> fAPBaseMult             { "Character", "fAPBaseMult",              1.0f };
+			inline static REX::INI::F32<> fAPPerAgilityMult       { "Character", "fAPPerAgilityMult",        1.0f };
+			inline static REX::INI::F32<> fAPRegenRateMult        { "Character", "fAPRegenRateMult",         1.0f };
+			inline static REX::INI::F32<> fCombatAPRegenMult      { "Character", "fCombatAPRegenMult",       0.75f };
+			inline static REX::INI::F32<> fAPRegenDelay           { "Character", "fAPRegenDelay",            1.0f };
+			inline static REX::INI::F32<> fOutOfBreathAPRegenDelay{ "Character", "fOutOfBreathAPRegenDelay", 2.0f };
+			inline static REX::INI::F32<> fAPRegenDelayMax        { "Character", "fAPRegenDelayMax",         5.0f };
+
+			// Sprint formula
+			inline static REX::INI::F32<> fSprintBaseDrain        { "Character", "fSprintBaseDrain",         1.05f };
+			inline static REX::INI::F32<> fSprintEnduranceDrain   { "Character", "fSprintEnduranceDrain",   -0.05f };
+			inline static REX::INI::F32<> fSprintDrainMult        { "Character", "fSprintDrainMult",         1.0f };
+		};
+
 		// Developer-only. Not exposed in MCM. Edit settings.ini directly.
 		class Diagnostic
 		{

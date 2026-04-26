@@ -506,6 +506,95 @@
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Character",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Character Feel</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Action Points and sprint tuning. Multiplier sliders show 1.00 = vanilla; Direct sliders show the vanilla default as their neutral value.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Action Points", "type": "section" },
+                {
+                    "id": "fAPBaseMult:Character",
+                    "text": "AP Pool Base",
+                    "type": "slider",
+                    "help": "Base AP pool. May need actor-value refresh.",
+                    "valueOptions": { "min": 0.25, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fAPPerAgilityMult:Character",
+                    "text": "AP per Agility",
+                    "type": "slider",
+                    "help": "AP gained per Agility. May need actor-value refresh.",
+                    "valueOptions": { "min": 0.0, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fAPRegenRateMult:Character",
+                    "text": "AP Regen Rate",
+                    "type": "slider",
+                    "help": "AP refill speed.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCombatAPRegenMult:Character",
+                    "text": "Combat AP Regen",
+                    "type": "slider",
+                    "help": "Combat AP regen multiplier. 0 disables combat regen. Vanilla 0.75.",
+                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fAPRegenDelay:Character",
+                    "text": "AP Regen Delay",
+                    "type": "slider",
+                    "help": "Delay before AP regen after partial AP use. Vanilla 1.0.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.1, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fOutOfBreathAPRegenDelay:Character",
+                    "text": "Out-of-Breath Delay",
+                    "type": "slider",
+                    "help": "Delay after sprinting to zero AP. Vanilla 2.0. Capped by AP Regen Delay Max.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.1, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fAPRegenDelayMax:Character",
+                    "text": "AP Regen Delay Max",
+                    "type": "slider",
+                    "help": "Cap for AP regen delay. Vanilla 5.0.",
+                    "valueOptions": { "min": 0.0, "max": 15.0, "step": 0.5, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Sprint", "type": "section" },
+                {
+                    "id": "fSprintBaseDrain:Character",
+                    "text": "Sprint Drain Base",
+                    "type": "slider",
+                    "help": "Sprint AP drain base term. Vanilla 1.05.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSprintEnduranceDrain:Character",
+                    "text": "Sprint Endurance Term",
+                    "type": "slider",
+                    "help": "Endurance term. More negative = Endurance reduces drain more. Vanilla -0.05.",
+                    "valueOptions": { "min": -1.0, "max": 0.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSprintDrainMult:Character",
+                    "text": "Sprint Drain Multiplier",
+                    "type": "slider",
+                    "help": "Overall sprint AP drain multiplier. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                }
+            ]
         }
     ]
 }
