@@ -5,8 +5,10 @@
 #include "Settings.h"
 
 #include <array>
+#include <cmath>
 #include <cstdint>
 #include <functional>
+#include <optional>
 #include <vector>
 
 namespace Tweaks::Magnitudes
@@ -73,6 +75,53 @@ namespace Tweaks::Magnitudes
 		std::vector<AlchSnapshot>                 g_alch_snapshots;
 		std::vector<MatchedAlchemyEffectSnapshot> g_food_heal_snapshots;
 		bool                                      g_snapshotted = false;
+
+		struct LastApplied
+		{
+			std::uint32_t ownerFormID;
+			std::uint32_t effectIndex;
+			float         value;
+		};
+		std::vector<LastApplied> g_last_applied;
+
+		struct MultVector
+		{
+			float stim_heal;
+			float stim_limb;
+			float radaway;
+			float radx;
+			float food;
+			float hunger_pen;
+			float thirst_pen;
+			float sleep_pen;
+			bool operator==(const MultVector&) const = default;
+		};
+		std::optional<MultVector> g_last_mults;
+
+		bool MaterialDelta(float a_prev, float a_now)
+		{
+			const float scale = std::max(1.0f, std::max(std::abs(a_prev), std::abs(a_now)));
+			return std::abs(a_prev - a_now) > 1e-4f * scale;
+		}
+
+		float* FindLastApplied(std::uint32_t a_owner, std::uint32_t a_index)
+		{
+			for (auto& entry : g_last_applied) {
+				if (entry.ownerFormID == a_owner && entry.effectIndex == a_index) {
+					return std::addressof(entry.value);
+				}
+			}
+			return nullptr;
+		}
+
+		void RecordApplied(std::uint32_t a_owner, std::uint32_t a_index, float a_value)
+		{
+			if (auto* prev = FindLastApplied(a_owner, a_index)) {
+				*prev = a_value;
+				return;
+			}
+			g_last_applied.push_back({ a_owner, a_index, a_value });
+		}
 
 		// Intentionally not using TESDataHandler::LookupForm — that path walks
 		// through the engine's form-by-ID hash in a way that triggers a lazy
@@ -157,7 +206,7 @@ namespace Tweaks::Magnitudes
 			return nullptr;
 		}
 
-		void ApplyAlch(std::uint32_t a_formID, const EffectScaler& a_scaler)
+		void ApplyAlch(std::uint32_t a_formID, const EffectScaler& a_scaler, bool a_trace, bool a_trace_delta_only)
 		{
 			const auto* snap = FindAlchSnapshot(a_formID);
 			if (!snap) return;
@@ -179,17 +228,31 @@ namespace Tweaks::Magnitudes
 				}
 				const float wanted = entry.baseline * a_scaler(currentSettingFormID);
 				eff->data.magnitude = wanted;
-				const auto  readback = eff->data.magnitude;
-				const int   archetype = eff->effectSetting
-					  ? static_cast<int>(eff->effectSetting->data.archetype.get())
-					  : -1;
-				const char* mgef_edid = eff->effectSetting ? eff->effectSetting->GetFormEditorID() : "";
-				REX::INFO("  ALCH {:08X}[{}]: wrote={} readback={} archetype={} mgef='{}'",
-					a_formID, i, wanted, readback, archetype, mgef_edid ? mgef_edid : "");
+				const auto readback = eff->data.magnitude;
+
+				const std::uint32_t idx32 = static_cast<std::uint32_t>(i);
+				if (a_trace) {
+					bool emit = true;
+					if (a_trace_delta_only) {
+						const float* prev = FindLastApplied(a_formID, idx32);
+						const bool changed_vs_baseline = MaterialDelta(entry.baseline, readback);
+						const bool changed_vs_prev = prev ? MaterialDelta(*prev, readback) : changed_vs_baseline;
+						emit = prev ? changed_vs_prev : changed_vs_baseline;
+					}
+					if (emit) {
+						const int archetype = eff->effectSetting
+							  ? static_cast<int>(eff->effectSetting->data.archetype.get())
+							  : -1;
+						const char* mgef_edid = eff->effectSetting ? eff->effectSetting->GetFormEditorID() : "";
+						REX::INFO("  ALCH {:08X}[{}]: wrote={} readback={} archetype={} mgef='{}'",
+							a_formID, i, wanted, readback, archetype, mgef_edid ? mgef_edid : "");
+					}
+				}
+				RecordApplied(a_formID, idx32, readback);
 			}
 		}
 
-		void ApplyFoodHeal(float a_mult)
+		void ApplyFoodHeal(float a_mult, bool a_trace, bool a_trace_delta_only)
 		{
 			for (const auto& snap : g_food_heal_snapshots) {
 				auto* alch = LookupAlch(snap.ownerFormID);
@@ -207,6 +270,22 @@ namespace Tweaks::Magnitudes
 
 				const float wanted = snap.baseline * a_mult;
 				eff->data.magnitude = wanted;
+				const float readback = eff->data.magnitude;
+
+				if (a_trace) {
+					bool emit = true;
+					if (a_trace_delta_only) {
+						const float* prev = FindLastApplied(snap.ownerFormID, snap.effectIndex);
+						const bool changed_vs_baseline = MaterialDelta(snap.baseline, readback);
+						const bool changed_vs_prev = prev ? MaterialDelta(*prev, readback) : changed_vs_baseline;
+						emit = prev ? changed_vs_prev : changed_vs_baseline;
+					}
+					if (emit) {
+						REX::INFO("  ALCH {:08X}[{}] (food-heal): wrote={} readback={}",
+							snap.ownerFormID, snap.effectIndex, wanted, readback);
+					}
+				}
+				RecordApplied(snap.ownerFormID, snap.effectIndex, readback);
 			}
 		}
 	}
@@ -239,6 +318,10 @@ namespace Tweaks::Magnitudes
 		const float thirst_pen = MCM::Settings::Magnitudes::fThirstPenalty.GetValue();
 		const float sleep_pen  = MCM::Settings::Magnitudes::fSleepPenalty.GetValue();
 
+		const bool trace             = MCM::Settings::Diagnostic::bMagnitudesTrace.GetValue();
+		const bool trace_delta_only  = MCM::Settings::Diagnostic::bMagnitudesTraceDeltaOnly.GetValue();
+		const bool always_summarize  = MCM::Settings::Diagnostic::bMagnitudesAlwaysSummarize.GetValue();
+
 		ApplyAlch(kAlchStimpak, [stim_heal, stim_limb](std::uint32_t a_effectSettingFormID) -> float {
 			switch (a_effectSettingFormID) {
 				case kEffectRestoreHealthStimpak:
@@ -253,27 +336,34 @@ namespace Tweaks::Magnitudes
 				default:
 					return 1.0f;
 			}
-		});
+		}, trace, trace_delta_only);
 		ApplyAlch(kAlchRadAway, [radaway](std::uint32_t a_effectSettingFormID) {
 			return a_effectSettingFormID == kEffectRestoreRadsChem ? radaway : 1.0f;
-		});
+		}, trace, trace_delta_only);
 		ApplyAlch(kAlchRadX, [radx](std::uint32_t a_effectSettingFormID) {
 			return a_effectSettingFormID == kEffectFortifyResistRadsRadX ? radx : 1.0f;
-		});
+		}, trace, trace_delta_only);
 
 		for (auto id : kAlchHungerStages) {
-			ApplyAlch(id, [hunger_pen](std::uint32_t) { return hunger_pen; });
+			ApplyAlch(id, [hunger_pen](std::uint32_t) { return hunger_pen; }, trace, trace_delta_only);
 		}
 		for (auto id : kAlchThirstStages) {
-			ApplyAlch(id, [thirst_pen](std::uint32_t) { return thirst_pen; });
+			ApplyAlch(id, [thirst_pen](std::uint32_t) { return thirst_pen; }, trace, trace_delta_only);
 		}
 		for (auto id : kAlchSleepStages) {
-			ApplyAlch(id, [sleep_pen](std::uint32_t) { return sleep_pen; });
+			ApplyAlch(id, [sleep_pen](std::uint32_t) { return sleep_pen; }, trace, trace_delta_only);
 		}
 
-		ApplyFoodHeal(food);
+		ApplyFoodHeal(food, trace, trace_delta_only);
 
-		REX::INFO("Magnitudes: applied (stim_heal={} stim_limb={} radaway={} radx={} food={} hunger={} thirst={} sleep={})",
-			stim_heal, stim_limb, radaway, radx, food, hunger_pen, thirst_pen, sleep_pen);
+		const MultVector mults{
+			stim_heal, stim_limb, radaway, radx, food, hunger_pen, thirst_pen, sleep_pen
+		};
+		const bool changed = !g_last_mults.has_value() || !(*g_last_mults == mults);
+		if (changed || always_summarize) {
+			REX::INFO("Magnitudes: applied (stim_heal={} stim_limb={} radaway={} radx={} food={} hunger={} thirst={} sleep={})",
+				stim_heal, stim_limb, radaway, radx, food, hunger_pen, thirst_pen, sleep_pen);
+		}
+		g_last_mults = mults;
 	}
 }

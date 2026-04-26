@@ -75,6 +75,15 @@ namespace MCM
 			inline static REX::INI::Bool<> bDumpOnLoad{
 				"Diagnostic", "bDumpOnLoad", false
 			};
+			inline static REX::INI::Bool<> bMagnitudesTrace{
+				"Diagnostic", "bMagnitudesTrace", false
+			};
+			inline static REX::INI::Bool<> bMagnitudesTraceDeltaOnly{
+				"Diagnostic", "bMagnitudesTraceDeltaOnly", true
+			};
+			inline static REX::INI::Bool<> bMagnitudesAlwaysSummarize{
+				"Diagnostic", "bMagnitudesAlwaysSummarize", false
+			};
 			inline static REX::INI::Str<> sDumpFilter{
 				"Diagnostic", "sDumpFilter",
 				std::string{ "Hardcore,Survival,Hunger,Thirst,Sleep,Fatigue,Stimpak,RadAway,RadX,Peckish,Weary,Parched,Dehydr,Starv" }
