@@ -129,6 +129,9 @@ namespace MCM
 			inline static REX::INI::Bool<> bDifficultyTrace{
 				"Diagnostic", "bDifficultyTrace", false
 			};
+			inline static REX::INI::Bool<> bGameSettingsTrace{
+				"Diagnostic", "bGameSettingsTrace", false
+			};
 			inline static REX::INI::Str<> sDumpFilter{
 				"Diagnostic", "sDumpFilter",
 				std::string{ "Hardcore,Survival,Hunger,Thirst,Sleep,Fatigue,Stimpak,RadAway,RadX,Peckish,Weary,Parched,Dehydr,Starv" }
