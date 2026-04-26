@@ -593,6 +593,52 @@
                     "type": "slider",
                     "help": "Overall sprint AP drain multiplier. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Carry Weight", "type": "section" },
+                {
+                    "id": "fCarryWeightBaseMult:Character",
+                    "text": "Carry Weight Base",
+                    "type": "slider",
+                    "help": "Base carry capacity. May need actor-value refresh.",
+                    "valueOptions": { "min": 0.25, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCarryWeightPerStrengthMult:Character",
+                    "text": "Carry per Strength",
+                    "type": "slider",
+                    "help": "Carry capacity gained per Strength. May need actor-value refresh.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Health", "type": "section" },
+                {
+                    "id": "fHealthPerEnduranceMult:Character",
+                    "text": "Health per Endurance",
+                    "type": "slider",
+                    "help": "Max health gained per Endurance. May need actor-value refresh.",
+                    "valueOptions": { "min": 0.25, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fHealthPerLevelMult:Character",
+                    "text": "Health per Level",
+                    "type": "slider",
+                    "help": "Max health gained per level. May need actor-value refresh.",
+                    "valueOptions": { "min": 0.25, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fHealRate:Character",
+                    "text": "Passive Health Regen",
+                    "type": "slider",
+                    "help": "Passive health regen. Vanilla 0.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCombatHealthRegenMult:Character",
+                    "text": "Combat Health Regen",
+                    "type": "slider",
+                    "help": "Combat multiplier for passive regen. Vanilla 0.",
+                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 }
             ]
         }

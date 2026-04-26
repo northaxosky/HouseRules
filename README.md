@@ -59,16 +59,20 @@ Runtime GMST sliders for each vanilla difficulty tier:
 
 Survival's Difficulty II baselines are unusual: vanilla `fDiffMultEffectDuration_TSV` is much *longer* than Normal and `fDiffMultEffectMagnitude_TSV` is much *smaller* than Normal. The MCM slider multiplies that Survival baseline, so `1.00` on Survival is still Survival - not Normal.
 
-### Character (Action Points & Sprint)
+### Character (Action Points, Sprint, Carry, Health)
 
-Runtime GMST sliders for AP feel and sprint cost:
+Runtime GMST sliders for AP feel, sprint cost, carry capacity, and health:
 
 - **Action Points**: AP pool base, AP per Agility, AP regen rate, combat regen multiplier, regen delay, out-of-breath delay, regen delay cap.
 - **Sprint**: drain base term, Endurance term, overall drain multiplier.
+- **Carry Weight**: base carry capacity and capacity per Strength.
+- **Health**: max health per Endurance, max health per level, passive heal rate, combat health regen multiplier.
 
-Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla default as their neutral value (e.g. `0.75` combat regen, `-0.05` Endurance term); leaving a Direct slider on its default preserves whatever baseline another mod has written.
+Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla default as their neutral value (e.g. `0.75` combat AP regen, `-0.05` Endurance term, `0` heal rates); leaving a Direct slider on its default preserves whatever baseline another mod has written.
 
-AP pool changes (`AP Pool Base`, `AP per Agility`) edit the actor-value formula but the player's *current* AP pool may not refresh until the engine recomputes actor values - typically on level-up, equip change, fast-travel, or save/load.
+AP pool changes (`AP Pool Base`, `AP per Agility`), carry-weight formula changes, and max-health formula changes (`Health per Endurance`, `Health per Level`) edit the actor-value formula but the player's *current* derived value may not refresh until the engine recomputes actor values - typically on level-up, equip change, fast-travel, or save/load.
+
+The `Remove Survival Carry-Weight Penalty` Survival Unlock stacks above the carry-weight GMST baseline: this slider tunes the underlying capacity formula, the unlock removes the Survival-only `HC_ReduceCarryWeightAbility` penalty on top of it.
 
 If `Out-of-Breath Delay` exceeds `AP Regen Delay Max`, House Rules logs a one-shot warning; the engine will clamp to the cap rather than honoring the larger value.
 

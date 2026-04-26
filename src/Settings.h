@@ -125,6 +125,18 @@ namespace MCM
 			inline static REX::INI::F32<> fSprintBaseDrain        { "Character", "fSprintBaseDrain",         1.05f };
 			inline static REX::INI::F32<> fSprintEnduranceDrain   { "Character", "fSprintEnduranceDrain",   -0.05f };
 			inline static REX::INI::F32<> fSprintDrainMult        { "Character", "fSprintDrainMult",         1.0f };
+
+			// Carry weight (Multiplier mode; 1.0 = vanilla)
+			inline static REX::INI::F32<> fCarryWeightBaseMult       { "Character", "fCarryWeightBaseMult",       1.0f };
+			inline static REX::INI::F32<> fCarryWeightPerStrengthMult{ "Character", "fCarryWeightPerStrengthMult",1.0f };
+
+			// Health scaling (Multiplier mode; 1.0 = vanilla)
+			inline static REX::INI::F32<> fHealthPerEnduranceMult    { "Character", "fHealthPerEnduranceMult",    1.0f };
+			inline static REX::INI::F32<> fHealthPerLevelMult        { "Character", "fHealthPerLevelMult",        1.0f };
+
+			// Health regen (Direct mode; vanilla 0)
+			inline static REX::INI::F32<> fHealRate                  { "Character", "fHealRate",                  0.0f };
+			inline static REX::INI::F32<> fCombatHealthRegenMult     { "Character", "fCombatHealthRegenMult",     0.0f };
 		};
 
 		// Developer-only. Not exposed in MCM. Edit settings.ini directly.
