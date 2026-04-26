@@ -43,6 +43,48 @@ namespace MCM
 			inline static REX::INI::F32<> fSleepPenalty     { "Magnitudes", "fSleepPenalty",      1.0f };
 		};
 
+		// Per-difficulty multipliers for vanilla GMSTs. 1.0 = vanilla. Survival
+		// here means the current TSV difficulty; legacy SV GMSTs are skipped.
+		class Difficulty
+		{
+		public:
+			// Incoming damage (player damage taken)
+			inline static REX::INI::F32<> fIncomingDamageVeryEasy{ "Difficulty", "fIncomingDamageVeryEasy", 1.0f };
+			inline static REX::INI::F32<> fIncomingDamageEasy    { "Difficulty", "fIncomingDamageEasy",     1.0f };
+			inline static REX::INI::F32<> fIncomingDamageNormal  { "Difficulty", "fIncomingDamageNormal",   1.0f };
+			inline static REX::INI::F32<> fIncomingDamageHard    { "Difficulty", "fIncomingDamageHard",     1.0f };
+			inline static REX::INI::F32<> fIncomingDamageVeryHard{ "Difficulty", "fIncomingDamageVeryHard", 1.0f };
+			inline static REX::INI::F32<> fIncomingDamageSurvival{ "Difficulty", "fIncomingDamageSurvival", 1.0f };
+
+			// Outgoing damage (player damage dealt)
+			inline static REX::INI::F32<> fOutgoingDamageVeryEasy{ "Difficulty", "fOutgoingDamageVeryEasy", 1.0f };
+			inline static REX::INI::F32<> fOutgoingDamageEasy    { "Difficulty", "fOutgoingDamageEasy",     1.0f };
+			inline static REX::INI::F32<> fOutgoingDamageNormal  { "Difficulty", "fOutgoingDamageNormal",   1.0f };
+			inline static REX::INI::F32<> fOutgoingDamageHard    { "Difficulty", "fOutgoingDamageHard",     1.0f };
+			inline static REX::INI::F32<> fOutgoingDamageVeryHard{ "Difficulty", "fOutgoingDamageVeryHard", 1.0f };
+			inline static REX::INI::F32<> fOutgoingDamageSurvival{ "Difficulty", "fOutgoingDamageSurvival", 1.0f };
+
+			// XP progression
+			inline static REX::INI::F32<> fXPBase{ "Difficulty", "fXPBase", 1.0f };
+			inline static REX::INI::F32<> fXPMult{ "Difficulty", "fXPMult", 1.0f };
+
+			// Legendary chance
+			inline static REX::INI::F32<> fLegendaryChanceVeryEasy{ "Difficulty", "fLegendaryChanceVeryEasy", 1.0f };
+			inline static REX::INI::F32<> fLegendaryChanceEasy    { "Difficulty", "fLegendaryChanceEasy",     1.0f };
+			inline static REX::INI::F32<> fLegendaryChanceNormal  { "Difficulty", "fLegendaryChanceNormal",   1.0f };
+			inline static REX::INI::F32<> fLegendaryChanceHard    { "Difficulty", "fLegendaryChanceHard",     1.0f };
+			inline static REX::INI::F32<> fLegendaryChanceVeryHard{ "Difficulty", "fLegendaryChanceVeryHard", 1.0f };
+			inline static REX::INI::F32<> fLegendaryChanceSurvival{ "Difficulty", "fLegendaryChanceSurvival", 1.0f };
+
+			// Legendary rarity
+			inline static REX::INI::F32<> fLegendaryRarityVeryEasy{ "Difficulty", "fLegendaryRarityVeryEasy", 1.0f };
+			inline static REX::INI::F32<> fLegendaryRarityEasy    { "Difficulty", "fLegendaryRarityEasy",     1.0f };
+			inline static REX::INI::F32<> fLegendaryRarityNormal  { "Difficulty", "fLegendaryRarityNormal",   1.0f };
+			inline static REX::INI::F32<> fLegendaryRarityHard    { "Difficulty", "fLegendaryRarityHard",     1.0f };
+			inline static REX::INI::F32<> fLegendaryRarityVeryHard{ "Difficulty", "fLegendaryRarityVeryHard", 1.0f };
+			inline static REX::INI::F32<> fLegendaryRaritySurvival{ "Difficulty", "fLegendaryRaritySurvival", 1.0f };
+		};
+
 		// Developer-only. Not exposed in MCM. Edit settings.ini directly.
 		class Diagnostic
 		{
@@ -83,6 +125,9 @@ namespace MCM
 			};
 			inline static REX::INI::Bool<> bMagnitudesAlwaysSummarize{
 				"Diagnostic", "bMagnitudesAlwaysSummarize", false
+			};
+			inline static REX::INI::Bool<> bDifficultyTrace{
+				"Diagnostic", "bDifficultyTrace", false
 			};
 			inline static REX::INI::Str<> sDumpFilter{
 				"Diagnostic", "sDumpFilter",

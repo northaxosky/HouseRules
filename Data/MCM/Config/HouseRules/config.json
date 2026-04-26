@@ -211,6 +211,213 @@
                     "valueOptions": { "min": 0, "max": 5, "step": 1, "sourceType": "ModSettingFloat" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Difficulty",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Difficulty Multipliers</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Per-difficulty multipliers applied as baseline * value. 1.00 = vanilla. Survival here is the current TSV difficulty.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Damage Taken", "type": "section" },
+                {
+                    "id": "fIncomingDamageVeryEasy:Difficulty",
+                    "text": "Incoming Damage (Very Easy)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPToPCVE. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fIncomingDamageEasy:Difficulty",
+                    "text": "Incoming Damage (Easy)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPToPCE. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fIncomingDamageNormal:Difficulty",
+                    "text": "Incoming Damage (Normal)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPToPCN. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fIncomingDamageHard:Difficulty",
+                    "text": "Incoming Damage (Hard)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPToPCH. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fIncomingDamageVeryHard:Difficulty",
+                    "text": "Incoming Damage (Very Hard)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPToPCVH. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fIncomingDamageSurvival:Difficulty",
+                    "text": "Incoming Damage (Survival)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPToPCTSV. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Damage Done", "type": "section" },
+                {
+                    "id": "fOutgoingDamageVeryEasy:Difficulty",
+                    "text": "Outgoing Damage (Very Easy)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPByPCVE. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fOutgoingDamageEasy:Difficulty",
+                    "text": "Outgoing Damage (Easy)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPByPCE. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fOutgoingDamageNormal:Difficulty",
+                    "text": "Outgoing Damage (Normal)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPByPCN. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fOutgoingDamageHard:Difficulty",
+                    "text": "Outgoing Damage (Hard)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPByPCH. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fOutgoingDamageVeryHard:Difficulty",
+                    "text": "Outgoing Damage (Very Hard)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPByPCVH. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fOutgoingDamageSurvival:Difficulty",
+                    "text": "Outgoing Damage (Survival)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultHPByPCTSV. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Progression", "type": "section" },
+                {
+                    "id": "fXPBase:Difficulty",
+                    "text": "XP Base",
+                    "type": "slider",
+                    "help": "Scales fXPModBase, the flat XP grant component. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fXPMult:Difficulty",
+                    "text": "XP Multiplier",
+                    "type": "slider",
+                    "help": "Scales fXPModMult, the difficulty-scaled XP multiplier. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Legendary Chance", "type": "section" },
+                {
+                    "id": "fLegendaryChanceVeryEasy:Difficulty",
+                    "text": "Legendary Chance (Very Easy)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryChance_VE. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryChanceEasy:Difficulty",
+                    "text": "Legendary Chance (Easy)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryChance_E. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryChanceNormal:Difficulty",
+                    "text": "Legendary Chance (Normal)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryChance_N. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryChanceHard:Difficulty",
+                    "text": "Legendary Chance (Hard)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryChance_H. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryChanceVeryHard:Difficulty",
+                    "text": "Legendary Chance (Very Hard)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryChance_VH. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryChanceSurvival:Difficulty",
+                    "text": "Legendary Chance (Survival)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryChance_TSV. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Legendary Rarity", "type": "section" },
+                {
+                    "id": "fLegendaryRarityVeryEasy:Difficulty",
+                    "text": "Legendary Rarity (Very Easy)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryRarity_VE. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryRarityEasy:Difficulty",
+                    "text": "Legendary Rarity (Easy)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryRarity_E. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryRarityNormal:Difficulty",
+                    "text": "Legendary Rarity (Normal)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryRarity_N. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryRarityHard:Difficulty",
+                    "text": "Legendary Rarity (Hard)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryRarity_H. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryRarityVeryHard:Difficulty",
+                    "text": "Legendary Rarity (Very Hard)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryRarity_VH. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLegendaryRaritySurvival:Difficulty",
+                    "text": "Legendary Rarity (Survival)",
+                    "type": "slider",
+                    "help": "Scales fDiffMultLegendaryRarity_TSV. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                }
+            ]
         }
     ]
 }

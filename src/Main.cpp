@@ -7,6 +7,7 @@
 #include "Hooks/Unlocks.h"
 #include "Settings.h"
 #include "SleepWait/Integration.h"
+#include "Tweaks/Difficulty.h"
 #include "Tweaks/Magnitudes.h"
 
 namespace
@@ -39,6 +40,7 @@ namespace
 			if (a_event.menuName == "PauseMenu") {
 				MCM::Settings::Update();
 				Tweaks::Magnitudes::Apply();
+				Tweaks::Difficulty::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
@@ -49,6 +51,7 @@ namespace
 			// / kNewGame messages fire on worker threads mid-init and crash.
 			if (a_event.menuName == "LoadingMenu") {
 				Tweaks::Magnitudes::Apply();
+				Tweaks::Difficulty::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
