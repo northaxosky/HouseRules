@@ -139,6 +139,27 @@ namespace MCM
 			inline static REX::INI::F32<> fCombatHealthRegenMult     { "Character", "fCombatHealthRegenMult",     0.0f };
 		};
 
+		// Damage Formulas v0.3 -- raw damage factors and armor reduction
+		// exponents for radiation, physical, and energy damage. All Direct
+		// mode with vanilla defaults; preserveBaselineAtNeutral keeps any
+		// baseline edits from other mods until the user moves a slider off
+		// the vanilla default.
+		class DamageFormulas
+		{
+		public:
+			// Radiation
+			inline static REX::INI::F32<> fRadiationDamageFactor       { "DamageFormulas", "fRadiationDamageFactor",        0.15f };
+			inline static REX::INI::F32<> fRadiationArmorReductionExponent{ "DamageFormulas", "fRadiationArmorReductionExponent", 0.365f };
+
+			// Physical
+			inline static REX::INI::F32<> fPhysicalDamageFactor        { "DamageFormulas", "fPhysicalDamageFactor",         0.15f };
+			inline static REX::INI::F32<> fPhysicalArmorReductionExponent{ "DamageFormulas", "fPhysicalArmorReductionExponent", 0.365f };
+
+			// Energy
+			inline static REX::INI::F32<> fEnergyDamageFactor          { "DamageFormulas", "fEnergyDamageFactor",           0.15f };
+			inline static REX::INI::F32<> fEnergyArmorReductionExponent{ "DamageFormulas", "fEnergyArmorReductionExponent", 0.365f };
+		};
+
 		// Developer-only. Not exposed in MCM. Edit settings.ini directly.
 		class Diagnostic
 		{

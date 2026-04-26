@@ -76,6 +76,16 @@ The `Remove Survival Carry-Weight Penalty` Survival Unlock stacks above the carr
 
 If `Out-of-Breath Delay` exceeds `AP Regen Delay Max`, House Rules logs a one-shot warning; the engine will clamp to the cap rather than honoring the larger value.
 
+### Damage Formulas
+
+Runtime GMST sliders for the raw damage and armor-reduction terms shared by every actor:
+
+- **Radiation**: `fRadsDamageFactor` (raw rad-damage factor) and `fRadsArmorDmgReductionExp` (rad resistance exponent). Survival-relevant: rads accumulate in Survival and these sliders are the cleanest way to dial that pressure up or down.
+- **Physical**: `fPhysicalDamageFactor` and `fPhysicalArmorDmgReductionExp`. Broad advanced controls - they stack with the Difficulty I incoming/outgoing damage multipliers, so a `0.10` factor here combined with a Difficulty slider compounds.
+- **Energy**: `fEnergyDamageFactor` and `fEnergyArmorDmgReductionExp`. Same shape as the Physical pair but for energy damage / energy resistance.
+
+Each slider's neutral value is the vanilla default (`0.15` for damage factors, `0.365` for armor exponents). Leaving a slider on neutral preserves whatever baseline another mod has written; moving it off neutral writes the literal value to the GMST.
+
 ### Developer Diagnostics
 
 `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:
