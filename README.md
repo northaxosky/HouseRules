@@ -52,9 +52,12 @@ Magnitude edits touch base records, so changes take effect the next time an item
 
 Runtime GMST sliders for each vanilla difficulty tier:
 
-- Incoming damage, outgoing damage, base XP rate, Intelligence XP bonus, legendary spawn chance, and legendary rarity.
+- **Difficulty I**: Incoming damage, outgoing damage, base XP rate, Intelligence XP bonus, legendary spawn chance, and legendary rarity.
+- **Difficulty II**: Effect duration and effect magnitude per difficulty tier.
 
 `1.00` means the engine's current baseline. House Rules snapshots each GMST on first safe apply and writes `baseline * slider`, so changes do not compound during a session.
+
+Survival's Difficulty II baselines are unusual: vanilla `fDiffMultEffectDuration_TSV` is much *longer* than Normal and `fDiffMultEffectMagnitude_TSV` is much *smaller* than Normal. The MCM slider multiplies that Survival baseline, so `1.00` on Survival is still Survival - not Normal.
 
 ### Developer Diagnostics
 

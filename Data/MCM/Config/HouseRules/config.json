@@ -416,6 +416,94 @@
                     "type": "slider",
                     "help": "Weights rarer legendary rolls after a legendary spawns. 1.00 = vanilla.",
                     "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Effect Duration", "type": "section" },
+                {
+                    "id": "fEffectDurationVeryEasy:Difficulty",
+                    "text": "Effect Duration (Very Easy)",
+                    "type": "slider",
+                    "help": "Multiplies effect duration on Very Easy. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectDurationEasy:Difficulty",
+                    "text": "Effect Duration (Easy)",
+                    "type": "slider",
+                    "help": "Multiplies effect duration on Easy. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectDurationNormal:Difficulty",
+                    "text": "Effect Duration (Normal)",
+                    "type": "slider",
+                    "help": "Multiplies effect duration on Normal. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectDurationHard:Difficulty",
+                    "text": "Effect Duration (Hard)",
+                    "type": "slider",
+                    "help": "Multiplies effect duration on Hard. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectDurationVeryHard:Difficulty",
+                    "text": "Effect Duration (Very Hard)",
+                    "type": "slider",
+                    "help": "Multiplies effect duration on Very Hard. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectDurationSurvival:Difficulty",
+                    "text": "Effect Duration (Survival)",
+                    "type": "slider",
+                    "help": "Multiplies effect duration on Survival. 1.00 = vanilla (TSV baseline is much longer than Normal).",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Effect Magnitude", "type": "section" },
+                {
+                    "id": "fEffectMagnitudeVeryEasy:Difficulty",
+                    "text": "Effect Magnitude (Very Easy)",
+                    "type": "slider",
+                    "help": "Multiplies effect magnitude on Very Easy. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectMagnitudeEasy:Difficulty",
+                    "text": "Effect Magnitude (Easy)",
+                    "type": "slider",
+                    "help": "Multiplies effect magnitude on Easy. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectMagnitudeNormal:Difficulty",
+                    "text": "Effect Magnitude (Normal)",
+                    "type": "slider",
+                    "help": "Multiplies effect magnitude on Normal. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectMagnitudeHard:Difficulty",
+                    "text": "Effect Magnitude (Hard)",
+                    "type": "slider",
+                    "help": "Multiplies effect magnitude on Hard. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectMagnitudeVeryHard:Difficulty",
+                    "text": "Effect Magnitude (Very Hard)",
+                    "type": "slider",
+                    "help": "Multiplies effect magnitude on Very Hard. 1.00 = vanilla.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fEffectMagnitudeSurvival:Difficulty",
+                    "text": "Effect Magnitude (Survival)",
+                    "type": "slider",
+                    "help": "Multiplies effect magnitude on Survival. 1.00 = vanilla (TSV baseline is much smaller than Normal).",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 }
             ]
         }

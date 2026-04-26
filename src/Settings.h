@@ -83,6 +83,26 @@ namespace MCM
 			inline static REX::INI::F32<> fLegendaryRarityHard    { "Difficulty", "fLegendaryRarityHard",     1.0f };
 			inline static REX::INI::F32<> fLegendaryRarityVeryHard{ "Difficulty", "fLegendaryRarityVeryHard", 1.0f };
 			inline static REX::INI::F32<> fLegendaryRaritySurvival{ "Difficulty", "fLegendaryRaritySurvival", 1.0f };
+
+			// Effect duration (Difficulty II). Multiplies the per-difficulty
+			// effect-duration GMST. Survival's TSV baseline is much longer
+			// than Normal, so 1.00 here means "vanilla Survival baseline".
+			inline static REX::INI::F32<> fEffectDurationVeryEasy{ "Difficulty", "fEffectDurationVeryEasy", 1.0f };
+			inline static REX::INI::F32<> fEffectDurationEasy    { "Difficulty", "fEffectDurationEasy",     1.0f };
+			inline static REX::INI::F32<> fEffectDurationNormal  { "Difficulty", "fEffectDurationNormal",   1.0f };
+			inline static REX::INI::F32<> fEffectDurationHard    { "Difficulty", "fEffectDurationHard",     1.0f };
+			inline static REX::INI::F32<> fEffectDurationVeryHard{ "Difficulty", "fEffectDurationVeryHard", 1.0f };
+			inline static REX::INI::F32<> fEffectDurationSurvival{ "Difficulty", "fEffectDurationSurvival", 1.0f };
+
+			// Effect magnitude (Difficulty II). Multiplies the per-difficulty
+			// effect-magnitude GMST. Survival's TSV baseline is much smaller
+			// than Normal, so 1.00 here means "vanilla Survival baseline".
+			inline static REX::INI::F32<> fEffectMagnitudeVeryEasy{ "Difficulty", "fEffectMagnitudeVeryEasy", 1.0f };
+			inline static REX::INI::F32<> fEffectMagnitudeEasy    { "Difficulty", "fEffectMagnitudeEasy",     1.0f };
+			inline static REX::INI::F32<> fEffectMagnitudeNormal  { "Difficulty", "fEffectMagnitudeNormal",   1.0f };
+			inline static REX::INI::F32<> fEffectMagnitudeHard    { "Difficulty", "fEffectMagnitudeHard",     1.0f };
+			inline static REX::INI::F32<> fEffectMagnitudeVeryHard{ "Difficulty", "fEffectMagnitudeVeryHard", 1.0f };
+			inline static REX::INI::F32<> fEffectMagnitudeSurvival{ "Difficulty", "fEffectMagnitudeSurvival", 1.0f };
 		};
 
 		// Developer-only. Not exposed in MCM. Edit settings.ini directly.

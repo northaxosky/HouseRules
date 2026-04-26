@@ -8,6 +8,7 @@
 #include "Settings.h"
 #include "SleepWait/Integration.h"
 #include "Tweaks/Difficulty.h"
+#include "Tweaks/DifficultyEffects.h"
 #include "Tweaks/Magnitudes.h"
 
 namespace
@@ -41,6 +42,7 @@ namespace
 				MCM::Settings::Update();
 				Tweaks::Magnitudes::Apply();
 				Tweaks::Difficulty::Apply();
+				Tweaks::DifficultyEffects::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
@@ -52,6 +54,7 @@ namespace
 			if (a_event.menuName == "LoadingMenu") {
 				Tweaks::Magnitudes::Apply();
 				Tweaks::Difficulty::Apply();
+				Tweaks::DifficultyEffects::Apply();
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
