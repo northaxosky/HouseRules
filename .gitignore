@@ -22,5 +22,8 @@ Thumbs.db
 # user-local reference files
 .local/
 
+# agent-local instructions
+.github/copilot-instructions.md
+
 # IntelliSense compile database (generated, contains local paths)
 compile_commands.json
