@@ -114,6 +114,16 @@ Runtime GMST sliders for non-difficulty XP sources:
 
 All sliders are Direct with the vanilla default as their neutral value; leaving a slider on neutral preserves whatever baseline another mod has written.
 
+### VATS
+
+Runtime GMST sliders for VATS targeting and safety:
+
+- **Max Engage Distance** (`fVATSMaxEngageDistance`, vanilla 5000): range where VATS can activate. `0` disables VATS targeting.
+- **Target-Select Time** (`fVATSTimeMultTargetSelect`, vanilla 0.04): lower values slow time more while choosing targets.
+- **Player Damage Mult** (`fVATSPlayerDamageMult`, vanilla 0.10): incoming damage multiplier while VATS is active. `1.0` removes the vanilla damage reduction.
+
+All three are Direct sliders with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written.
+
 ### Developer Diagnostics
 
 The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`). `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:
@@ -127,7 +137,7 @@ The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`)
 To validate an audit log after launching through F4SE and loading a save:
 
 ```powershell
-python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression
+python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS
 ```
 
 ## Design Principles

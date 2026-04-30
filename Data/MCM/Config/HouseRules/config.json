@@ -983,6 +983,48 @@
                     "valueOptions": { "min": 0, "max": 200, "step": 1, "sourceType": "ModSettingInt" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "VATS",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>VATS</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Targeting range, time slowdown, and incoming damage while VATS is active. Direct sliders show the vanilla default as their neutral value.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Targeting", "type": "section" },
+                {
+                    "id": "fVATSMaxEngageDistance:VATS",
+                    "text": "Max Engage Distance",
+                    "type": "slider",
+                    "help": "Range where VATS can activate. 0 disables targeting. Vanilla 5000.",
+                    "valueOptions": { "min": 0.0, "max": 25000.0, "step": 500.0, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Timing", "type": "section" },
+                {
+                    "id": "fVATSTimeMultTargetSelect:VATS",
+                    "text": "Target-Select Time",
+                    "type": "slider",
+                    "help": "Lower = slower target selection. Vanilla 0.04.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Damage Taken", "type": "section" },
+                {
+                    "id": "fVATSPlayerDamageMult:VATS",
+                    "text": "Player Damage Mult",
+                    "type": "slider",
+                    "help": "Damage taken in VATS. Vanilla 0.10; 1 = no reduction.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                }
+            ]
         }
     ]
 }

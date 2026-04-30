@@ -231,6 +231,17 @@ namespace MCM
 			inline static REX::INI::I32<> iMineDisarmXP{ "Progression", "iMineDisarmXP", 5 };
 		};
 
+		// VATS v0.5 -- targeting distance, target-select time scale, and
+		// player damage multiplier. All Direct mode with vanilla defaults
+		// as neutral.
+		class VATS
+		{
+		public:
+			inline static REX::INI::F32<> fVATSMaxEngageDistance   { "VATS", "fVATSMaxEngageDistance",    5000.0f };
+			inline static REX::INI::F32<> fVATSTimeMultTargetSelect{ "VATS", "fVATSTimeMultTargetSelect", 0.04f   };
+			inline static REX::INI::F32<> fVATSPlayerDamageMult    { "VATS", "fVATSPlayerDamageMult",     0.10f   };
+		};
+
 		// Diagnostics. Some values are exposed in MCM; developer-only toggles
 		// remain INI-only.
 		class Diagnostic
