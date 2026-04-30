@@ -120,6 +120,7 @@ The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`)
 
 - `SurvivalObserver` for correlating survival actor values / active effects with vanilla behavior.
 - `SleepWait` integration logging for sit/wait/sleep boundaries.
+- `ActorValueProbe` for investigating deferred non-GMST AP / health regen surfaces.
 - `iLogLevel` controls plugin log verbosity from MCM: `0=Quiet`, `1=Normal`, `2=Verbose`, `3=Trace`. `sLogLevel` remains as a manual fallback for invalid integer values.
 - `bValidationAudit=1` emits structured `HRVERIFY_SUMMARY` lines for GMST writes; set `sValidationAuditMode=Full` to include per-target `HRVERIFY` lines.
 

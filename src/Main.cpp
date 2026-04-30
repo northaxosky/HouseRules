@@ -1,5 +1,6 @@
 #include "PCH.h"
 
+#include "Diagnostics/ActorValueProbe.h"
 #include "Diagnostics/DumpDefaultObjects.h"
 #include "Diagnostics/SurvivalObserver.h"
 #include "Hooks/GodMode.h"
@@ -55,6 +56,7 @@ namespace
 				Tweaks::PowerArmor::Apply();
 				Tweaks::Economy::Apply();
 				Tweaks::Progression::Apply();
+				Diagnostics::ActorValueProbe::MaybeRun("PauseMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
@@ -73,6 +75,7 @@ namespace
 				Tweaks::PowerArmor::Apply();
 				Tweaks::Economy::Apply();
 				Tweaks::Progression::Apply();
+				Diagnostics::ActorValueProbe::MaybeRun("LoadingMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;

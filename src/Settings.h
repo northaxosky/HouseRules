@@ -264,6 +264,32 @@ namespace MCM
 			inline static REX::INI::Bool<> bDumpOnLoad{
 				"Diagnostic", "bDumpOnLoad", false
 			};
+			inline static REX::INI::Bool<> bActorValueProbe{
+				"Diagnostic", "bActorValueProbe", false
+			};
+			inline static REX::INI::Bool<> bActorValueProbePhaseA{
+				"Diagnostic", "bActorValueProbePhaseA", true
+			};
+			inline static REX::INI::Bool<> bActorValueProbePhaseB{
+				"Diagnostic", "bActorValueProbePhaseB", true
+			};
+			inline static REX::INI::Bool<> bActorValueProbeDFOBArray{
+				"Diagnostic", "bActorValueProbeDFOBArray", false
+			};
+			inline static REX::INI::Bool<> bActorValueProbePlayerSnapshot{
+				"Diagnostic", "bActorValueProbePlayerSnapshot", true
+			};
+			inline static REX::INI::Bool<> bActorValueProbeRerunOnPause{
+				"Diagnostic", "bActorValueProbeRerunOnPause", false
+			};
+			inline static REX::INI::Str<> sActorValueProbeFilter{
+				"Diagnostic", "sActorValueProbeFilter",
+				std::string{ "apRateMult,restoreAPRate,actionPoints,healRateMult,restoreHealthRate,combatHealthRegenMult,health,fatigueAPMax,fatigue" }
+			};
+			inline static REX::INI::Str<> sDefaultObjectProbeFilter{
+				"Diagnostic", "sDefaultObjectProbeFilter",
+				std::string{ "ActionPoint,APRate,HealRate,Regen,Hardcore,Combat" }
+			};
 			inline static REX::INI::Bool<> bMagnitudesTrace{
 				"Diagnostic", "bMagnitudesTrace", false
 			};
