@@ -136,6 +136,15 @@ Runtime GMST sliders for pickpocket, hacking, and lockpicking:
 
 All Skills sliders are Direct with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written. Lockpick XP remains on the Progression page.
 
+### Sneak
+
+Runtime GMST sliders for sneak attacks and core detection:
+
+- **Sneak Attack**: gun, unarmed/fist, one-handed, and two-handed damage multipliers.
+- **Detection**: exterior detection distance multiplier, light sensitivity, and maximum detection distance.
+
+All Sneak sliders are Direct with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written. NPC search timers and stealth-point internals remain deferred.
+
 ### Developer Diagnostics
 
 The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`). `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:
@@ -149,7 +158,7 @@ The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`)
 To validate an audit log after launching through F4SE and loading a save:
 
 ```powershell
-python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module ActorValues --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS --require-module Skills
+python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module ActorValues --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS --require-module Skills --require-module Sneak
 ```
 
 ## Design Principles

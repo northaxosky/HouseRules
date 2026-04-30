@@ -272,6 +272,23 @@ namespace MCM
 			inline static REX::INI::F32<> fSweetspotMaster          { "Skills", "fSweetspotMaster",           20.0f };
 		};
 
+		// Sneak v0.7 -- sneak attack and core detection GMSTs.
+		// All Direct mode with vanilla defaults as neutral.
+		class Sneak
+		{
+		public:
+			// Sneak attack damage
+			inline static REX::INI::F32<> fSneakAttackGunMult      { "Sneak", "fSneakAttackGunMult",       2.0f    };
+			inline static REX::INI::F32<> fSneakAttackUnarmedMult  { "Sneak", "fSneakAttackUnarmedMult",   3.0f    };
+			inline static REX::INI::F32<> fSneakAttackOneHandMult  { "Sneak", "fSneakAttackOneHandMult",   3.0f    };
+			inline static REX::INI::F32<> fSneakAttackTwoHandMult  { "Sneak", "fSneakAttackTwoHandMult",   3.0f    };
+
+			// Detection
+			inline static REX::INI::F32<> fSneakExteriorDistanceMult{ "Sneak", "fSneakExteriorDistanceMult", 1.25f   };
+			inline static REX::INI::F32<> fSneakLightMult           { "Sneak", "fSneakLightMult",            0.33f   };
+			inline static REX::INI::F32<> fSneakMaxDistance         { "Sneak", "fSneakMaxDistance",          4096.0f };
+		};
+
 		// Diagnostics. Some values are exposed in MCM; developer-only toggles
 		// remain INI-only.
 		class Diagnostic

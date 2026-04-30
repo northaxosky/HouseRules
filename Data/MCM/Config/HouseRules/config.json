@@ -1176,6 +1176,74 @@
                     "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Sneak",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Sneak & Detection</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Sneak attack and detection constants. Neutral values match vanilla.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Sneak Attack Damage", "type": "section" },
+                {
+                    "id": "fSneakAttackGunMult:Sneak",
+                    "text": "Gun Multiplier",
+                    "type": "slider",
+                    "help": "Sneak attack damage multiplier for guns. Vanilla 2.",
+                    "valueOptions": { "min": 0.0, "max": 25.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSneakAttackUnarmedMult:Sneak",
+                    "text": "Unarmed Multiplier",
+                    "type": "slider",
+                    "help": "Sneak attack damage multiplier for fists and fist weapons. Vanilla 3.",
+                    "valueOptions": { "min": 0.0, "max": 25.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSneakAttackOneHandMult:Sneak",
+                    "text": "One-Hand Multiplier",
+                    "type": "slider",
+                    "help": "Sneak attack damage multiplier for one-handed weapons. Vanilla 3.",
+                    "valueOptions": { "min": 0.0, "max": 25.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSneakAttackTwoHandMult:Sneak",
+                    "text": "Two-Hand Multiplier",
+                    "type": "slider",
+                    "help": "Sneak attack damage multiplier for two-handed weapons. Vanilla 3.",
+                    "valueOptions": { "min": 0.0, "max": 25.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Detection", "type": "section" },
+                {
+                    "id": "fSneakExteriorDistanceMult:Sneak",
+                    "text": "Exterior Distance",
+                    "type": "slider",
+                    "help": "Exterior sneak detection distance multiplier. Vanilla 1.25.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSneakLightMult:Sneak",
+                    "text": "Light Sensitivity",
+                    "type": "slider",
+                    "help": "How much light affects detection while sneaking. Vanilla 0.33.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSneakMaxDistance:Sneak",
+                    "text": "Max Detection Distance",
+                    "type": "slider",
+                    "help": "Maximum distance where enemies can spot you. Vanilla 4096.",
+                    "valueOptions": { "min": 0.0, "max": 20480.0, "step": 256.0, "sourceType": "ModSettingFloat" }
+                }
+            ]
         }
     ]
 }
