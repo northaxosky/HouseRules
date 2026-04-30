@@ -242,6 +242,33 @@ namespace MCM
 			inline static REX::INI::F32<> fVATSPlayerDamageMult    { "VATS", "fVATSPlayerDamageMult",     0.10f   };
 		};
 
+		// Skills v0.6 -- pickpocket, hacking, and lockpicking GMSTs.
+		// All Direct mode with vanilla defaults as neutral.
+		class Skills
+		{
+		public:
+			// Pickpocket
+			inline static REX::INI::F32<> fPickPocketMinChance      { "Skills", "fPickPocketMinChance",       0.0f  };
+			inline static REX::INI::F32<> fPickPocketMaxChance      { "Skills", "fPickPocketMaxChance",       90.0f };
+			inline static REX::INI::F32<> fReversePickpocketTimer   { "Skills", "fReversePickpocketTimer",    2.0f  };
+
+			// Hacking
+			inline static REX::INI::I32<> iHackingMinWords          { "Skills", "iHackingMinWords",           6 };
+			inline static REX::INI::I32<> iHackingMaxWords          { "Skills", "iHackingMaxWords",           20 };
+
+			// Lockpicking
+			inline static REX::INI::F32<> fLockPickBreakBase        { "Skills", "fLockPickBreakBase",         0.05f };
+			inline static REX::INI::F32<> fLockpickSkillSweetSpotBase{ "Skills", "fLockpickSkillSweetSpotBase", 0.20f };
+			inline static REX::INI::F32<> fLockpickBreakApprentice  { "Skills", "fLockpickBreakApprentice",   2.0f  };
+			inline static REX::INI::F32<> fLockpickBreakAdept       { "Skills", "fLockpickBreakAdept",        2.0f  };
+			inline static REX::INI::F32<> fLockpickBreakExpert      { "Skills", "fLockpickBreakExpert",       2.0f  };
+			inline static REX::INI::F32<> fLockpickBreakMaster      { "Skills", "fLockpickBreakMaster",       2.0f  };
+			inline static REX::INI::F32<> fSweetspotApprentice      { "Skills", "fSweetspotApprentice",       80.0f };
+			inline static REX::INI::F32<> fSweetspotAdept           { "Skills", "fSweetspotAdept",            60.0f };
+			inline static REX::INI::F32<> fSweetspotExpert          { "Skills", "fSweetspotExpert",           40.0f };
+			inline static REX::INI::F32<> fSweetspotMaster          { "Skills", "fSweetspotMaster",           20.0f };
+		};
+
 		// Diagnostics. Some values are exposed in MCM; developer-only toggles
 		// remain INI-only.
 		class Diagnostic

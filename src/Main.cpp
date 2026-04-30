@@ -17,6 +17,7 @@
 #include "Tweaks/Magnitudes.h"
 #include "Tweaks/PowerArmor.h"
 #include "Tweaks/Progression.h"
+#include "Tweaks/Skills.h"
 #include "Tweaks/VATS.h"
 
 namespace
@@ -58,6 +59,7 @@ namespace
 				Tweaks::Economy::Apply();
 				Tweaks::Progression::Apply();
 				Tweaks::VATS::Apply();
+				Tweaks::Skills::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("PauseMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
@@ -78,6 +80,7 @@ namespace
 				Tweaks::Economy::Apply();
 				Tweaks::Progression::Apply();
 				Tweaks::VATS::Apply();
+				Tweaks::Skills::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("LoadingMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);

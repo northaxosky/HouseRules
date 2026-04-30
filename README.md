@@ -124,6 +124,16 @@ Runtime GMST sliders for VATS targeting and safety:
 
 All three are Direct sliders with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written.
 
+### Skills
+
+Runtime GMST sliders for pickpocket, hacking, and lockpicking:
+
+- **Pickpocket**: minimum / maximum chance (`fPickPocketMinChance`, `fPickPocketMaxChance`, vanilla 0 / 90) and reverse-pickpocket explosive timer (`fProjectileInventoryGrenadeTimer`, vanilla 2 seconds).
+- **Hacking**: minimum / maximum terminal password words (`iHackingMinWords`, `iHackingMaxWords`, vanilla 6 / 20).
+- **Lockpicking**: break base, sweet-spot base, durability by lock level, and sweet-spot width by lock level.
+
+All Skills sliders are Direct with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written. Lockpick XP remains on the Progression page.
+
 ### Developer Diagnostics
 
 The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`). `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:
@@ -137,7 +147,7 @@ The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`)
 To validate an audit log after launching through F4SE and loading a save:
 
 ```powershell
-python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS
+python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS --require-module Skills
 ```
 
 ## Design Principles

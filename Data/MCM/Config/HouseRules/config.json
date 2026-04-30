@@ -1025,6 +1025,136 @@
                     "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.01, "sourceType": "ModSettingFloat" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Skills",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Skills</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Pickpocket, hacking, and lockpicking constants. Direct sliders show the vanilla default as their neutral value.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Pickpocket", "type": "section" },
+                {
+                    "id": "fPickPocketMinChance:Skills",
+                    "text": "Minimum Chance",
+                    "type": "slider",
+                    "help": "Lowest possible pickpocket chance. Vanilla 0%.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fPickPocketMaxChance:Skills",
+                    "text": "Maximum Chance",
+                    "type": "slider",
+                    "help": "Highest possible pickpocket chance. Vanilla 90%.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fReversePickpocketTimer:Skills",
+                    "text": "Explosive Timer",
+                    "type": "slider",
+                    "help": "Seconds before reverse-pickpocketed explosives detonate. Vanilla 2.",
+                    "valueOptions": { "min": 1.0, "max": 60.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Hacking", "type": "section" },
+                {
+                    "id": "iHackingMinWords:Skills",
+                    "text": "Minimum Words",
+                    "type": "slider",
+                    "help": "Fewest terminal password choices. Vanilla 6.",
+                    "valueOptions": { "min": 1, "max": 40, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iHackingMaxWords:Skills",
+                    "text": "Maximum Words",
+                    "type": "slider",
+                    "help": "Most terminal password choices. Vanilla 20.",
+                    "valueOptions": { "min": 1, "max": 40, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                { "type": "spacer" },
+                { "text": "Lockpicking", "type": "section" },
+                {
+                    "id": "fLockPickBreakBase:Skills",
+                    "text": "Break Base",
+                    "type": "slider",
+                    "help": "Base pick-break constant. Vanilla 0.05.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLockpickSkillSweetSpotBase:Skills",
+                    "text": "Sweet Spot Base",
+                    "type": "slider",
+                    "help": "Base sweet-spot constant. Vanilla 0.20.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Lockpick Durability", "type": "section" },
+                {
+                    "id": "fLockpickBreakApprentice:Skills",
+                    "text": "Apprentice Durability",
+                    "type": "slider",
+                    "help": "Higher = picks last longer. Vanilla 2.",
+                    "valueOptions": { "min": 0.0, "max": 20.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLockpickBreakAdept:Skills",
+                    "text": "Adept Durability",
+                    "type": "slider",
+                    "help": "Higher = picks last longer. Vanilla 2.",
+                    "valueOptions": { "min": 0.0, "max": 20.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLockpickBreakExpert:Skills",
+                    "text": "Expert Durability",
+                    "type": "slider",
+                    "help": "Higher = picks last longer. Vanilla 2.",
+                    "valueOptions": { "min": 0.0, "max": 20.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLockpickBreakMaster:Skills",
+                    "text": "Master Durability",
+                    "type": "slider",
+                    "help": "Higher = picks last longer. Vanilla 2.",
+                    "valueOptions": { "min": 0.0, "max": 20.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Sweet Spot by Lock Level", "type": "section" },
+                {
+                    "id": "fSweetspotApprentice:Skills",
+                    "text": "Apprentice Sweet Spot",
+                    "type": "slider",
+                    "help": "Sweet-spot width for Apprentice locks. Vanilla 80.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSweetspotAdept:Skills",
+                    "text": "Adept Sweet Spot",
+                    "type": "slider",
+                    "help": "Sweet-spot width for Adept locks. Vanilla 60.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSweetspotExpert:Skills",
+                    "text": "Expert Sweet Spot",
+                    "type": "slider",
+                    "help": "Sweet-spot width for Expert locks. Vanilla 40.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSweetspotMaster:Skills",
+                    "text": "Master Sweet Spot",
+                    "type": "slider",
+                    "help": "Sweet-spot width for Master locks. Vanilla 20.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                }
+            ]
         }
     ]
 }
