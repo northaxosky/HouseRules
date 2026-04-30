@@ -557,6 +557,13 @@
                     "valueOptions": { "min": 0.0, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
+                    "id": "fAPRegenRate:Character",
+                    "text": "AP Regen Rate",
+                    "type": "slider",
+                    "help": "Player AP restored per second before multipliers. Vanilla 6.",
+                    "valueOptions": { "min": 0.0, "max": 200.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
                     "id": "fCombatAPRegenMult:Character",
                     "text": "Combat AP Regen",
                     "type": "slider",
@@ -638,6 +645,20 @@
                     "type": "slider",
                     "help": "Max health gained per level. May need actor-value refresh.",
                     "valueOptions": { "min": 0.25, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fPassiveHealthRegen:Character",
+                    "text": "Passive Health Regen",
+                    "type": "slider",
+                    "help": "Player health regen rate. 1 = 1% max health. Vanilla 0.",
+                    "valueOptions": { "min": 0.0, "max": 100.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCombatHealthRegenMult:Character",
+                    "text": "Combat Health Regen",
+                    "type": "slider",
+                    "help": "Combat multiplier for passive health regen. 1 = full rate. Vanilla 0.",
+                    "valueOptions": { "min": 0.0, "max": 10.0, "step": 0.01, "sourceType": "ModSettingFloat" }
                 }
             ]
         },

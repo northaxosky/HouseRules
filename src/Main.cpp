@@ -9,6 +9,7 @@
 #include "Settings.h"
 #include "SleepWait/Integration.h"
 #include "Tweaks/ActionPoints.h"
+#include "Tweaks/ActorValues.h"
 #include "Tweaks/CharacterStats.h"
 #include "Tweaks/DamageFormulas.h"
 #include "Tweaks/Difficulty.h"
@@ -54,6 +55,7 @@ namespace
 				Tweaks::DifficultyEffects::Apply();
 				Tweaks::ActionPoints::Apply();
 				Tweaks::CharacterStats::Apply();
+				Tweaks::ActorValues::Apply();
 				Tweaks::DamageFormulas::Apply();
 				Tweaks::PowerArmor::Apply();
 				Tweaks::Economy::Apply();
@@ -75,6 +77,7 @@ namespace
 				Tweaks::DifficultyEffects::Apply();
 				Tweaks::ActionPoints::Apply();
 				Tweaks::CharacterStats::Apply();
+				Tweaks::ActorValues::Apply();
 				Tweaks::DamageFormulas::Apply();
 				Tweaks::PowerArmor::Apply();
 				Tweaks::Economy::Apply();
@@ -109,6 +112,14 @@ namespace
 		}
 
 		switch (a_msg->type) {
+			case F4SE::MessagingInterface::kPreLoadGame:
+			case F4SE::MessagingInterface::kPostLoadGame:
+			case F4SE::MessagingInterface::kNewGame:
+				// These messages are not safe for touching forms on OG, but
+				// clearing per-save process state here prevents ActorValue
+				// baselines from leaking between loaded saves.
+				Tweaks::ActorValues::ResetSnapshots();
+				break;
 			case F4SE::MessagingInterface::kGameDataReady:
 				MCM::Settings::Update();
 				Diagnostics::DumpDefaultObjects::MaybeRun();

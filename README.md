@@ -59,16 +59,18 @@ Survival's Difficulty II baselines are unusual: vanilla `fDiffMultEffectDuration
 
 ### Character (Action Points, Sprint, Carry, Health)
 
-Runtime GMST sliders for AP feel, sprint cost, carry capacity, and health:
+Runtime GMST and player ActorValue sliders for AP feel, sprint cost, carry capacity, and health:
 
-- **Action Points**: AP pool base, AP per Agility, combat regen multiplier, regen delay, out-of-breath delay, regen delay cap.
+- **Action Points**: AP pool base, AP per Agility, AP regen rate, combat regen multiplier, regen delay, out-of-breath delay, regen delay cap.
 - **Sprint**: drain base term, Endurance term, overall drain multiplier.
 - **Carry Weight**: base carry capacity and capacity per Strength.
-- **Health**: max health per Endurance and max health per level.
+- **Health**: max health per Endurance, max health per level, passive health regen, and combat health regen multiplier.
 
 Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla default as their neutral value (e.g. `0.75` combat AP regen and `-0.05` Endurance term); leaving a Direct slider on its default preserves whatever baseline another mod has written.
 
 AP pool changes (`AP Pool Base`, `AP per Agility`), carry-weight formula changes, and max-health formula changes (`Health per Endurance`, `Health per Level`) edit the actor-value formula but the player's *current* derived value may not refresh until the engine recomputes actor values - typically on level-up, equip change, fast-travel, or save/load.
+
+`AP Regen Rate`, `Passive Health Regen`, and `Combat Health Regen` write the player's live ActorValue bases (`restoreAPRate`, `restoreHealthRate`, and `combatHealthRegenMult`) because these are not GMSTs. Unlike GMST Direct sliders, these three use absolute vanilla-neutral values so saved player ActorValues always have a deterministic reset path.
 
 The `Remove Survival Carry-Weight Penalty` Survival Unlock stacks above the carry-weight GMST baseline: this slider tunes the underlying capacity formula, the unlock removes the Survival-only `HC_ReduceCarryWeightAbility` penalty on top of it.
 
@@ -142,12 +144,12 @@ The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`)
 - `SleepWait` integration logging for sit/wait/sleep boundaries.
 - `ActorValueProbe` for investigating deferred non-GMST AP / health regen surfaces.
 - `iLogLevel` controls plugin log verbosity from MCM: `0=Quiet`, `1=Normal`, `2=Verbose`, `3=Trace`. `sLogLevel` remains as a manual fallback for invalid integer values.
-- `bValidationAudit=1` emits structured `HRVERIFY_SUMMARY` lines for GMST writes; set `sValidationAuditMode=Full` to include per-target `HRVERIFY` lines.
+- `bValidationAudit=1` emits structured `HRVERIFY_SUMMARY` lines for GMST and ActorValue writes; set `sValidationAuditMode=Full` to include per-target `HRVERIFY` lines.
 
 To validate an audit log after launching through F4SE and loading a save:
 
 ```powershell
-python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS --require-module Skills
+python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module ActorValues --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS --require-module Skills
 ```
 
 ## Design Principles

@@ -115,6 +115,7 @@ namespace MCM
 			// AP pool / regen delays
 			inline static REX::INI::F32<> fAPBaseMult             { "Character", "fAPBaseMult",              1.0f };
 			inline static REX::INI::F32<> fAPPerAgilityMult       { "Character", "fAPPerAgilityMult",        1.0f };
+			inline static REX::INI::F32<> fAPRegenRate            { "Character", "fAPRegenRate",             6.0f };
 			inline static REX::INI::F32<> fCombatAPRegenMult      { "Character", "fCombatAPRegenMult",       0.75f };
 			inline static REX::INI::F32<> fAPRegenDelay           { "Character", "fAPRegenDelay",            1.0f };
 			inline static REX::INI::F32<> fOutOfBreathAPRegenDelay{ "Character", "fOutOfBreathAPRegenDelay", 2.0f };
@@ -132,6 +133,8 @@ namespace MCM
 			// Health scaling (Multiplier mode; 1.0 = vanilla)
 			inline static REX::INI::F32<> fHealthPerEnduranceMult    { "Character", "fHealthPerEnduranceMult",    1.0f };
 			inline static REX::INI::F32<> fHealthPerLevelMult        { "Character", "fHealthPerLevelMult",        1.0f };
+			inline static REX::INI::F32<> fPassiveHealthRegen        { "Character", "fPassiveHealthRegen",        0.0f };
+			inline static REX::INI::F32<> fCombatHealthRegenMult     { "Character", "fCombatHealthRegenMult",     0.0f };
 
 		};
 
