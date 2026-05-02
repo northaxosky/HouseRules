@@ -16,6 +16,11 @@
             "html": true,
             "type": "text"
         },
+        {
+            "type": "image",
+            "libName": "HouseRules",
+            "className": "s1"
+        },
         { "type": "spacer", "numLines": 2 },
         {
             "text": "General",
