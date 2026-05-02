@@ -2,6 +2,7 @@
 
 #include "Diagnostics/ActorValueProbe.h"
 #include "Diagnostics/DumpDefaultObjects.h"
+#include "Diagnostics/HCManagerProbe.h"
 #include "Diagnostics/SurvivalObserver.h"
 #include "Hooks/GodMode.h"
 #include "Hooks/SafeTravel.h"
@@ -65,6 +66,7 @@ namespace
 				Tweaks::Skills::Apply();
 				Tweaks::Sneak::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("PauseMenu");
+				Diagnostics::HCManagerProbe::MaybeRun("PauseMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
@@ -88,6 +90,7 @@ namespace
 				Tweaks::Skills::Apply();
 				Tweaks::Sneak::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("LoadingMenu");
+				Diagnostics::HCManagerProbe::MaybeRun("LoadingMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
 				SleepWait::Integration::OnMenuOpenClose(a_event);
 				return RE::BSEventNotifyControl::kContinue;
@@ -122,6 +125,7 @@ namespace
 				// clearing per-save process state here prevents ActorValue
 				// baselines from leaking between loaded saves.
 				Tweaks::ActorValues::ResetSnapshots();
+				Diagnostics::HCManagerProbe::Reset();
 				break;
 			case F4SE::MessagingInterface::kGameDataReady:
 				MCM::Settings::Update();

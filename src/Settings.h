@@ -348,6 +348,16 @@ namespace MCM
 				"Diagnostic", "sDefaultObjectProbeFilter",
 				std::string{ "ActionPoint,APRate,HealRate,Regen,Hardcore,Combat" }
 			};
+			inline static REX::INI::Bool<> bHCManagerProbe{
+				"Diagnostic", "bHCManagerProbe", false
+			};
+			inline static REX::INI::Bool<> bHCManagerProbeRerunOnPause{
+				"Diagnostic", "bHCManagerProbeRerunOnPause", false
+			};
+			inline static REX::INI::Str<> sHCManagerProbeFilter{
+				"Diagnostic", "sHCManagerProbeFilter",
+				std::string{ "bHardcoreIsRunning,FoodCostPerTick,DrinkCostPerTick,GameTimerInterval_SleepDeprivation,GameTimerInterval_Sustenance,GamesHoursPerTick,BonusDigestionHours,SustenanceTickWhileSleepingMult,TickHoursCostPerCombat,FoodPool,FoodReqs,DrinkPool,DrinkReqs,NextSustenanceTickDay,LastSleepUpdateDay,NextSleepUpdateDay,ProcessingSleep,bFirstSleep,HC_Rule_SustenanceEffects,HC_Rule_SleepEffects,HC_HungerEffect,HC_ThirstEffect,HC_SleepEffect" }
+			};
 			inline static REX::INI::Bool<> bMagnitudesTrace{
 				"Diagnostic", "bMagnitudesTrace", false
 			};
