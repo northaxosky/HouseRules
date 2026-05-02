@@ -12,8 +12,8 @@ PASS conditions (all must hold):
    contain "failed" or "ERROR".
  - No crash-<date>-<time>.log file in My Games/Fallout4/F4SE newer than the
    launch timestamp.
- - No "Failed to find offset for Address Library ID" message in SA log (the
-   REL::IDDB popup that hangs the game at startup).
+ - No "Failed to find offset for Address Library ID" message in the plugin log
+   (the REL::IDDB popup that hangs the game at startup).
 
 Exits 0 on pass, non-zero on fail with a short summary.
 
