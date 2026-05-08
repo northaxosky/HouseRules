@@ -14,6 +14,11 @@ namespace Globals
 		// doesn't flood the log on every MCM apply.
 		std::unordered_set<std::string> g_warned_missing;
 
+		// Same idea for FormID-based lookups. Vanilla globals should always
+		// resolve, but if Fallout4.esm load order shifted somehow, we don't
+		// want to flood.
+		std::unordered_set<std::uint32_t> g_warned_missing_formIDs;
+
 		RE::TESGlobal* FindByEditorID(std::string_view a_edid)
 		{
 			auto* dh = RE::TESDataHandler::GetSingleton();
@@ -49,6 +54,31 @@ namespace Globals
 			glob->value = a_value;
 			REX::INFO("Globals: wrote '{}' = {} (FormID {:08X})",
 				a_editorID, a_value, glob->formID);
+		}
+	}
+
+	void WriteByFormID(std::uint32_t a_formID, float a_value)
+	{
+		auto* dh = RE::TESDataHandler::GetSingleton();
+		if (!dh) {
+			return;
+		}
+
+		for (auto* glob : dh->GetFormArray<RE::TESGlobal>()) {
+			if (!glob || glob->formID != a_formID) {
+				continue;
+			}
+			if (std::abs(glob->value - a_value) > 1e-6f) {
+				glob->value = a_value;
+				const char* edid = glob->GetFormEditorID();
+				REX::INFO("Globals: wrote FormID {:08X} = {} (edid='{}')",
+					a_formID, a_value, edid ? edid : "");
+			}
+			return;
+		}
+
+		if (g_warned_missing_formIDs.insert(a_formID).second) {
+			REX::WARN("Globals: FormID {:08X} not found in TESGlobal array", a_formID);
 		}
 	}
 }

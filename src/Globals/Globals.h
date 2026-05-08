@@ -13,6 +13,11 @@ namespace Globals
 	// TESDataHandler::LookupForm hit on cold meshes.
 	void Write(const char* a_editorID, float a_value);
 
+	// Look up a TESGlobal by FormID and write its value field. Used for
+	// vanilla globals (Fallout4.esm masters) where the FormID is stable
+	// across runtimes but the EditorID isn't worth probing for.
+	void WriteByFormID(std::uint32_t a_formID, float a_value);
+
 	// Convenience wrapper for boolean-flavored knobs. Writes 1.0f/0.0f.
 	inline void WriteBool(const char* a_editorID, bool a_value)
 	{

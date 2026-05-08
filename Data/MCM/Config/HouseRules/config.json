@@ -1249,6 +1249,88 @@
                     "valueOptions": { "min": 0.0, "max": 20480.0, "step": 256.0, "sourceType": "ModSettingFloat" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Companions",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Companions Affinity</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Reaction thresholds and cooldowns for companion affinity events. Replicates the Companions Affinity Nexus mod's surface natively.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Reaction Thresholds", "type": "section" },
+                {
+                    "id": "fLove:CompanionsAffinity",
+                    "text": "Love Threshold",
+                    "type": "slider",
+                    "help": "The affinity score at which a companion reaches the Love reaction. Vanilla 35.",
+                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLike:CompanionsAffinity",
+                    "text": "Like Threshold",
+                    "type": "slider",
+                    "help": "The affinity score at which a companion reaches the Like reaction. Vanilla 15.",
+                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fIndifferent:CompanionsAffinity",
+                    "text": "Indifferent Threshold",
+                    "type": "slider",
+                    "help": "The neutral baseline reaction score. Vanilla 0.",
+                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDislike:CompanionsAffinity",
+                    "text": "Dislike Threshold",
+                    "type": "slider",
+                    "help": "The affinity score at which a companion reaches the Dislike reaction. Vanilla -15.",
+                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fHates:CompanionsAffinity",
+                    "text": "Hates Threshold",
+                    "type": "slider",
+                    "help": "The affinity score at which a companion reaches the Hates reaction. Vanilla -35.",
+                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Reaction Cooldowns", "type": "section" },
+                {
+                    "id": "fCooldownImmediate:CompanionsAffinity",
+                    "text": "Immediate Cooldown",
+                    "type": "slider",
+                    "help": "Cooldown in game days for back-to-back reactions of the same type. Vanilla 0.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCooldownShort:CompanionsAffinity",
+                    "text": "Short Cooldown",
+                    "type": "slider",
+                    "help": "Cooldown in game days for short-tier reactions. Vanilla 0.05.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCooldownMedium:CompanionsAffinity",
+                    "text": "Medium Cooldown",
+                    "type": "slider",
+                    "help": "Cooldown in game days for medium-tier reactions. Vanilla 2.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCooldownLong:CompanionsAffinity",
+                    "text": "Long Cooldown",
+                    "type": "slider",
+                    "help": "Cooldown in game days for long-tier reactions. Vanilla 5.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                }
+            ]
         }
     ]
 }

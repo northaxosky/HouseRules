@@ -145,6 +145,15 @@ Runtime GMST sliders for sneak attacks and core detection:
 
 All Sneak sliders are Direct with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written. NPC search timers and stealth-point internals remain deferred.
 
+### Companions Affinity
+
+Direct writes to nine vanilla `Fallout4.esm` `TESGlobal` records that drive companion reaction thresholds and cooldown timing. Replicates the Companions Affinity Nexus mod's surface natively (no Papyrus, no script forks):
+
+- **Reaction Thresholds**: Love (35), Like (15), Indifferent (0), Dislike (-15), Hates (-35).
+- **Reaction Cooldowns** in game days: Immediate (0), Short (0.05), Medium (2), Long (5).
+
+Each global is addressed by stable Fallout4.esm FormID, so the writes are runtime-portable across OG / NG / AE.
+
 ### Developer Diagnostics
 
 The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`). `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:

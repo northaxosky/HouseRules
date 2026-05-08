@@ -269,11 +269,39 @@ Sliders by lock tier for break threshold, sweet-spot base, durability, and sweet
 
 NPC search timers and stealth-point internals are not exposed. They may come later.
 
+## Companions Affinity
+
+Sliders for the nine vanilla game values that control how companions react to your actions. These are the same values the Companions Affinity Nexus mod exposes - House Rules now writes them directly, so you do not need to install that mod separately.
+
+### Reaction Thresholds
+
+How much the companion has to like or dislike you before they react.
+
+| Slider | Default | Range | What it changes |
+|---|---|---|---|
+| Love Threshold | 35 | -100 to 100 | Score where the Love reaction triggers. |
+| Like Threshold | 15 | -100 to 100 | Score where the Like reaction triggers. |
+| Indifferent Threshold | 0 | -100 to 100 | The neutral baseline. |
+| Dislike Threshold | -15 | -100 to 100 | Score where the Dislike reaction triggers. |
+| Hates Threshold | -35 | -100 to 100 | Score where the Hates reaction triggers. |
+
+### Reaction Cooldowns
+
+How often the same kind of reaction can fire, measured in game days.
+
+| Slider | Default | Range | What it changes |
+|---|---|---|---|
+| Immediate Cooldown | 0 | 0 to 5 | Cooldown for back-to-back reactions. |
+| Short Cooldown | 0.05 | 0 to 5 | Cooldown for short-tier reactions. |
+| Medium Cooldown | 2 | 0 to 5 | Cooldown for medium-tier reactions. |
+| Long Cooldown | 5 | 0 to 5 | Cooldown for long-tier reactions. |
+
+All Direct sliders. Leaving one on its default keeps the vanilla value.
+
 ## Coming Soon
 
 Planned tracks:
 
-- **Companions Affinity** - 9 sliders for companion reaction thresholds and cooldowns. Replicates the Companions Affinity mod's settings inside House Rules' MCM.
 - **Settlements** - sliders for settlement-related game settings (workshop attack distance, recruitment, settler happiness, defense). Does not replace Uncapped Settlement Surplus. Covers different settings.
 - **Economy expansion** - more vendor and persuasion sliders beyond the four current ones.
 - **Progression expansion** - global XP curve, sneak attack XP, perk pacing, and more.

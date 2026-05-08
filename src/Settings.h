@@ -272,6 +272,29 @@ namespace MCM
 			inline static REX::INI::F32<> fSweetspotMaster          { "Skills", "fSweetspotMaster",           20.0f };
 		};
 
+		// Companions Affinity v0.4 -- vanilla TESGlobal-backed reaction
+		// thresholds and cooldowns. Direct sliders (literal values written
+		// to the global). Each FormID is a Fallout4.esm master record so
+		// the FormID is stable across runtimes (no esp index reshuffle).
+		// Replicates the Companions Affinity Nexus mod's nine-global surface.
+		class CompanionsAffinity
+		{
+		public:
+			// Reaction thresholds (game-affinity score that triggers each reaction)
+			inline static REX::INI::F32<> fLove       { "CompanionsAffinity", "fLove",         35.0f };
+			inline static REX::INI::F32<> fLike       { "CompanionsAffinity", "fLike",         15.0f };
+			inline static REX::INI::F32<> fIndifferent{ "CompanionsAffinity", "fIndifferent",   0.0f };
+			inline static REX::INI::F32<> fDislike    { "CompanionsAffinity", "fDislike",     -15.0f };
+			inline static REX::INI::F32<> fHates      { "CompanionsAffinity", "fHates",       -35.0f };
+
+			// Reaction cooldowns in game days (how often a companion will
+			// re-react to the same kind of player action)
+			inline static REX::INI::F32<> fCooldownImmediate{ "CompanionsAffinity", "fCooldownImmediate", 0.0f  };
+			inline static REX::INI::F32<> fCooldownShort    { "CompanionsAffinity", "fCooldownShort",     0.05f };
+			inline static REX::INI::F32<> fCooldownMedium   { "CompanionsAffinity", "fCooldownMedium",    2.0f  };
+			inline static REX::INI::F32<> fCooldownLong     { "CompanionsAffinity", "fCooldownLong",      5.0f  };
+		};
+
 		// Sneak v0.7 -- sneak attack and core detection GMSTs.
 		// All Direct mode with vanilla defaults as neutral.
 		class Sneak

@@ -12,6 +12,7 @@
 #include "Tweaks/ActionPoints.h"
 #include "Tweaks/ActorValues.h"
 #include "Tweaks/CharacterStats.h"
+#include "Tweaks/CompanionsAffinity.h"
 #include "Tweaks/DamageFormulas.h"
 #include "Tweaks/Difficulty.h"
 #include "Tweaks/DifficultyEffects.h"
@@ -65,6 +66,7 @@ namespace
 				Tweaks::VATS::Apply();
 				Tweaks::Skills::Apply();
 				Tweaks::Sneak::Apply();
+				Tweaks::CompanionsAffinity::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("PauseMenu");
 				Diagnostics::HCManagerProbe::MaybeRun("PauseMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
@@ -89,6 +91,7 @@ namespace
 				Tweaks::VATS::Apply();
 				Tweaks::Skills::Apply();
 				Tweaks::Sneak::Apply();
+				Tweaks::CompanionsAffinity::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("LoadingMenu");
 				Diagnostics::HCManagerProbe::MaybeRun("LoadingMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
