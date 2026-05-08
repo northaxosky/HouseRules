@@ -35,7 +35,7 @@ import time
 MO2_DIR = pathlib.Path(r"C:/Games/Modding/Nucleus")
 MO2_EXE = MO2_DIR / "ModOrganizer.exe"
 PROFILE = "Testing - OG"
-EXE_LABEL = "F4SE - OG"
+EXE_LABEL = "OG - F4SE"
 F4SE_LOG_DIR = pathlib.Path.home() / "Documents" / "My Games" / "Fallout4" / "F4SE"
 PLUGIN_LOG = F4SE_LOG_DIR / "HouseRules.log"
 
