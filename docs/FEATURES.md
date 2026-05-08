@@ -1,208 +1,210 @@
 # House Rules - Feature Reference
 
-A page-by-page reference for every MCM setting House Rules ships. For installation, build, and general project info see the [README](../README.md).
+A complete list of every setting House Rules adds to your MCM menu. For installation and project info see the [README](../README.md).
 
-## Reading the tables
+## How sliders work
 
-- **Default** is the vanilla Fallout 4 value. Leaving a slider at its default keeps whatever baseline another mod has written.
-- **Slider type:**
-  - **Direct** writes the literal value to the underlying GMST or ActorValue.
-  - **Multiplier** snapshots the vanilla baseline on first apply and writes `baseline * slider` thereafter, so changes don't compound across sessions.
-  - **Toggle** flips a boolean flag (Survival Unlock toggles).
-- **Apply timing:** all sliders apply when the pause menu closes. Magnitude edits also re-evaluate when an item is consumed; record-backed toggles (carry-weight unlock, Re-enter Survival) are live.
+- **Default** is the value Fallout 4 normally uses. If you leave a slider on its default, House Rules does not change anything. Any changes from other mods stay in effect.
+- **Slider types:**
+  - **Direct sliders** set the value to exactly what you choose.
+  - **Multiplier sliders** scale the original game value. `1.00` means no change. `2.00` means double. `0.50` means half.
+  - **Toggles** turn a setting on or off (used in Survival Unlocks).
+- **When changes apply:** sliders take effect when you close the pause menu. Some changes also update when you eat or drink a consumable. The carry-weight unlock and the Re-enter-Survival toggle update right away.
 
 ## Front Page
 
 | Setting | Type | Default | Effect |
 |---|---|---|---|
-| Enable Plugin | Toggle | On | Master switch. With this off, none of the gameplay tweaks apply; diagnostics can still run. |
-| Log Level | Stepper | Normal | Controls plugin log verbosity: `Quiet`, `Normal`, `Verbose`, `Trace`. |
+| Enable Plugin | Toggle | On | Master switch. With this off, none of the gameplay changes apply. Diagnostics can still run. |
+| Log Level | Stepper | Normal | How much detail House Rules writes to its log file: `Quiet`, `Normal`, `Verbose`, or `Trace`. |
 
 ## Survival Unlocks
 
-All toggles default OFF (vanilla Survival behavior). Turning one ON applies that tweak while keeping real Survival difficulty engaged - i.e. food / water / sleep / damage scaling all stay in effect.
+All toggles default OFF (vanilla Survival). Turning one ON applies that change while keeping real Survival difficulty active. Damage scaling, food, water, sleep, and the rest stay in effect.
 
-| Toggle | Effect |
+| Toggle | What it does |
 |---|---|
-| Allow Console | Re-enables the developer console. |
-| Allow Manual Saves | Re-enables F5 quicksave plus the pause-menu Save / Load surfaces. |
-| Allow Auto-Saves | Re-enables queued vanilla autosaves (menu close, door arrival, etc.). |
-| Allow Fast Travel | Re-enables Pip-Boy map fast travel. Loading screens during fast travel get targeted HP / rad / rad-resistance protection - **not** God Mode or Immortal Mode, so non-fast-travel danger is unaffected. |
-| Show Enemies on Compass | Restores vanilla red-dot enemy markers. |
-| Show Locations on Compass | Restores vanilla undiscovered-location markers. |
-| Remove Chem/Aid Weight | Strips Survival's added weight from consumables (chems, food, drinks, stimpaks). |
-| Remove Ammo Weight | Strips Survival's added weight from ammunition. |
-| Remove Survival Carry-Weight Penalty | ESP-backed: neutralizes `HC_ReduceCarryWeightAbility` on the player and companions. Stacks above the carry-weight GMST sliders on the Character page. |
-| Allow God Mode | `tgm` and `tim` console cheats work in Survival via a single-byte engine patch (same approach as Unlimited Survival Mode). Vanilla `IsGodMode` returns honestly, so the engine's native invulnerability path is the one running. |
-| Allow Re-entering Survival | Removes vanilla's one-way Survival lock - difficulty changes work both directions. Live-toggleable. |
+| Allow Console | Lets you open the developer console. |
+| Allow Manual Saves | Lets you use F5 quicksave and the pause-menu Save / Load options. |
+| Allow Auto-Saves | Lets the game auto-save (menu close, door entry, and so on). |
+| Allow Fast Travel | Lets you fast travel from the Pip-Boy map. House Rules protects you from rad damage during the fast-travel loading screen, but only during fast travel. Other dangers are not affected. |
+| Show Enemies on Compass | Brings back red enemy markers on the compass. |
+| Show Locations on Compass | Brings back unexplored-location markers on the compass. |
+| Remove Chem/Aid Weight | Removes the extra weight Survival adds to chems, food, drinks, and stimpaks. |
+| Remove Ammo Weight | Removes the extra weight Survival adds to ammunition. |
+| Remove Survival Carry-Weight Penalty | Removes the carry-weight reduction Survival applies to you and your companions. Stacks with the carry-weight sliders on the Character page. |
+| Allow God Mode | Lets the `tgm` and `tim` console commands work in Survival. |
+| Allow Re-entering Survival | Lets you switch Survival on and off freely. Vanilla only allows leaving Survival, never coming back. Updates right away. |
 
 ## Magnitudes
 
-Conservative scalers for proven vanilla survival records. Magnitude edits touch base records, so changes take effect the next time an item is consumed or re-evaluated. Pip-Boy tooltips cache the previous value until then.
+Sliders for how strong consumables and Survival penalties are. These edit base item records, so changes apply the next time you use the item. The Pip-Boy tooltip will keep showing the old value until then.
 
 ### Consumables
 
 | Slider | Type | Default | Effect |
 |---|---|---|---|
-| Stimpak Heal | Multiplier | 1.0 | Scales `RestoreHealthStimpak` magnitude (vanilla: 6). |
-| Stimpak Limb Repair | Multiplier | 1.0 | Scales per-limb `RestoreCondition` magnitudes (vanilla: 100). |
-| RadAway Strength | Multiplier | 1.0 | Scales `RestoreRadsChem` magnitude (vanilla: 60). |
-| Rad-X Potency | Multiplier | 1.0 | Scales `FortifyResistRadsRadX` magnitude (vanilla: 100). |
-| Food Heal | Multiplier | 1.0 | Scales the universal `RestoreHealthFood` MGEF baseCost. |
+| Stimpak Heal | Multiplier | 1.0 | How much health a Stimpak restores. |
+| Stimpak Limb Repair | Multiplier | 1.0 | How much limb damage a Stimpak repairs. |
+| RadAway Strength | Multiplier | 1.0 | How much radiation RadAway removes. |
+| Rad-X Potency | Multiplier | 1.0 | How much radiation resistance Rad-X grants. |
+| Food Heal | Multiplier | 1.0 | How much health food items restore. |
 
-### Survival Stage Penalties
+### Survival Penalties
 
 | Slider | Type | Default | Effect |
 |---|---|---|---|
-| Hunger Penalty | Multiplier | 1.0 | Scales `HC_HungerEffect_*` ALCH magnitudes (Peckish/Hungry/Famished/Starving). |
-| Thirst Penalty | Multiplier | 1.0 | Scales `HC_ThirstEffect_*` ALCH magnitudes (Parched/Thirsty/Dehydrated). |
-| Sleep Penalty | Multiplier | 1.0 | Scales `HC_SleepEffect_*` ALCH magnitudes (Tired/Weary/Exhausted/Incapacitated). |
+| Hunger Penalty | Multiplier | 1.0 | How harsh the hunger stage penalties are (Peckish, Hungry, Famished, Starving). |
+| Thirst Penalty | Multiplier | 1.0 | How harsh the thirst stage penalties are (Parched, Thirsty, Dehydrated). |
+| Sleep Penalty | Multiplier | 1.0 | How harsh the sleep stage penalties are (Tired, Weary, Exhausted, Incapacitated). |
 
-`0.0` on any penalty slider nulls that effect entirely.
+`0.0` on any penalty slider removes that penalty completely.
 
 ## Difficulty I (Combat & Rewards)
 
-Runtime GMST sliders. `1.00` is the engine's current baseline; House Rules snapshots it on first apply and writes `baseline * slider`, so changes don't compound across sessions.
+Multipliers for combat damage and rewards on each difficulty level. `1.00` means no change. House Rules saves the original game value the first time it applies a setting, so changing the slider does not stack across save loads.
 
-| Slider | GMST | Type | Effect |
-|---|---|---|---|
-| Incoming Damage | `fDiffMultHPByPCVS<difficulty>` | Multiplier | Damage you take per difficulty tier. |
-| Outgoing Damage | `fDiffMultHPToPCVS<difficulty>` | Multiplier | Damage you deal per difficulty tier. |
-| Base XP Rate | `fXPDifficultyMult` | Multiplier | Base XP scaling. |
-| Intelligence XP Bonus | `fXPPerIntelligenceMult` | Multiplier | Bonus XP per Intelligence point. |
-| Legendary Chance | `fLegendaryDropChance<tier>` | Multiplier | Probability a kill drops a legendary at this difficulty. |
-| Legendary Rarity | `fLegendaryDropRarityMult<tier>` | Multiplier | Quality / rarity weight applied when a legendary does drop. |
+| Slider | Game Setting | What it changes |
+|---|---|---|
+| Incoming Damage | `fDiffMultHPByPCVS<difficulty>` | Damage you take, per difficulty level. |
+| Outgoing Damage | `fDiffMultHPToPCVS<difficulty>` | Damage you deal, per difficulty level. |
+| Base XP Rate | `fXPDifficultyMult` | How much XP you earn overall. |
+| Intelligence XP Bonus | `fXPPerIntelligenceMult` | How much extra XP each point of Intelligence gives. |
+| Legendary Chance | `fLegendaryDropChance<tier>` | The chance an enemy drops a legendary item. |
+| Legendary Rarity | `fLegendaryDropRarityMult<tier>` | How rare the legendary effect is when one drops. |
 
-## Difficulty II (Effect Duration & Magnitude)
+## Difficulty II (Effect Duration & Strength)
 
-Per-tier effect-balance multipliers. Survival's baselines are unusual: vanilla `fDiffMultEffectDuration_TSV` is much *longer* than Normal and `fDiffMultEffectMagnitude_TSV` is much *smaller* than Normal. The slider multiplies that Survival baseline, so `1.00` on Survival is still Survival - not Normal.
+Multipliers for how long status effects last and how strong they are. Each difficulty level has its own pair of sliders.
 
-| Slider Group | GMST Family | Type | Notes |
-|---|---|---|---|
-| Effect Duration (per tier) | `fDiffMultEffectDuration_*` | Multiplier | Tiers: VeryEasy / Easy / Normal / Hard / VeryHard / Survival. The legacy `_SV` is intentionally skipped. |
-| Effect Magnitude (per tier) | `fDiffMultEffectMagnitude_*` | Multiplier | Same tier set. |
+A note about Survival: vanilla Survival uses unusual values here. Status effects last much longer in Survival, but their magnitude is much weaker. The slider multiplies that Survival value, so `1.00` on Survival is still Survival. It does not become Normal.
+
+| Slider Group | Game Setting Family | What it changes |
+|---|---|---|
+| Effect Duration (per difficulty) | `fDiffMultEffectDuration_*` | How long status effects last. Difficulty levels: VeryEasy, Easy, Normal, Hard, VeryHard, Survival. |
+| Effect Magnitude (per difficulty) | `fDiffMultEffectMagnitude_*` | How strong status effects are. Same difficulty levels. |
 
 ## Character (Action Points, Sprint, Carry, Health)
 
-Runtime GMST and player-ActorValue sliders for AP feel, sprint cost, carry capacity, and health.
+Sliders for AP, sprint, carry weight, and health.
 
-### Action Points
+### Action Points (AP)
 
-| Slider | Surface | Default | Effect |
-|---|---|---|---|
-| AP Pool Base | GMST `fAVDActionPointsBase` | Direct | Base AP pool. |
-| AP per Agility | GMST `fAVDActionPointsAgilityMult` | Direct | AP gained per Agility point. |
-| AP Regen Rate | ActorValue `restoreAPRate` | Direct (player AV) | Out-of-combat AP regeneration. |
-| Combat AP Regen Multiplier | GMST `fCombatActionPointsRegenMultiplier` | Direct | Multiplier applied to AP regen during combat (vanilla 0.75). |
-| AP Regen Delay | GMST `fCombatActionPointsRegenDelay` | Direct | Seconds after AP spend before regen resumes. |
-| Out-of-Breath Delay | GMST `fCombatActionPointsRegenDelayMax` | Direct | Cap on the regen delay. **Warning logged if you set this lower than `AP Regen Delay`.** |
-| Regen Delay Cap | GMST `fSprintStopActionPointsRegenDelay` | Direct | Sprint-stop regen delay floor. |
+| Slider | Default | What it changes |
+|---|---|---|
+| AP Pool Base | Direct | Your starting AP, before SPECIAL bonuses. |
+| AP per Agility | Direct | How much AP you get per Agility point. |
+| AP Regen Rate | Direct | How fast AP regenerates outside combat. |
+| Combat AP Regen Multiplier | Direct (vanilla 0.75) | How fast AP regenerates during combat. |
+| AP Regen Delay | Direct | The pause after spending AP before it starts regenerating. |
+| Out-of-Breath Delay | Direct | The maximum length of the regen pause. House Rules logs a warning if you set this lower than `AP Regen Delay`. |
+| Sprint-Stop Regen Delay | Direct | The minimum delay before AP regen starts after you stop sprinting. |
 
 ### Sprint
 
-| Slider | Surface | Default | Effect |
-|---|---|---|---|
-| Sprint Drain Base | GMST `fActorSprintAPCost` | Direct | Per-second AP cost while sprinting. |
-| Sprint Endurance Term | GMST `fAVDActionPointsEnduranceMult` | Direct | Endurance reduction term (vanilla -0.05). |
-| Sprint Drain Multiplier | GMST `fActorSprintAPCostMult` | Multiplier | Overall sprint drain scalar. |
+| Slider | Default | What it changes |
+|---|---|---|
+| Sprint Drain Base | Direct | The basic AP cost per second of sprinting. |
+| Sprint Endurance Term | Direct (vanilla -0.05) | How much Endurance reduces sprint cost. |
+| Sprint Drain Multiplier | Multiplier | An overall multiplier on sprint AP cost. |
 
 ### Carry Weight
 
-| Slider | Surface | Default | Effect |
-|---|---|---|---|
-| Carry Weight Base | GMST `fAVDCarryWeightBase` | Direct | Base capacity before SPECIAL bonuses. |
-| Carry Weight per Strength | GMST `fAVDCarryWeightStrengthMult` | Direct | Capacity gained per Strength point. |
+| Slider | Default | What it changes |
+|---|---|---|
+| Carry Weight Base | Direct | Your base carry weight, before SPECIAL bonuses. |
+| Carry Weight per Strength | Direct | How much extra carry weight each Strength point gives. |
 
-The `Remove Survival Carry-Weight Penalty` Survival Unlock stacks on top of this: this slider tunes the underlying capacity formula; the unlock removes the Survival-only `HC_ReduceCarryWeightAbility` penalty.
+The `Remove Survival Carry-Weight Penalty` toggle (on Survival Unlocks) stacks with these sliders. The slider sets the base formula. The toggle removes the Survival-only weight penalty on top of that.
 
 ### Health
 
-| Slider | Surface | Default | Effect |
-|---|---|---|---|
-| Health per Endurance | GMST `fAVDHealthEnduranceMult` | Direct | Max-health gain per Endurance point. |
-| Health per Level | GMST `fAVDHealthLevelMult` | Direct | Max-health gain per character level. |
-| Passive Health Regen | ActorValue `restoreHealthRate` | Direct (player AV) | Out-of-combat health regen. |
-| Combat Health Regen Multiplier | ActorValue `combatHealthRegenMult` | Direct (player AV) | Health regen scalar during combat. |
+| Slider | Default | What it changes |
+|---|---|---|
+| Health per Endurance | Direct | How much max health each Endurance point gives. |
+| Health per Level | Direct | How much max health you gain per character level. |
+| Passive Health Regen | Direct | How fast you heal outside combat. |
+| Combat Health Regen Multiplier | Direct | How fast you heal during combat. |
 
-AP pool, carry, and max-health formula edits update the actor-value formula but the player's *current* derived value may not refresh until the engine recomputes (level-up, equip change, fast-travel, save/load).
+A few of these sliders change the formula but not your current value right away. Your AP pool, carry weight, and max health refresh when the game recalculates them: at level-up, when you change equipment, after fast travel, or after you load a save.
 
-The three ActorValue regen sliders (`AP Regen Rate`, `Passive Health Regen`, `Combat Health Regen`) write the player's live ActorValue bases because they aren't GMSTs. Unlike GMST Direct sliders, these use absolute vanilla-neutral values so saved player ActorValues always have a deterministic reset path.
+The three regen sliders (AP Regen, Passive Health Regen, Combat Health Regen) are different from the others. They write a value directly to your character. This means they always have a known reset point so saves stay clean.
 
 ## Damage Formulas
 
-The raw damage and armor-reduction terms shared by every actor (player and NPCs).
+Sliders for the basic damage and armor calculations the game uses. These apply to both you and NPCs.
 
-| Slider | GMST | Default | Effect |
+| Slider | Game Setting | Default | What it changes |
 |---|---|---|---|
-| Radiation Damage Factor | `fRadsDamageFactor` | 0.15 | Raw rad-damage factor. Survival-relevant: rads accumulate in Survival. |
-| Radiation Armor Exponent | `fRadsArmorDmgReductionExp` | 0.365 | Rad-resistance exponent. |
-| Physical Damage Factor | `fPhysicalDamageFactor` | 0.15 | Stacks with the Difficulty I incoming/outgoing multipliers - they compound. |
-| Physical Armor Exponent | `fPhysicalArmorDmgReductionExp` | 0.365 | Physical resistance exponent. |
-| Energy Damage Factor | `fEnergyDamageFactor` | 0.15 | Same shape as Physical, for energy damage. |
-| Energy Armor Exponent | `fEnergyArmorDmgReductionExp` | 0.365 | Energy resistance exponent. |
+| Radiation Damage Factor | `fRadsDamageFactor` | 0.15 | How much damage radiation does. Higher = more damage. |
+| Radiation Armor Exponent | `fRadsArmorDmgReductionExp` | 0.365 | How much rad resistance reduces rad damage. |
+| Physical Damage Factor | `fPhysicalDamageFactor` | 0.15 | How much damage physical attacks do. Stacks with the Difficulty I sliders. |
+| Physical Armor Exponent | `fPhysicalArmorDmgReductionExp` | 0.365 | How much physical armor reduces damage. |
+| Energy Damage Factor | `fEnergyDamageFactor` | 0.15 | How much damage energy attacks do. Stacks with the Difficulty I sliders. |
+| Energy Armor Exponent | `fEnergyArmorDmgReductionExp` | 0.365 | How much energy resistance reduces energy damage. |
 
-All Direct. Leaving a slider on its default preserves whatever baseline another mod has written.
+All Direct sliders. Leaving one on its default keeps any changes another mod has made.
 
 ## Power Armor & Jetpack
 
-Runtime GMSTs for jetpack feel, fusion-core drain, and Power Armor durability.
+Sliders for jetpack feel, fusion core drain, and how fast Power Armor breaks.
 
 ### Jetpack
 
-| Slider | GMST | Default | Type |
+| Slider | Default | Type | What it changes |
 |---|---|---|---|
-| Initial Drain | `fJetpackDrainInital` (engine typo preserved) | 1.0 | Multiplier |
-| Sustained Drain | `fJetpackDrainSustained` | 1.0 | Multiplier |
-| Initial Thrust | `fJetpackThrustInitial` | 1.0 | Multiplier |
-| Sustained Thrust | `fJetpackThrustSustained` | 1.0 | Multiplier |
-| Min Fuel to Ignite | `fJetpackMinFuel` | 3 | Direct |
-| Sustained-Mode Threshold | `fJetpackSustainedTime` | 0.15 sec | Direct |
+| Initial Drain | 1.0 | Multiplier | Fuel cost when you first activate the jetpack. |
+| Sustained Drain | 1.0 | Multiplier | Fuel cost while flying. |
+| Initial Thrust | 1.0 | Multiplier | How much lift you get when you first activate the jetpack. |
+| Sustained Thrust | 1.0 | Multiplier | How much lift you get while flying. |
+| Min Fuel to Ignite | 3 | Direct | The smallest amount of fuel needed to start the jetpack. |
+| Sustained-Mode Time | 0.15 sec | Direct | How long after activation before sustained mode starts. |
 
 ### Fusion Core Drain
 
-| Slider | GMST | Default | Type |
+| Slider | Default | Type | What it changes |
 |---|---|---|---|
-| Per AP Spent | `fFusionCoreDrainPerAP` | 1.0 | Multiplier |
-| Per Second Running | `fFusionCoreDrainPerSec` | 1.0 | Multiplier |
-| Per Jump | `fFusionCoreDrainJump` | 0 | Direct |
-| Per Melee Attack | `fFusionCoreDrainMelee` | 0 | Direct |
-| Per Hard Landing | `fFusionCoreDrainLanding` | 0 | Direct |
+| Drain per AP Spent | 1.0 | Multiplier | Fuel cost per AP you spend in Power Armor. |
+| Drain per Second Running | 1.0 | Multiplier | Fuel cost per second you run in Power Armor. |
+| Drain per Jump | 0 | Direct | Extra fuel cost when you jump. |
+| Drain per Melee Attack | 0 | Direct | Extra fuel cost on melee attacks. |
+| Drain per Hard Landing | 0 | Direct | Extra fuel cost on hard landings. |
 
 ### Durability
 
-| Slider | GMST | Default | Effect |
-|---|---|---|---|
-| Player PA Damage Multiplier | `fPowerArmorPlayerCondDmgMult` | 1.0 | `0` makes PA effectively unbreakable on the player. |
-| NPC PA Damage Multiplier | `fPowerArmorNPCCondDmgMult` | 3 | Higher = NPC PA breaks faster. |
+| Slider | Default | What it changes |
+|---|---|---|
+| Player PA Damage Multiplier | 1.0 | How fast your Power Armor takes damage. `0` makes it unbreakable. |
+| NPC PA Damage Multiplier | 3 | How fast NPC Power Armor takes damage. |
 
 ## Economy (Vendor Pricing)
 
-| Slider | GMST | Default | Effect |
+| Slider | Game Setting | Default | What it changes |
 |---|---|---|---|
-| Buy Price Floor | `fBarterMin` | 2.0 | Minimum buy-side multiplier. **Higher = vendors charge more.** |
-| Sell Price Floor | `fBarterMax` | 3.5 | Sell-side divisor. **Higher = vendors pay less.** |
-| Max Buy Multiplier | `fBarterBuyMax` | 1.2 | Cap the Barter perk / Charisma curve can reach when buying. |
-| Max Sell Multiplier | `fBarterSellMax` | 0.8 | Cap reachable when selling. |
+| Buy Price Floor | `fBarterMin` | 2.0 | The lowest price multiplier you can pay when buying. **Higher = vendors charge more.** |
+| Sell Price Floor | `fBarterMax` | 3.5 | The divisor used when selling. **Higher = vendors pay less.** |
+| Max Buy Multiplier | `fBarterBuyMax` | 1.2 | The cap the Barter perk and Charisma can reach when you buy. |
+| Max Sell Multiplier | `fBarterSellMax` | 0.8 | The cap the Barter perk and Charisma can reach when you sell. |
 
-All Direct. Leaving a slider on its default preserves whatever baseline another mod has written.
+All Direct sliders. Leaving one on its default keeps any changes another mod has made.
 
 ## Progression (XP)
 
-Non-difficulty XP sources. Difficulty I covers the global multipliers; this page covers crafting, lockpicking, and minor sources.
+Sliders for XP from sources other than combat (Difficulty I covers combat XP).
 
 ### Crafting XP
 
-| Slider Group | GMST Triplet | Defaults |
+| Slider Group | Game Settings | Defaults |
 |---|---|---|
 | Cooking | `fCookingExp{Base,Max,Mult}` | 1 / 10 / 0.15 |
 | Weapon/Armor Workbench | `fWorkbenchExperience{Base,Max,Mult}` | 2 / 50 / 0.03 |
 | Settlement Workshop | `fWorkshopExperience{Base,Max,Mult}` | 2 / 25 / 0.10 |
 
-Engine clamps computed XP between Base and Max. If you invert a pair (Base > Max), House Rules logs a one-shot warning rather than mutating the values.
+The game keeps crafting XP between Base and Max. If you set Base higher than Max, House Rules logs a warning and does not change anything.
 
 ### Lockpick XP
 
-| Lock Tier | GMST | Default |
+| Lock Tier | Game Setting | Default |
 |---|---|---|
 | Apprentice | `fLockpickXPRewardEasy` | 5 |
 | Adept | `fLockpickXPRewardAverage` | 10 |
@@ -211,86 +213,86 @@ Engine clamps computed XP between Base and Max. If you invert a pair (Base > Max
 
 ### Other
 
-| Slider | GMST | Default |
+| Slider | Game Setting | Default |
 |---|---|---|
 | Mine Disarm XP | `iMineDisarmExperience` | 5 |
 
-All Direct.
+All Direct sliders.
 
 ## VATS
 
-| Slider | GMST | Default | Effect |
+| Slider | Game Setting | Default | What it changes |
 |---|---|---|---|
-| Max Engage Distance | `fVATSMaxEngageDistance` | 5000 | Range where VATS can activate. `0` disables VATS targeting. |
-| Target-Select Time | `fVATSTimeMultTargetSelect` | 0.04 | Lower values slow time more while choosing targets. |
-| Player Damage Multiplier | `fVATSPlayerDamageMult` | 0.10 | Incoming damage multiplier while VATS is active. `1.0` removes the vanilla damage reduction. |
+| Max Engage Distance | `fVATSMaxEngageDistance` | 5000 | How far you can be from a target to use VATS. `0` disables VATS. |
+| Target-Select Time | `fVATSTimeMultTargetSelect` | 0.04 | How much time slows while you choose targets. Lower = slower. |
+| Player Damage Multiplier | `fVATSPlayerDamageMult` | 0.10 | Damage you take while VATS is active. `1.0` removes the vanilla damage reduction. |
 
 ## Skills (Pickpocket, Hacking, Lockpicking)
 
 ### Pickpocket
 
-| Slider | GMST | Default | Effect |
+| Slider | Game Setting | Default | What it changes |
 |---|---|---|---|
-| Min Chance | `fPickPocketMinChance` | 0 | Floor on pickpocket success. |
-| Max Chance | `fPickPocketMaxChance` | 90 | Ceiling on pickpocket success. |
-| Reverse-Pickpocket Grenade Timer | `fProjectileInventoryGrenadeTimer` | 2 sec | Fuse on grenades reverse-pickpocketed onto NPCs. |
+| Min Chance | `fPickPocketMinChance` | 0 | The smallest pickpocket success chance. |
+| Max Chance | `fPickPocketMaxChance` | 90 | The largest pickpocket success chance. |
+| Reverse-Pickpocket Grenade Timer | `fProjectileInventoryGrenadeTimer` | 2 sec | How long the fuse is on grenades you place on NPCs. |
 
 ### Hacking
 
-| Slider | GMST | Default | Effect |
+| Slider | Game Setting | Default | What it changes |
 |---|---|---|---|
-| Min Words | `iHackingMinWords` | 6 | Smallest terminal puzzle size. |
-| Max Words | `iHackingMaxWords` | 20 | Largest terminal puzzle size. |
+| Min Words | `iHackingMinWords` | 6 | The smallest number of words on a terminal screen. |
+| Max Words | `iHackingMaxWords` | 20 | The largest number of words on a terminal screen. |
 
 ### Lockpicking
 
-Lock-tier sliders for break threshold, sweet-spot base, durability, and sweet-spot width. Lockpick XP remains on the Progression page.
+Sliders by lock tier for break threshold, sweet-spot base, durability, and sweet-spot width. Lockpick XP is on the Progression page.
 
 ## Sneak
 
-### Sneak Attack Damage Multipliers
+### Sneak Attack Damage
 
-| Slider | GMST | Default |
-|---|---|---|
-| Gun | `fSneakAttackMult` | varies by weapon class |
-| Unarmed / Fist | `fSneakAttackMultUnarmed` | varies |
-| One-Handed Melee | `fSneakAttackMult1H` | varies |
-| Two-Handed Melee | `fSneakAttackMult2H` | varies |
+| Slider | Game Setting |
+|---|---|
+| Gun | `fSneakAttackMult` |
+| Unarmed / Fist | `fSneakAttackMultUnarmed` |
+| One-Handed Melee | `fSneakAttackMult1H` |
+| Two-Handed Melee | `fSneakAttackMult2H` |
 
 ### Detection
 
-| Slider | GMST | Default | Effect |
+| Slider | Game Setting | Default | What it changes |
 |---|---|---|---|
-| Exterior Detection Distance | `fDetectionExteriorDistanceMult` | 1.0 | Multiplier on outdoor enemy detection range. |
+| Outdoor Detection Distance | `fDetectionExteriorDistanceMult` | 1.0 | How far enemies can spot you outdoors. |
 | Light Sensitivity | `fDetectionLightMod` | 1.0 | How much ambient light affects detection. |
-| Max Detection Distance | `fDetectionMaxDistance` | varies | Hard cap on enemy detection range. |
+| Max Detection Distance | `fDetectionMaxDistance` | varies | The maximum range an enemy can detect you at. |
 
-NPC search timers and stealth-point internals are intentionally deferred.
+NPC search timers and stealth-point internals are not exposed. They may come later.
 
 ## Coming Soon
 
-Tracks under active development:
+Planned tracks:
 
-- **Companions Affinity** - 9 sliders backed by direct vanilla TESGlobal writes (5 reaction thresholds + 4 cooldown durations). Replicates the Companions Affinity mod's functionality natively.
-- **Settlements** - vanilla settlement GMSTs (workshop attack distance, recruitment caps, settler happiness rates, defense scaling). Does not replace Uncapped Settlement Surplus; covers the GMST-track adjacent.
-- **Economy expansion** - additional vendor / persuasion / barter knobs beyond the four current barter sliders.
-- **Progression expansion** - global XP curve (`fLevelUpExperienceFactor`), sneak XP scaling, perk pacing, kill XP scalers.
+- **Companions Affinity** - 9 sliders for companion reaction thresholds and cooldowns. Replicates the Companions Affinity mod's settings inside House Rules' MCM.
+- **Settlements** - sliders for settlement-related game settings (workshop attack distance, recruitment, settler happiness, defense). Does not replace Uncapped Settlement Surplus. Covers different settings.
+- **Economy expansion** - more vendor and persuasion sliders beyond the four current ones.
+- **Progression expansion** - global XP curve, sneak attack XP, perk pacing, and more.
 
 ## Recommended Companion Mods
 
-House Rules is designed to stack cleanly with mods that own the surfaces it doesn't:
+House Rules works well alongside mods that change settings House Rules cannot:
 
-- **[Uncapped Settlement Surplus](https://www.nexusmods.com/fallout4/mods/8635)** - removes hardcoded Papyrus settlement production caps. House Rules covers GMST settlement knobs; USS covers the script-side caps. Run both.
-- **MCM** (required) - the configuration menu UI House Rules registers into.
+- **[Uncapped Settlement Surplus](https://www.nexusmods.com/fallout4/mods/8635)** - removes Fallout 4's hidden settlement production caps. Those caps are not exposed as game settings, so House Rules cannot change them. House Rules and USS work together.
+- **MCM** (required) - the menu UI House Rules uses.
 
 ## Validation
 
-House Rules ships an in-game validation audit. Open the console and type `HRVERIFY` to emit a per-module PASS/FAIL/SKIP report into the plugin log. Every shipped GMST or ActorValue writer should print PASS with no failed or skipped targets.
+House Rules has a built-in self-test. Open the console and type `HRVERIFY`. The plugin writes a per-page PASS / FAIL / SKIP report to its log file. Every active feature should show PASS.
 
-To validate the audit log after a launch:
+To check the log automatically after launch:
 
 ```powershell
 python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module ActorValues --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS --require-module Skills --require-module Sneak
 ```
 
-Per-module validation will be extended for each new track (Companions, Settlements, Economy expansion, Progression expansion) as they ship.
+The validation list will grow as new tracks ship.
