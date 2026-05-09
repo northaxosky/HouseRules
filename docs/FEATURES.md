@@ -364,11 +364,34 @@ Sliders for trigger chances and tier multipliers tied to combat perks.
 
 All Direct sliders. Leaving one on its default keeps any changes another mod has made.
 
+## Settlements
+
+Sliders for vanilla workshop game settings - build timers, repair cost, wire length, settler cap, and placement constraints. **Does not replicate Uncapped Settlement Surplus** - USS targets Papyrus-side production caps that have no game-setting surface. Run both mods together if you want USS's surplus uncap on top of these knobs.
+
+### Settler & Building
+
+| Slider | Game Setting | Default | What it changes |
+|---|---|---|---|
+| Settler Population Cap | `iWorkshopSettlerPopulationMax` | 10 | Hard cap on settlers per settlement (before Charisma bonuses). |
+| Build Base Timer | `fWorkshopBuildBaseTimer` | 0.1 | Seconds the workshop UI takes to register a build. |
+| Build Resource Timer | `fWorkshopBuildResourceTimer` | 0.4 | Seconds the workshop UI takes to deduct resources. |
+| Repair Component Multiplier | `fWorkshopRepairComponentMult` | 0.1 | Component cost multiplier when repairing damaged objects. |
+| Power Wire Max Length | `fWorkshopWireMaxLength` | 1100 | Maximum reach of a single power wire. |
+
+### Placement Constraints
+
+| Slider | Game Setting | Default | What it changes |
+|---|---|---|---|
+| Restricted Build Spacing | `fWorkshopRestrictedBuildSpacing` | 32 | Minimum spacing between restricted build objects. |
+| Max Flora Build Radius | `fWorkshopRestrictedBuildMaxFloraRadius` | 50 | Radius around flora where restricted objects cannot be placed. |
+| Max Keyword Build Radius | `fWorkshopRestrictedBuildMaxKeywordRadius` | 50 | Radius around keyword-tagged objects where restricted builds are blocked. |
+| Max Turret Build Radius | `fWorkshopRestrictedBuildMaxTurretRadius` | 70 | Minimum spacing between automated turrets. |
+
+All Direct sliders. Leaving one on its default keeps any changes another mod has made.
+
 ## Coming Soon
 
-Planned tracks:
-
-- **Settlements** - sliders for settlement-related game settings (workshop attack distance, recruitment, settler happiness, defense). Does not replace Uncapped Settlement Surplus. Covers different settings.
+No firmly-planned tracks at the moment. Suggestions welcome.
 
 ## Recommended Companion Mods
 

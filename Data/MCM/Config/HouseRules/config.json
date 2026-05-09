@@ -1554,6 +1554,88 @@
                     "valueOptions": { "min": 0, "max": 200, "step": 1, "sourceType": "ModSettingInt" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Settlements",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Settlements</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Workshop GMSTs for build timers, repair cost, wire length, settler cap, and placement constraints. Does not replicate Uncapped Settlement Surplus (whose surplus caps live in Papyrus, not GMSTs).</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Settler & Building", "type": "section" },
+                {
+                    "id": "iSettlerPopulationMax:Settlements",
+                    "text": "Settler Population Cap",
+                    "type": "slider",
+                    "help": "Hard cap on settlers per settlement (before Charisma bonuses). Vanilla 10.",
+                    "valueOptions": { "min": 1, "max": 50, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "fBuildBaseTimer:Settlements",
+                    "text": "Build Base Timer",
+                    "type": "slider",
+                    "help": "Seconds the workshop UI takes to register a build. Vanilla 0.1.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fBuildResourceTimer:Settlements",
+                    "text": "Build Resource Timer",
+                    "type": "slider",
+                    "help": "Seconds the workshop UI takes to deduct resources. Vanilla 0.4.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fRepairComponentMult:Settlements",
+                    "text": "Repair Component Multiplier",
+                    "type": "slider",
+                    "help": "Component cost multiplier when repairing damaged objects. Vanilla 0.1.",
+                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fWireMaxLength:Settlements",
+                    "text": "Power Wire Max Length",
+                    "type": "slider",
+                    "help": "Maximum reach of a single power wire connection. Vanilla 1100.",
+                    "valueOptions": { "min": 100.0, "max": 5000.0, "step": 50.0, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Placement Constraints", "type": "section" },
+                {
+                    "id": "fRestrictedBuildSpacing:Settlements",
+                    "text": "Restricted Build Spacing",
+                    "type": "slider",
+                    "help": "Minimum spacing between restricted build objects. Vanilla 32.",
+                    "valueOptions": { "min": 0.0, "max": 200.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fRestrictedBuildMaxFloraRadius:Settlements",
+                    "text": "Max Flora Build Radius",
+                    "type": "slider",
+                    "help": "Radius around flora where restricted objects cannot be placed. Vanilla 50.",
+                    "valueOptions": { "min": 0.0, "max": 500.0, "step": 5.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fRestrictedBuildMaxKeywordRadius:Settlements",
+                    "text": "Max Keyword Build Radius",
+                    "type": "slider",
+                    "help": "Radius around keyword-tagged objects where restricted builds are blocked. Vanilla 50.",
+                    "valueOptions": { "min": 0.0, "max": 500.0, "step": 5.0, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fRestrictedBuildMaxTurretRadius:Settlements",
+                    "text": "Max Turret Build Radius",
+                    "type": "slider",
+                    "help": "Minimum spacing between automated turrets. Vanilla 70.",
+                    "valueOptions": { "min": 0.0, "max": 500.0, "step": 5.0, "sourceType": "ModSettingFloat" }
+                }
+            ]
         }
     ]
 }

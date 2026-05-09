@@ -361,6 +361,28 @@ namespace MCM
 			inline static REX::INI::I32<> iHeavyArmorSinkSum             { "CombatPerks", "iHeavyArmorSinkSum",              35   };
 		};
 
+		// Settlements v0.4 -- vanilla workshop GMSTs for build timers, repair
+		// cost, wire length, settler population cap, and placement radius
+		// constraints. Direct mode with vanilla defaults as neutral. Does
+		// not replicate Uncapped Settlement Surplus (whose surplus caps live
+		// in Papyrus, not GMSTs).
+		class Settlements
+		{
+		public:
+			// Settler / build timers / repair / wire
+			inline static REX::INI::I32<> iSettlerPopulationMax  { "Settlements", "iSettlerPopulationMax",  10  };
+			inline static REX::INI::F32<> fBuildBaseTimer        { "Settlements", "fBuildBaseTimer",         0.1f  };
+			inline static REX::INI::F32<> fBuildResourceTimer    { "Settlements", "fBuildResourceTimer",     0.4f  };
+			inline static REX::INI::F32<> fRepairComponentMult   { "Settlements", "fRepairComponentMult",    0.1f  };
+			inline static REX::INI::F32<> fWireMaxLength         { "Settlements", "fWireMaxLength",       1100.0f  };
+
+			// Placement radius constraints
+			inline static REX::INI::F32<> fRestrictedBuildSpacing       { "Settlements", "fRestrictedBuildSpacing",        32.0f };
+			inline static REX::INI::F32<> fRestrictedBuildMaxFloraRadius{ "Settlements", "fRestrictedBuildMaxFloraRadius",  50.0f };
+			inline static REX::INI::F32<> fRestrictedBuildMaxKeywordRadius{ "Settlements", "fRestrictedBuildMaxKeywordRadius", 50.0f };
+			inline static REX::INI::F32<> fRestrictedBuildMaxTurretRadius { "Settlements", "fRestrictedBuildMaxTurretRadius",  70.0f };
+		};
+
 		// Diagnostics. Some values are exposed in MCM; developer-only toggles
 		// remain INI-only.
 		class Diagnostic

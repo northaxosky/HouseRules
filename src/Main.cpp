@@ -21,6 +21,7 @@
 #include "Tweaks/Magnitudes.h"
 #include "Tweaks/PowerArmor.h"
 #include "Tweaks/Progression.h"
+#include "Tweaks/Settlements.h"
 #include "Tweaks/Skills.h"
 #include "Tweaks/Sneak.h"
 #include "Tweaks/VATS.h"
@@ -69,6 +70,7 @@ namespace
 				Tweaks::Sneak::Apply();
 				Tweaks::CompanionsAffinity::Apply();
 				Tweaks::CombatPerks::Apply();
+				Tweaks::Settlements::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("PauseMenu");
 				Diagnostics::HCManagerProbe::MaybeRun("PauseMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
@@ -95,6 +97,7 @@ namespace
 				Tweaks::Sneak::Apply();
 				Tweaks::CompanionsAffinity::Apply();
 				Tweaks::CombatPerks::Apply();
+				Tweaks::Settlements::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("LoadingMenu");
 				Diagnostics::HCManagerProbe::MaybeRun("LoadingMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
