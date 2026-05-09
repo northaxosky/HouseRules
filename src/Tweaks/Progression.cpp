@@ -16,7 +16,7 @@ namespace Tweaks::Progression
 		using GameSettings::IntTarget;
 		using GameSettings::Mode;
 
-		const std::array<FloatTarget, 13> kFloatTargets = { {
+		const std::array<FloatTarget, 16> kFloatTargets = { {
 			// Cooking
 			{ "fCookingExpBase", &MCM::Settings::Progression::fCookingExpBase, Mode::Direct, 1.0f  },
 			{ "fCookingExpMax",  &MCM::Settings::Progression::fCookingExpMax,  Mode::Direct, 10.0f },
@@ -37,10 +37,24 @@ namespace Tweaks::Progression
 			{ "fLockpickXPRewardAverage",  &MCM::Settings::Progression::fLockpickXPAdept,      Mode::Direct, 10.0f },
 			{ "fLockpickXPRewardHard",     &MCM::Settings::Progression::fLockpickXPExpert,     Mode::Direct, 15.0f },
 			{ "fLockpickXPRewardVeryHard", &MCM::Settings::Progression::fLockpickXPMaster,     Mode::Direct, 20.0f },
+
+			// XP formula (mod XP scaling + post-death penalty threshold)
+			{ "fXPModBase",                  &MCM::Settings::Progression::fXPModBase,                  Mode::Direct, 1.0f  },
+			{ "fXPModMult",                  &MCM::Settings::Progression::fXPModMult,                  Mode::Direct, 0.03f },
+			{ "fXPDeathRewardHealthThreshold", &MCM::Settings::Progression::fXPDeathRewardHealthThreshold, Mode::Direct, 0.25f },
 		} };
 
-		const std::array<IntTarget, 1> kIntTargets = { {
+		const std::array<IntTarget, 6> kIntTargets = { {
 			{ "iMineDisarmExperience", &MCM::Settings::Progression::iMineDisarmXP, Mode::Direct, std::int32_t{ 5 } },
+
+			// Kill / discovery XP rewards
+			{ "iXPRewardKillOpponent",      &MCM::Settings::Progression::iXPRewardKillOpponent,      Mode::Direct, std::int32_t{ 20 } },
+			{ "iXPRewardDiscoverMapMarker", &MCM::Settings::Progression::iXPRewardDiscoverMapMarker, Mode::Direct, std::int32_t{ 20 } },
+			{ "iXPRewardDiscoverSecretArea", &MCM::Settings::Progression::iXPRewardDiscoverSecretArea, Mode::Direct, std::int32_t{ 20 } },
+
+			// XP base scalar + level-up bump
+			{ "iXPBase",     &MCM::Settings::Progression::iXPBase,     Mode::Direct, std::int32_t{ 200 } },
+			{ "iXPBumpBase", &MCM::Settings::Progression::iXPBumpBase, Mode::Direct, std::int32_t{ 75  } },
 		} };
 
 		void WarnIfInverted(const char* a_label,

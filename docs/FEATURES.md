@@ -226,6 +226,24 @@ The game keeps crafting XP between Base and Max. If you set Base higher than Max
 |---|---|---|
 | Mine Disarm XP | `iMineDisarmExperience` | 5 |
 
+### Kill & Discovery XP
+
+| Slider | Game Setting | Default | What it changes |
+|---|---|---|---|
+| Kill XP | `iXPRewardKillOpponent` | 20 | XP per killed opponent. |
+| Map Marker XP | `iXPRewardDiscoverMapMarker` | 20 | XP per newly discovered map marker. |
+| Secret Area XP | `iXPRewardDiscoverSecretArea` | 20 | XP per discovered secret area. |
+
+### XP Formula
+
+| Slider | Game Setting | Default | What it changes |
+|---|---|---|---|
+| XP Base | `iXPBase` | 200 | Base XP scalar used by the level-up curve. |
+| Level-Up Bump | `iXPBumpBase` | 75 | Per-level XP bump value. |
+| Mod XP Base | `fXPModBase` | 1.0 | Base XP for installing or removing a weapon/armor mod at a workbench. |
+| Mod XP Multiplier | `fXPModMult` | 0.03 | Multiplier on Mod XP. |
+| Death Reward Health Threshold | `fXPDeathRewardHealthThreshold` | 0.25 | Engine penalty threshold for kills made just before the player's death. |
+
 All Direct sliders.
 
 ## VATS

@@ -237,6 +237,19 @@ namespace MCM
 
 			// Mine disarm (int)
 			inline static REX::INI::I32<> iMineDisarmXP{ "Progression", "iMineDisarmXP", 5 };
+
+			// Kill / discovery XP rewards
+			inline static REX::INI::I32<> iXPRewardKillOpponent     { "Progression", "iXPRewardKillOpponent",      20 };
+			inline static REX::INI::I32<> iXPRewardDiscoverMapMarker{ "Progression", "iXPRewardDiscoverMapMarker", 20 };
+			inline static REX::INI::I32<> iXPRewardDiscoverSecretArea{ "Progression", "iXPRewardDiscoverSecretArea", 20 };
+
+			// XP formula
+			inline static REX::INI::I32<> iXPBase     { "Progression", "iXPBase",      200 };
+			inline static REX::INI::I32<> iXPBumpBase { "Progression", "iXPBumpBase",   75 };
+			inline static REX::INI::F32<> fXPModBase  { "Progression", "fXPModBase",     1.0f  };
+			inline static REX::INI::F32<> fXPModMult  { "Progression", "fXPModMult",     0.03f };
+			inline static REX::INI::F32<> fXPDeathRewardHealthThreshold{
+				"Progression", "fXPDeathRewardHealthThreshold", 0.25f };
 		};
 
 		// VATS v0.5 -- targeting distance, target-select time scale, and
