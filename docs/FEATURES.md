@@ -177,7 +177,9 @@ Sliders for jetpack feel, fusion core drain, and how fast Power Armor breaks.
 | Player PA Damage Multiplier | 1.0 | How fast your Power Armor takes damage. `0` makes it unbreakable. |
 | NPC PA Damage Multiplier | 3 | How fast NPC Power Armor takes damage. |
 
-## Economy (Vendor Pricing)
+## Economy
+
+### Vendor Pricing
 
 | Slider | Game Setting | Default | What it changes |
 |---|---|---|---|
@@ -185,6 +187,13 @@ Sliders for jetpack feel, fusion core drain, and how fast Power Armor breaks.
 | Sell Price Floor | `fBarterMax` | 3.5 | The divisor used when selling. **Higher = vendors pay less.** |
 | Max Buy Multiplier | `fBarterBuyMax` | 1.2 | The cap the Barter perk and Charisma can reach when you buy. |
 | Max Sell Multiplier | `fBarterSellMax` | 0.8 | The cap the Barter perk and Charisma can reach when you sell. |
+
+### Persuasion
+
+| Slider | Game Setting | Default | What it changes |
+|---|---|---|---|
+| Persuasion Floor | `fSpeechcraftFavorMin` | 0.5 | Minimum success chance the Charisma speech-check curve can fall to. |
+| Persuasion Ceiling | `fSpeechcraftFavorMax` | 1.0 | Maximum success chance the Charisma speech-check curve can reach. |
 
 All Direct sliders. Leaving one on its default keeps any changes another mod has made.
 

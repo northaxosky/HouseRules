@@ -17,11 +17,16 @@ namespace Tweaks::Economy
 		// Note on semantics: raising fBarterMin pushes BUY prices up;
 		// raising fBarterMax pushes SELL payouts down. MCM labels
 		// surface this in plain English.
-		const std::array<FloatTarget, 4> kTargets = { {
+		const std::array<FloatTarget, 6> kTargets = { {
+			// Barter
 			{ "fBarterMin",     &MCM::Settings::Economy::fBarterMin,     Mode::Direct, 2.0f },
 			{ "fBarterMax",     &MCM::Settings::Economy::fBarterMax,     Mode::Direct, 3.5f },
 			{ "fBarterBuyMax",  &MCM::Settings::Economy::fBarterBuyMax,  Mode::Direct, 1.2f },
 			{ "fBarterSellMax", &MCM::Settings::Economy::fBarterSellMax, Mode::Direct, 0.8f },
+
+			// Persuasion (Charisma speech-check outcome bounds)
+			{ "fSpeechcraftFavorMin", &MCM::Settings::Economy::fSpeechcraftFavorMin, Mode::Direct, 0.5f },
+			{ "fSpeechcraftFavorMax", &MCM::Settings::Economy::fSpeechcraftFavorMax, Mode::Direct, 1.0f },
 		} };
 	}
 

@@ -197,10 +197,15 @@ namespace MCM
 		class Economy
 		{
 		public:
+			// Barter pricing (vendor buy/sell multipliers)
 			inline static REX::INI::F32<> fBarterMin    { "Economy", "fBarterMin",     2.0f };
 			inline static REX::INI::F32<> fBarterMax    { "Economy", "fBarterMax",     3.5f };
 			inline static REX::INI::F32<> fBarterBuyMax { "Economy", "fBarterBuyMax",  1.2f };
 			inline static REX::INI::F32<> fBarterSellMax{ "Economy", "fBarterSellMax", 0.8f };
+
+			// Persuasion (Charisma speech-check) outcome bounds
+			inline static REX::INI::F32<> fSpeechcraftFavorMin{ "Economy", "fSpeechcraftFavorMin", 0.5f };
+			inline static REX::INI::F32<> fSpeechcraftFavorMax{ "Economy", "fSpeechcraftFavorMax", 1.0f };
 		};
 
 		// Progression v0.4 -- Non-difficulty XP source GMSTs: cooking,
