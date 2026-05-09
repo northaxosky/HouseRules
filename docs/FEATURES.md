@@ -325,13 +325,50 @@ How often the same kind of reaction can fire, measured in game days.
 
 All Direct sliders. Leaving one on its default keeps the vanilla value.
 
+## Combat Perks
+
+Sliders for trigger chances and tier multipliers tied to combat perks.
+
+### Combat Chances
+
+| Slider | Game Setting | Default | What it changes |
+|---|---|---|---|
+| Attack Disarm Chance | `iPerkAttackDisarmChance` | 50 | Disarm chance from the Big Leagues / Iron Fist disarm rank. |
+| Block Disarm Chance | `iPerkBlockDisarmChance` | 50 | Disarm chance when blocking with a melee weapon. |
+| Block Stagger Chance | `iPerkBlockStaggerChance` | 5 | Stagger chance when blocking. |
+| Hand-to-Hand Block Recoil Chance | `iPerkHandToHandBlockRecoilChance` | 25 | Recoil chance when blocking unarmed attacks. |
+| Marksman Knockdown Chance | `iPerkMarksmanKnockdownChance` | 5 | Knockdown chance from the Rifleman / Gunslinger knockdown ranks. |
+| Marksman Paralyze Chance | `iPerkMarksmanParalyzeChance` | 5 | Paralyze chance from the Rifleman / Gunslinger paralyze ranks. |
+
+### Light Armor Perk Tiers
+
+| Slider | Game Setting | Default | What it changes |
+|---|---|---|---|
+| Novice Damage Multiplier | `fPerkLightArmorNoviceDamageMult` | 1.5 | Damage taken at Light Armor rank 1. |
+| Journeyman Damage Multiplier | `fPerkLightArmorJourneymanDamageMult` | 0.5 | Damage taken at Light Armor rank 2. |
+| Expert Speed Multiplier | `fPerkLightArmorExpertSpeedMult` | 0.0 | Speed bonus at Light Armor rank 3. |
+| Master Rating Multiplier | `fPerkLightArmorMasterRatingMult` | 1.5 | Armor rating multiplier at Light Armor rank 4. |
+| Master Min Sum | `iPerkLightArmorMasterMinSum` | 5 | Minimum light armor pieces required for the Master bonus. |
+
+### Heavy Armor Perk Tiers
+
+| Slider | Game Setting | Default | What it changes |
+|---|---|---|---|
+| Novice Damage Multiplier | `fPerkHeavyArmorNoviceDamageMult` | 1.5 | Damage taken at Heavy Armor rank 1. |
+| Journeyman Damage Multiplier | `fPerkHeavyArmorJourneymanDamageMult` | 0.5 | Damage taken at Heavy Armor rank 2. |
+| Expert Speed Multiplier | `fPerkHeavyArmorExpertSpeedMult` | 0.5 | Speed multiplier at Heavy Armor rank 3. |
+| Master Speed Multiplier | `fPerkHeavyArmorMasterSpeedMult` | 0.0 | Speed multiplier at Heavy Armor rank 4. |
+| Sink Gravity Multiplier | `fPerkHeavyArmorSinkGravityMult` | 15 | Underwater gravity multiplier at the heavy armor sink threshold. |
+| Jump Sum Threshold | `iPerkHeavyArmorJumpSum` | 35 | Total armor weight where the heavy armor jump penalty triggers. |
+| Sink Sum Threshold | `iPerkHeavyArmorSinkSum` | 35 | Total armor weight where the heavy armor sink penalty triggers. |
+
+All Direct sliders. Leaving one on its default keeps any changes another mod has made.
+
 ## Coming Soon
 
 Planned tracks:
 
 - **Settlements** - sliders for settlement-related game settings (workshop attack distance, recruitment, settler happiness, defense). Does not replace Uncapped Settlement Surplus. Covers different settings.
-- **Economy expansion** - more vendor and persuasion sliders beyond the four current ones.
-- **Progression expansion** - global XP curve, sneak attack XP, perk pacing, and more.
 
 ## Recommended Companion Mods
 

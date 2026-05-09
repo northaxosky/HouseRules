@@ -1407,6 +1407,153 @@
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Combat Perks",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Combat Perks</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Tier multipliers and trigger chances for combat perks. Direct sliders show the vanilla default as their neutral value.</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Combat Chances", "type": "section" },
+                {
+                    "id": "iAttackDisarmChance:CombatPerks",
+                    "text": "Attack Disarm Chance",
+                    "type": "slider",
+                    "help": "Disarm chance from the Big Leagues / Iron Fist disarm rank. Vanilla 50.",
+                    "valueOptions": { "min": 0, "max": 100, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iBlockDisarmChance:CombatPerks",
+                    "text": "Block Disarm Chance",
+                    "type": "slider",
+                    "help": "Disarm chance when blocking with a melee weapon. Vanilla 50.",
+                    "valueOptions": { "min": 0, "max": 100, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iBlockStaggerChance:CombatPerks",
+                    "text": "Block Stagger Chance",
+                    "type": "slider",
+                    "help": "Stagger chance when blocking. Vanilla 5.",
+                    "valueOptions": { "min": 0, "max": 100, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iHandToHandBlockRecoilChance:CombatPerks",
+                    "text": "Hand-to-Hand Block Recoil Chance",
+                    "type": "slider",
+                    "help": "Recoil chance when blocking unarmed attacks. Vanilla 25.",
+                    "valueOptions": { "min": 0, "max": 100, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iMarksmanKnockdownChance:CombatPerks",
+                    "text": "Marksman Knockdown Chance",
+                    "type": "slider",
+                    "help": "Knockdown chance from the Rifleman / Gunslinger knockdown ranks. Vanilla 5.",
+                    "valueOptions": { "min": 0, "max": 100, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iMarksmanParalyzeChance:CombatPerks",
+                    "text": "Marksman Paralyze Chance",
+                    "type": "slider",
+                    "help": "Paralyze chance from the Rifleman / Gunslinger paralyze ranks. Vanilla 5.",
+                    "valueOptions": { "min": 0, "max": 100, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                { "type": "spacer" },
+                { "text": "Light Armor Perk", "type": "section" },
+                {
+                    "id": "fLightArmorNoviceDamageMult:CombatPerks",
+                    "text": "Novice Damage Multiplier",
+                    "type": "slider",
+                    "help": "Damage taken multiplier at Light Armor rank 1. Vanilla 1.5.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLightArmorJourneymanDamageMult:CombatPerks",
+                    "text": "Journeyman Damage Multiplier",
+                    "type": "slider",
+                    "help": "Damage taken multiplier at Light Armor rank 2. Vanilla 0.5.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLightArmorExpertSpeedMult:CombatPerks",
+                    "text": "Expert Speed Multiplier",
+                    "type": "slider",
+                    "help": "Speed bonus at Light Armor rank 3. Vanilla 0.0.",
+                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fLightArmorMasterRatingMult:CombatPerks",
+                    "text": "Master Rating Multiplier",
+                    "type": "slider",
+                    "help": "Armor rating multiplier at Light Armor rank 4. Vanilla 1.5.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "iLightArmorMasterMinSum:CombatPerks",
+                    "text": "Master Min Sum",
+                    "type": "slider",
+                    "help": "Minimum number of light armor pieces required to trigger the Master rating bonus. Vanilla 5.",
+                    "valueOptions": { "min": 0, "max": 10, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                { "type": "spacer" },
+                { "text": "Heavy Armor Perk", "type": "section" },
+                {
+                    "id": "fHeavyArmorNoviceDamageMult:CombatPerks",
+                    "text": "Novice Damage Multiplier",
+                    "type": "slider",
+                    "help": "Damage taken multiplier at Heavy Armor rank 1. Vanilla 1.5.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fHeavyArmorJourneymanDamageMult:CombatPerks",
+                    "text": "Journeyman Damage Multiplier",
+                    "type": "slider",
+                    "help": "Damage taken multiplier at Heavy Armor rank 2. Vanilla 0.5.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fHeavyArmorExpertSpeedMult:CombatPerks",
+                    "text": "Expert Speed Multiplier",
+                    "type": "slider",
+                    "help": "Speed multiplier at Heavy Armor rank 3. Vanilla 0.5.",
+                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fHeavyArmorMasterSpeedMult:CombatPerks",
+                    "text": "Master Speed Multiplier",
+                    "type": "slider",
+                    "help": "Speed multiplier at Heavy Armor rank 4. Vanilla 0.0.",
+                    "valueOptions": { "min": 0.0, "max": 2.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fHeavyArmorSinkGravityMult:CombatPerks",
+                    "text": "Sink Gravity Multiplier",
+                    "type": "slider",
+                    "help": "Underwater gravity multiplier when wearing the heavy armor sink threshold. Vanilla 15.",
+                    "valueOptions": { "min": 0.0, "max": 50.0, "step": 0.5, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "iHeavyArmorJumpSum:CombatPerks",
+                    "text": "Jump Sum Threshold",
+                    "type": "slider",
+                    "help": "Total armor weight at which heavy armor jump penalty triggers. Vanilla 35.",
+                    "valueOptions": { "min": 0, "max": 200, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iHeavyArmorSinkSum:CombatPerks",
+                    "text": "Sink Sum Threshold",
+                    "type": "slider",
+                    "help": "Total armor weight at which heavy armor sink (faster water descent) triggers. Vanilla 35.",
+                    "valueOptions": { "min": 0, "max": 200, "step": 1, "sourceType": "ModSettingInt" }
+                }
+            ]
         }
     ]
 }

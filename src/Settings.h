@@ -330,6 +330,37 @@ namespace MCM
 			inline static REX::INI::F32<> fSneakMaxDistance         { "Sneak", "fSneakMaxDistance",          4096.0f };
 		};
 
+		// CombatPerks v0.4 -- perk-tier multipliers for Light/Heavy Armor and
+		// disarm/stagger/knockdown/paralyze chances tied to combat perks.
+		// Direct mode with vanilla defaults as neutral.
+		class CombatPerks
+		{
+		public:
+			// Disarm / stagger / knockdown / paralyze chances triggered by combat perks
+			inline static REX::INI::I32<> iAttackDisarmChance         { "CombatPerks", "iAttackDisarmChance",          50 };
+			inline static REX::INI::I32<> iBlockDisarmChance          { "CombatPerks", "iBlockDisarmChance",           50 };
+			inline static REX::INI::I32<> iBlockStaggerChance         { "CombatPerks", "iBlockStaggerChance",           5 };
+			inline static REX::INI::I32<> iHandToHandBlockRecoilChance{ "CombatPerks", "iHandToHandBlockRecoilChance", 25 };
+			inline static REX::INI::I32<> iMarksmanKnockdownChance    { "CombatPerks", "iMarksmanKnockdownChance",      5 };
+			inline static REX::INI::I32<> iMarksmanParalyzeChance     { "CombatPerks", "iMarksmanParalyzeChance",       5 };
+
+			// Light Armor perk tier multipliers
+			inline static REX::INI::F32<> fLightArmorNoviceDamageMult    { "CombatPerks", "fLightArmorNoviceDamageMult",     1.5f };
+			inline static REX::INI::F32<> fLightArmorJourneymanDamageMult{ "CombatPerks", "fLightArmorJourneymanDamageMult", 0.5f };
+			inline static REX::INI::F32<> fLightArmorExpertSpeedMult     { "CombatPerks", "fLightArmorExpertSpeedMult",      0.0f };
+			inline static REX::INI::F32<> fLightArmorMasterRatingMult    { "CombatPerks", "fLightArmorMasterRatingMult",     1.5f };
+			inline static REX::INI::I32<> iLightArmorMasterMinSum        { "CombatPerks", "iLightArmorMasterMinSum",          5  };
+
+			// Heavy Armor perk tier multipliers
+			inline static REX::INI::F32<> fHeavyArmorNoviceDamageMult    { "CombatPerks", "fHeavyArmorNoviceDamageMult",     1.5f  };
+			inline static REX::INI::F32<> fHeavyArmorJourneymanDamageMult{ "CombatPerks", "fHeavyArmorJourneymanDamageMult", 0.5f  };
+			inline static REX::INI::F32<> fHeavyArmorExpertSpeedMult     { "CombatPerks", "fHeavyArmorExpertSpeedMult",      0.5f  };
+			inline static REX::INI::F32<> fHeavyArmorMasterSpeedMult     { "CombatPerks", "fHeavyArmorMasterSpeedMult",      0.0f  };
+			inline static REX::INI::F32<> fHeavyArmorSinkGravityMult     { "CombatPerks", "fHeavyArmorSinkGravityMult",     15.0f  };
+			inline static REX::INI::I32<> iHeavyArmorJumpSum             { "CombatPerks", "iHeavyArmorJumpSum",              35   };
+			inline static REX::INI::I32<> iHeavyArmorSinkSum             { "CombatPerks", "iHeavyArmorSinkSum",              35   };
+		};
+
 		// Diagnostics. Some values are exposed in MCM; developer-only toggles
 		// remain INI-only.
 		class Diagnostic
