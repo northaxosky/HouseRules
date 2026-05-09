@@ -151,6 +151,42 @@ namespace Diagnostics::DumpDefaultObjects
 		void DetailGlobal(const RE::TESGlobal* a_g) {
 			if (a_g) REX::INFO("    value={}", a_g->value);
 		}
+
+		// GMSTs live in RE::GameSettingCollection (BSTBTree-backed map),
+		// not in TESDataHandler form arrays — so they need their own sweep.
+		// Used to enumerate candidate sliders for new tweak modules.
+		int DumpGMSTs(const std::vector<std::string>& a_filters)
+		{
+			auto* coll = RE::GameSettingCollection::GetSingleton();
+			if (!coll) {
+				REX::WARN("GameSettingCollection unavailable; skipping GMST sweep");
+				return 0;
+			}
+			int matched = 0;
+			for (const auto& kv : coll->settings) {
+				const auto* setting = kv.second;
+				if (!setting) continue;
+				const auto name = setting->GetKey();
+				if (name.empty() || !NameMatches(name, a_filters)) continue;
+				++matched;
+				switch (setting->GetType()) {
+					case RE::Setting::SETTING_TYPE::kFloat:
+						REX::INFO("[GMST] '{}' = {} (float)", name, setting->GetFloat());
+						break;
+					case RE::Setting::SETTING_TYPE::kInt:
+						REX::INFO("[GMST] '{}' = {} (int)", name, setting->GetInt());
+						break;
+					case RE::Setting::SETTING_TYPE::kUInt:
+						REX::INFO("[GMST] '{}' = {} (uint)", name, setting->GetUInt());
+						break;
+					default:
+						REX::INFO("[GMST] '{}' (type={})", name,
+							static_cast<int>(setting->GetType()));
+						break;
+				}
+			}
+			return matched;
+		}
 	}
 
 	void MaybeRun()
@@ -175,8 +211,9 @@ namespace Diagnostics::DumpDefaultObjects
 		int flst  = DumpByEditorID<RE::BGSListForm>  ("FLST", filters, &DumpFormList);
 		int glob  = DumpByEditorID<RE::TESGlobal>    ("GLOB", filters, &DetailGlobal);
 		int mgef  = DumpByEditorID<RE::EffectSetting>("MGEF", filters, &DetailMGEF);
+		int gmst  = DumpGMSTs(filters);
 
-		REX::INFO("--- DumpDefaultObjects done (KYWD={} ALCH={} FLST={} GLOB={} MGEF={}) ---",
-			kw, alch, flst, glob, mgef);
+		REX::INFO("--- DumpDefaultObjects done (KYWD={} ALCH={} FLST={} GLOB={} MGEF={} GMST={}) ---",
+			kw, alch, flst, glob, mgef, gmst);
 	}
 }
