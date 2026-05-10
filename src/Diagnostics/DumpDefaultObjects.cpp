@@ -152,9 +152,7 @@ namespace Diagnostics::DumpDefaultObjects
 			if (a_g) REX::INFO("    value={}", a_g->value);
 		}
 
-		// GMSTs live in RE::GameSettingCollection (BSTBTree-backed map),
-		// not in TESDataHandler form arrays — so they need their own sweep.
-		// Used to enumerate candidate sliders for new tweak modules.
+		// GMSTs live in RE::GameSettingCollection (BSTBTree map), not the form arrays — separate sweep.
 		int DumpGMSTs(const std::vector<std::string>& a_filters)
 		{
 			auto* coll = RE::GameSettingCollection::GetSingleton();

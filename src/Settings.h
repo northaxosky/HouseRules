@@ -290,15 +290,12 @@ namespace MCM
 			inline static REX::INI::F32<> fSweetspotMaster          { "Skills", "fSweetspotMaster",           20.0f };
 		};
 
-		// Companions Affinity v0.4 -- vanilla TESGlobal-backed reaction
-		// thresholds and cooldowns. Direct sliders (literal values written
-		// to the global). Each FormID is a Fallout4.esm master record so
-		// the FormID is stable across runtimes (no esp index reshuffle).
-		// Replicates the Companions Affinity Nexus mod's nine-global surface.
+		// Companions Affinity v0.4 -- nine vanilla Fallout4.esm TESGlobals (per-reaction affinity deltas + event cooldowns).
 		class CompanionsAffinity
 		{
 		public:
-			// Reaction thresholds (game-affinity score that triggers each reaction)
+			// Per-reaction affinity change (added to companion's affinity score
+			// when an event of that reaction type fires)
 			inline static REX::INI::F32<> fLove       { "CompanionsAffinity", "fLove",         35.0f };
 			inline static REX::INI::F32<> fLike       { "CompanionsAffinity", "fLike",         15.0f };
 			inline static REX::INI::F32<> fIndifferent{ "CompanionsAffinity", "fIndifferent",   0.0f };
@@ -330,9 +327,7 @@ namespace MCM
 			inline static REX::INI::F32<> fSneakMaxDistance         { "Sneak", "fSneakMaxDistance",          4096.0f };
 		};
 
-		// CombatPerks v0.4 -- perk-tier multipliers for Light/Heavy Armor and
-		// disarm/stagger/knockdown/paralyze chances tied to combat perks.
-		// Direct mode with vanilla defaults as neutral.
+		// CombatPerks v0.4 -- combat-perk trigger chances and Light/Heavy Armor perk-tier multipliers.
 		class CombatPerks
 		{
 		public:
@@ -361,11 +356,7 @@ namespace MCM
 			inline static REX::INI::I32<> iHeavyArmorSinkSum             { "CombatPerks", "iHeavyArmorSinkSum",              35   };
 		};
 
-		// Settlements v0.4 -- vanilla workshop GMSTs for build timers, repair
-		// cost, wire length, settler population cap, and placement radius
-		// constraints. Direct mode with vanilla defaults as neutral. Does
-		// not replicate Uncapped Settlement Surplus (whose surplus caps live
-		// in Papyrus, not GMSTs).
+		// Settlements v0.4 -- vanilla workshop GMSTs (build/repair/wire/settler-cap/placement); USS's Papyrus surplus caps not in scope.
 		class Settlements
 		{
 		public:

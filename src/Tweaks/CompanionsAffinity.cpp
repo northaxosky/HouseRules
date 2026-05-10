@@ -19,15 +19,13 @@ namespace Tweaks::CompanionsAffinity
 			REX::INI::F32<>* setting;
 		};
 
-		// FormIDs sourced from the Companions Affinity mod's MCM JSON
-		// (sourceForm "Fallout4.esm|<hex>"). Spot-checked against the
-		// in-game GLOB form-array dump (CA_Event_Likes/Loves/Dislikes/Hates).
+		// FormIDs from CA's MCM JSON, spot-checked against the in-game GLOB dump; values are per-event affinity deltas, not thresholds.
 		const std::array<Target, 9> kTargets = { {
-			{ "Reaction Love",        0x5611Du, &MCM::Settings::CompanionsAffinity::fLove              },
-			{ "Reaction Like",        0x5611Cu, &MCM::Settings::CompanionsAffinity::fLike              },
-			{ "Reaction Indifferent", 0x56120u, &MCM::Settings::CompanionsAffinity::fIndifferent       },
-			{ "Reaction Dislike",     0x5611Eu, &MCM::Settings::CompanionsAffinity::fDislike           },
-			{ "Reaction Hates",       0x5611Fu, &MCM::Settings::CompanionsAffinity::fHates             },
+			{ "Loves Reaction",       0x5611Du, &MCM::Settings::CompanionsAffinity::fLove              },
+			{ "Likes Reaction",       0x5611Cu, &MCM::Settings::CompanionsAffinity::fLike              },
+			{ "Indifferent Reaction", 0x56120u, &MCM::Settings::CompanionsAffinity::fIndifferent       },
+			{ "Dislikes Reaction",    0x5611Eu, &MCM::Settings::CompanionsAffinity::fDislike           },
+			{ "Hates Reaction",       0x5611Fu, &MCM::Settings::CompanionsAffinity::fHates             },
 			{ "Cooldown Immediate",   0xA1B7Cu, &MCM::Settings::CompanionsAffinity::fCooldownImmediate },
 			{ "Cooldown Short",       0xA1B7Bu, &MCM::Settings::CompanionsAffinity::fCooldownShort     },
 			{ "Cooldown Medium",      0xA1B7Du, &MCM::Settings::CompanionsAffinity::fCooldownMedium    },

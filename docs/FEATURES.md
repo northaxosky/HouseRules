@@ -298,19 +298,19 @@ NPC search timers and stealth-point internals are not exposed. They may come lat
 
 ## Companions Affinity
 
-Sliders for the nine vanilla game values that control how companions react to your actions. These are the same values the Companions Affinity Nexus mod exposes - House Rules now writes them directly, so you do not need to install that mod separately.
+Sliders for the nine vanilla game values that control companion affinity events. These are the same values the Companions Affinity Nexus mod exposes - House Rules now writes them directly, so you do not need to install that mod separately.
 
-### Reaction Thresholds
+### Affinity Per Reaction
 
-How much the companion has to like or dislike you before they react.
+How much affinity is gained or lost when a companion reacts to your action. Positive values raise affinity; negative values lower it.
 
 | Slider | Default | Range | What it changes |
 |---|---|---|---|
-| Love Threshold | 35 | -100 to 100 | Score where the Love reaction triggers. |
-| Like Threshold | 15 | -100 to 100 | Score where the Like reaction triggers. |
-| Indifferent Threshold | 0 | -100 to 100 | The neutral baseline. |
-| Dislike Threshold | -15 | -100 to 100 | Score where the Dislike reaction triggers. |
-| Hates Threshold | -35 | -100 to 100 | Score where the Hates reaction triggers. |
+| Loves Reaction | +35 | -250 to 250 | Affinity gained when a companion 'Loves' your action. |
+| Likes Reaction | +15 | -250 to 250 | Affinity gained when a companion 'Likes' your action. |
+| Indifferent Reaction | 0 | -250 to 250 | Affinity change for a neutral reaction. Vanilla 0 (no change). |
+| Dislikes Reaction | -15 | -250 to 250 | Affinity lost when a companion 'Dislikes' your action. |
+| Hates Reaction | -35 | -250 to 250 | Affinity lost when a companion 'Hates' your action. |
 
 ### Reaction Cooldowns
 

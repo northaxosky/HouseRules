@@ -541,7 +541,7 @@
                     "type": "text"
                 },
                 {
-                    "text": "<font color='#AAAAAA'><p align='center'>Action Points and sprint tuning. Multiplier sliders show 1.00 = vanilla; Direct sliders show the vanilla default as their neutral value.</p></font>",
+                    "text": "<font color='#AAAAAA'><p align='center'>Action Points, sprint, carry weight, and health. Multiplier sliders show 1.00 = vanilla; Direct sliders use the vanilla default as neutral. Formula sliders (AP Pool, AP per Agility, Carry, Health per Endurance/Level) edit the actor-value formula — your current derived value will refresh on the next level-up, equip change, fast-travel, or save reload.</p></font>",
                     "html": true,
                     "type": "text"
                 },
@@ -551,14 +551,14 @@
                     "id": "fAPBaseMult:Character",
                     "text": "AP Pool Base",
                     "type": "slider",
-                    "help": "Base AP pool. May need actor-value refresh.",
+                    "help": "Multiplies the base AP pool used by the engine's AP formula. Vanilla 1.00.",
                     "valueOptions": { "min": 0.25, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fAPPerAgilityMult:Character",
                     "text": "AP per Agility",
                     "type": "slider",
-                    "help": "AP gained per Agility. May need actor-value refresh.",
+                    "help": "Multiplies the AP gain per Agility point. Vanilla 1.00.",
                     "valueOptions": { "min": 0.0, "max": 4.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
@@ -625,14 +625,14 @@
                     "id": "fCarryWeightBaseMult:Character",
                     "text": "Carry Weight Base",
                     "type": "slider",
-                    "help": "Base carry capacity. May need actor-value refresh.",
+                    "help": "Multiplies the base carry capacity (the part not affected by Strength). Vanilla 1.00.",
                     "valueOptions": { "min": 0.25, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fCarryWeightPerStrengthMult:Character",
                     "text": "Carry per Strength",
                     "type": "slider",
-                    "help": "Carry capacity gained per Strength. May need actor-value refresh.",
+                    "help": "Multiplies carry capacity gained per Strength point. Vanilla 1.00.",
                     "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 { "type": "spacer" },
@@ -641,14 +641,14 @@
                     "id": "fHealthPerEnduranceMult:Character",
                     "text": "Health per Endurance",
                     "type": "slider",
-                    "help": "Max health gained per Endurance. May need actor-value refresh.",
+                    "help": "Multiplies max health gained per Endurance point. Vanilla 1.00.",
                     "valueOptions": { "min": 0.25, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fHealthPerLevelMult:Character",
                     "text": "Health per Level",
                     "type": "slider",
-                    "help": "Max health gained per level. May need actor-value refresh.",
+                    "help": "Multiplies max health gained per character level. Vanilla 1.00.",
                     "valueOptions": { "min": 0.25, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
                 },
                 {
@@ -1335,46 +1335,46 @@
                     "type": "text"
                 },
                 {
-                    "text": "<font color='#AAAAAA'><p align='center'>Reaction thresholds and cooldowns for companion affinity events. Replicates the Companions Affinity Nexus mod's surface natively.</p></font>",
+                    "text": "<font color='#AAAAAA'><p align='center'>Per-reaction affinity changes and event cooldowns. The five reaction sliders set how much affinity an event of that type adds (or subtracts) when a companion reacts to your action. Replicates the Companions Affinity Nexus mod's surface natively.</p></font>",
                     "html": true,
                     "type": "text"
                 },
                 { "type": "spacer" },
-                { "text": "Reaction Thresholds", "type": "section" },
+                { "text": "Affinity Per Reaction", "type": "section" },
                 {
                     "id": "fLove:CompanionsAffinity",
-                    "text": "Love Threshold",
+                    "text": "Loves Reaction",
                     "type": "slider",
-                    "help": "The affinity score at which a companion reaches the Love reaction. Vanilla 35.",
-                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                    "help": "Affinity gained when a companion 'Loves' your action. Higher = bigger gain. Vanilla +35.",
+                    "valueOptions": { "min": -250.0, "max": 250.0, "step": 1.0, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fLike:CompanionsAffinity",
-                    "text": "Like Threshold",
+                    "text": "Likes Reaction",
                     "type": "slider",
-                    "help": "The affinity score at which a companion reaches the Like reaction. Vanilla 15.",
-                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                    "help": "Affinity gained when a companion 'Likes' your action. Vanilla +15.",
+                    "valueOptions": { "min": -250.0, "max": 250.0, "step": 1.0, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fIndifferent:CompanionsAffinity",
-                    "text": "Indifferent Threshold",
+                    "text": "Indifferent Reaction",
                     "type": "slider",
-                    "help": "The neutral baseline reaction score. Vanilla 0.",
-                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                    "help": "Affinity change for a neutral reaction. Vanilla 0 (no change).",
+                    "valueOptions": { "min": -250.0, "max": 250.0, "step": 1.0, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fDislike:CompanionsAffinity",
-                    "text": "Dislike Threshold",
+                    "text": "Dislikes Reaction",
                     "type": "slider",
-                    "help": "The affinity score at which a companion reaches the Dislike reaction. Vanilla -15.",
-                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                    "help": "Affinity lost when a companion 'Dislikes' your action. More negative = bigger loss. Vanilla -15.",
+                    "valueOptions": { "min": -250.0, "max": 250.0, "step": 1.0, "sourceType": "ModSettingFloat" }
                 },
                 {
                     "id": "fHates:CompanionsAffinity",
-                    "text": "Hates Threshold",
+                    "text": "Hates Reaction",
                     "type": "slider",
-                    "help": "The affinity score at which a companion reaches the Hates reaction. Vanilla -35.",
-                    "valueOptions": { "min": -100.0, "max": 100.0, "step": 1.0, "sourceType": "ModSettingFloat" }
+                    "help": "Affinity lost when a companion 'Hates' your action. Vanilla -35.",
+                    "valueOptions": { "min": -250.0, "max": 250.0, "step": 1.0, "sourceType": "ModSettingFloat" }
                 },
                 { "type": "spacer" },
                 { "text": "Reaction Cooldowns", "type": "section" },

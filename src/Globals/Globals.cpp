@@ -14,9 +14,7 @@ namespace Globals
 		// doesn't flood the log on every MCM apply.
 		std::unordered_set<std::string> g_warned_missing;
 
-		// Same idea for FormID-based lookups. Vanilla globals should always
-		// resolve, but if Fallout4.esm load order shifted somehow, we don't
-		// want to flood.
+		// Warn-once per missing FormID so a misordered Fallout4.esm doesn't flood the log.
 		std::unordered_set<std::uint32_t> g_warned_missing_formIDs;
 
 		RE::TESGlobal* FindByEditorID(std::string_view a_edid)

@@ -1,9 +1,6 @@
 #pragma once
 
-// Settlements v0.4 -- vanilla workshop GMSTs for settlement build /
-// repair / wire / placement-radius tuning, plus the settler population
-// cap. Does NOT replicate Uncapped Settlement Surplus, which targets
-// Papyrus-side production caps that have no GMST surface.
+// Settlements v0.4 -- vanilla workshop GMSTs (build/repair/wire/placement/settler-cap); USS's Papyrus-side surplus caps are out of scope.
 namespace Tweaks::Settlements
 {
 	void Apply();
