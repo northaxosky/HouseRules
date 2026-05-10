@@ -298,7 +298,7 @@ NPC search timers and stealth-point internals are not exposed. They may come lat
 
 ## Companions Affinity
 
-Sliders for the nine vanilla game values that control companion affinity events. These are the same values the Companions Affinity Nexus mod exposes - House Rules now writes them directly, so you do not need to install that mod separately.
+Sliders for the nine vanilla game values that control companion affinity events.
 
 ### Affinity Per Reaction
 
@@ -366,7 +366,7 @@ All Direct sliders. Leaving one on its default keeps any changes another mod has
 
 ## Settlements
 
-Sliders for vanilla workshop game settings - build timers, repair cost, wire length, settler cap, and placement constraints. **Does not replicate Uncapped Settlement Surplus** - USS targets Papyrus-side production caps that have no game-setting surface. Run both mods together if you want USS's surplus uncap on top of these knobs.
+Sliders for vanilla workshop game settings: build timers, repair cost, wire length, settler cap, and placement constraints. Settlement-surplus production caps are baked into script code (not game settings) and aren't covered here.
 
 ### Settler & Building
 
@@ -392,13 +392,6 @@ All Direct sliders. Leaving one on its default keeps any changes another mod has
 ## Coming Soon
 
 No firmly-planned tracks at the moment. Suggestions welcome.
-
-## Recommended Companion Mods
-
-House Rules works well alongside mods that change settings House Rules cannot:
-
-- **[Uncapped Settlement Surplus](https://www.nexusmods.com/fallout4/mods/8635)** - removes Fallout 4's hidden settlement production caps. Those caps are not exposed as game settings, so House Rules cannot change them. House Rules and USS work together.
-- **MCM** (required) - the menu UI House Rules uses.
 
 ## Validation
 

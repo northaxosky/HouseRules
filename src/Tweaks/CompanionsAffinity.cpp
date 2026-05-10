@@ -19,7 +19,7 @@ namespace Tweaks::CompanionsAffinity
 			REX::INI::F32<>* setting;
 		};
 
-		// FormIDs from CA's MCM JSON, spot-checked against the in-game GLOB dump; values are per-event affinity deltas, not thresholds.
+		// Vanilla Fallout4.esm FormIDs spot-checked against the in-game GLOB dump. Values are per-event affinity deltas, not thresholds.
 		const std::array<Target, 9> kTargets = { {
 			{ "Loves Reaction",       0x5611Du, &MCM::Settings::CompanionsAffinity::fLove              },
 			{ "Likes Reaction",       0x5611Cu, &MCM::Settings::CompanionsAffinity::fLike              },

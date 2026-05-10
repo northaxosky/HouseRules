@@ -1,7 +1,6 @@
 #pragma once
 
-// Skills v0.6 -- pickpocket, hacking, and lockpicking GMSTs.
-// Direct mode with vanilla defaults as neutral.
+// Skills: pickpocket, hacking, and lockpicking GMSTs.
 namespace Tweaks::Skills
 {
 	void Apply();

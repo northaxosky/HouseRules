@@ -14,7 +14,7 @@
 // singleton-array approach is unusable on OG (ID::BGSDefaultObject::Singleton
 // is runtime-0 there), so we filter forms directly by their editorID instead.
 // The DO-suffixed names (HardcoreHungerEffectKeyword_DO etc.) are just engine
-// lookup aliases — the underlying keywords have their own editor IDs like
+// lookup aliases - the underlying keywords have their own editor IDs like
 // HardcoreHungerEffect that this dump finds via prefix match.
 namespace Diagnostics::DumpDefaultObjects
 {
@@ -152,7 +152,7 @@ namespace Diagnostics::DumpDefaultObjects
 			if (a_g) REX::INFO("    value={}", a_g->value);
 		}
 
-		// GMSTs live in RE::GameSettingCollection (BSTBTree map), not the form arrays — separate sweep.
+		// GMSTs live in RE::GameSettingCollection (BSTBTree map), not the form arrays. Separate sweep.
 		int DumpGMSTs(const std::vector<std::string>& a_filters)
 		{
 			auto* coll = RE::GameSettingCollection::GetSingleton();

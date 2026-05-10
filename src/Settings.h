@@ -105,7 +105,7 @@ namespace MCM
 			inline static REX::INI::F32<> fEffectMagnitudeSurvival{ "Difficulty", "fEffectMagnitudeSurvival", 1.0f };
 		};
 
-		// Character v0.3 -- AP pool/regen + sprint-drain sliders. Defaults
+		// Character: AP pool/regen + sprint-drain sliders. Defaults
 		// reflect vanilla; with preserveBaselineAtNeutral, Direct entries
 		// preserve any baseline edits from other mods until the user moves
 		// the slider off the vanilla default.
@@ -138,7 +138,7 @@ namespace MCM
 
 		};
 
-		// Damage Formulas v0.3 -- raw damage factors and armor reduction
+		// Damage Formulas: raw damage factors and armor reduction
 		// exponents for radiation, physical, and energy damage. All Direct
 		// mode with vanilla defaults; preserveBaselineAtNeutral keeps any
 		// baseline edits from other mods until the user moves a slider off
@@ -159,7 +159,7 @@ namespace MCM
 			inline static REX::INI::F32<> fEnergyArmorReductionExponent{ "DamageFormulas", "fEnergyArmorReductionExponent", 0.365f };
 		};
 
-		// Power Armor v0.3 -- Jetpack, fusion-core drain, and PA
+		// Power Armor: Jetpack, fusion-core drain, and PA
 		// durability GMSTs. Multiplier defaults at 1.0; Direct defaults
 		// match each vanilla GMST baseline so preserveBaselineAtNeutral
 		// keeps other mods' edits until the user moves the slider off.
@@ -190,7 +190,7 @@ namespace MCM
 			inline static REX::INI::F32<> fPANPCArmorDamageMultiplier   { "PowerArmor", "fPANPCArmorDamageMultiplier",    3.0f };
 		};
 
-		// Economy v0.4 -- Buy/sell pricing GMSTs. All Direct mode with
+		// Economy: Buy/sell pricing GMSTs. All Direct mode with
 		// vanilla defaults as neutral; preserveBaselineAtNeutral keeps
 		// any other mod's edits until the user moves a slider off the
 		// vanilla default.
@@ -208,7 +208,7 @@ namespace MCM
 			inline static REX::INI::F32<> fSpeechcraftFavorMax{ "Economy", "fSpeechcraftFavorMax", 1.0f };
 		};
 
-		// Progression v0.4 -- Non-difficulty XP source GMSTs: cooking,
+		// Progression: Non-difficulty XP source GMSTs (cooking,
 		// workbench, workshop, lockpick rewards, mine disarm. All Direct
 		// mode with vanilla defaults as neutral.
 		class Progression
@@ -252,7 +252,7 @@ namespace MCM
 				"Progression", "fXPDeathRewardHealthThreshold", 0.25f };
 		};
 
-		// VATS v0.5 -- targeting distance, target-select time scale, and
+		// VATS: targeting distance, target-select time scale, and
 		// player damage multiplier. All Direct mode with vanilla defaults
 		// as neutral.
 		class VATS
@@ -263,7 +263,7 @@ namespace MCM
 			inline static REX::INI::F32<> fVATSPlayerDamageMult    { "VATS", "fVATSPlayerDamageMult",     0.10f   };
 		};
 
-		// Skills v0.6 -- pickpocket, hacking, and lockpicking GMSTs.
+		// Skills: pickpocket, hacking, and lockpicking GMSTs.
 		// All Direct mode with vanilla defaults as neutral.
 		class Skills
 		{
@@ -290,7 +290,7 @@ namespace MCM
 			inline static REX::INI::F32<> fSweetspotMaster          { "Skills", "fSweetspotMaster",           20.0f };
 		};
 
-		// Companions Affinity v0.4 -- nine vanilla Fallout4.esm TESGlobals (per-reaction affinity deltas + event cooldowns).
+		// Companions Affinity: nine vanilla TESGlobals for per-reaction affinity deltas and event cooldowns.
 		class CompanionsAffinity
 		{
 		public:
@@ -310,7 +310,7 @@ namespace MCM
 			inline static REX::INI::F32<> fCooldownLong     { "CompanionsAffinity", "fCooldownLong",      5.0f  };
 		};
 
-		// Sneak v0.7 -- sneak attack and core detection GMSTs.
+		// Sneak: sneak attack and core detection GMSTs.
 		// All Direct mode with vanilla defaults as neutral.
 		class Sneak
 		{
@@ -327,7 +327,7 @@ namespace MCM
 			inline static REX::INI::F32<> fSneakMaxDistance         { "Sneak", "fSneakMaxDistance",          4096.0f };
 		};
 
-		// CombatPerks v0.4 -- combat-perk trigger chances and Light/Heavy Armor perk-tier multipliers.
+		// Combat Perks: trigger chances and Light/Heavy Armor perk-tier multipliers.
 		class CombatPerks
 		{
 		public:
@@ -356,7 +356,7 @@ namespace MCM
 			inline static REX::INI::I32<> iHeavyArmorSinkSum             { "CombatPerks", "iHeavyArmorSinkSum",              35   };
 		};
 
-		// Settlements v0.4 -- vanilla workshop GMSTs (build/repair/wire/settler-cap/placement); USS's Papyrus surplus caps not in scope.
+		// Settlements: vanilla workshop GMSTs (build/repair/wire/settler-cap/placement).
 		class Settlements
 		{
 		public:

@@ -1,7 +1,6 @@
 #pragma once
 
-// VATS v0.5 -- targeting distance, target-select time scale, and player
-// damage multiplier GMSTs. Direct mode with vanilla defaults as neutral.
+// VATS: targeting distance, target-select time scale, and player damage multiplier GMSTs.
 namespace Tweaks::VATS
 {
 	void Apply();

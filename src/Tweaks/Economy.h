@@ -1,6 +1,6 @@
 #pragma once
 
-// Economy v0.4 - Buy/sell pricing GMSTs.
+// Economy: vendor pricing GMSTs.
 //
 // All Direct sliders with vanilla defaults as neutral.
 // preserveBaselineAtNeutral keeps any baseline edits from other mods until

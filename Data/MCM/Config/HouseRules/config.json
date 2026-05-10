@@ -541,7 +541,7 @@
                     "type": "text"
                 },
                 {
-                    "text": "<font color='#AAAAAA'><p align='center'>Action Points, sprint, carry weight, and health. Multiplier sliders show 1.00 = vanilla; Direct sliders use the vanilla default as neutral. Formula sliders (AP Pool, AP per Agility, Carry, Health per Endurance/Level) edit the actor-value formula — your current derived value will refresh on the next level-up, equip change, fast-travel, or save reload.</p></font>",
+                    "text": "<font color='#AAAAAA'><p align='center'>Action Points, sprint, carry weight, and health. Multiplier sliders show 1.00 = vanilla; Direct sliders use the vanilla default as neutral. Formula sliders (AP Pool, AP per Agility, Carry, Health per Endurance/Level) edit the actor-value formula. Your current derived value will refresh on the next level-up, equip change, fast-travel, or save reload.</p></font>",
                     "html": true,
                     "type": "text"
                 },
@@ -1335,7 +1335,7 @@
                     "type": "text"
                 },
                 {
-                    "text": "<font color='#AAAAAA'><p align='center'>Per-reaction affinity changes and event cooldowns. The five reaction sliders set how much affinity an event of that type adds (or subtracts) when a companion reacts to your action. Replicates the Companions Affinity Nexus mod's surface natively.</p></font>",
+                    "text": "<font color='#AAAAAA'><p align='center'>Per-reaction affinity changes and event cooldowns. The five reaction sliders set how much affinity an event of that type adds (or subtracts) when a companion reacts to your action.</p></font>",
                     "html": true,
                     "type": "text"
                 },
@@ -1564,7 +1564,7 @@
                     "type": "text"
                 },
                 {
-                    "text": "<font color='#AAAAAA'><p align='center'>Workshop GMSTs for build timers, repair cost, wire length, settler cap, and placement constraints. Does not replicate Uncapped Settlement Surplus (whose surplus caps live in Papyrus, not GMSTs).</p></font>",
+                    "text": "<font color='#AAAAAA'><p align='center'>Workshop GMSTs for build timers, repair cost, wire length, settler cap, and placement constraints. Settlement-surplus production caps are baked into script code, not game settings, so they aren't covered here.</p></font>",
                     "html": true,
                     "type": "text"
                 },
