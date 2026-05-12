@@ -1,10 +1,10 @@
 # House Rules
 
-An F4SE plugin that exposes high-impact vanilla Fallout 4 settings through a single MCM menu. Its goal is to give players the tools they need to tune vanilla mechanics so they fit a modded playthrough - not to add new gameplay.
+An F4SE plugin that exposes high-impact vanilla Fallout 4 settings through a single MCM menu. The goal is to give players the tools they need to tune vanilla mechanics so they fit a modded playthrough - not to add new gameplay.
 
 ## Status
 
-**v1.0.0** - feature-complete for the original scope. Self-test (`HRVERIFY`) reports 381 GMST targets PASS, 0 failed / 0 skipped across all 12 GMST modules.
+**v1.0.0** - feature-complete for the original scope. Self-test (`HRVERIFY`) reports 381 GMST targets PASS, 0 failed / 0 skipped across 12 modules.
 
 ## Compatibility
 
@@ -18,189 +18,46 @@ Requires **F4SE** and **Address Library for F4SE**. Mod Configuration Menu (MCM)
 
 ## Features
 
-The full per-slider reference lives in [docs/FEATURES.md](docs/FEATURES.md). Sections below are a summary of what's in MCM.
-
-### Survival Unlocks
-
-All toggles default OFF (vanilla behavior). Turning one ON applies that tweak while keeping real Survival difficulty engaged.
-
-| Toggle | Effect |
-|---|---|
-| Allow Console | Re-enables the developer console |
-| Allow Manual Saves | Re-enables F5 quicksave plus the pause-menu Save/Load surfaces |
-| Allow Auto-Saves | Re-enables queued vanilla autosaves such as menu-close and door-arrival saves |
-| Allow Fast Travel | Re-enables Pip-Boy map fast travel eligibility; fast-travel load screens use targeted HP/rads/rad-resistance protection, not God Mode or Immortal Mode |
-| Show Enemies on Compass | Restores vanilla red-dot enemy markers |
-| Show Locations on Compass | Restores vanilla undiscovered-location markers |
-| Remove Chem/Aid Weight | Strips Survival's added weight from consumables |
-| Remove Ammo Weight | Strips Survival's added weight from ammunition |
-| Remove Survival Carry-Weight Penalty | Zeroes the effect magnitudes on `HC_ReduceCarryWeightAbility` (snapshot/restored when toggled off), so Survival no longer applies the carry-weight reduction on you or your companions. **Requires save reload after toggling** for the engine to re-read the magnitude on currently-applied spell instances. |
-| Allow God Mode | `tgm` / `tim` console cheats work in Survival via validated byte patches |
-| Allow Re-entering Survival | Removes vanilla's one-way gate - switch Survival on and off freely |
-
-`Allow Re-entering Survival` is live-toggleable; the others apply when the pause menu closes.
-
-### Magnitude Scalers
-
-Conservative sliders targeting proven vanilla records:
-
-- Stimpak healing, limb repair, RadAway, Rad-X, food/drink healing, hunger/thirst/sleep penalty severity.
-
-Magnitude edits touch base records, so changes take effect the next time an item is consumed or re-evaluated - the Pip-Boy tooltip value caches until then.
-
-### Difficulty Multipliers
-
-Runtime GMST sliders for each vanilla difficulty tier:
-
-- **Difficulty I**: Incoming damage, outgoing damage, base XP rate, Intelligence XP bonus, legendary spawn chance, and legendary rarity.
-- **Difficulty II**: Effect duration and effect magnitude per difficulty tier.
-
-`1.00` means the engine's current baseline. House Rules snapshots each GMST on first safe apply and writes `baseline * slider`, so changes do not compound during a session.
-
-Survival's Difficulty II baselines are unusual: vanilla `fDiffMultEffectDuration_TSV` is much *longer* than Normal and `fDiffMultEffectMagnitude_TSV` is much *smaller* than Normal. The MCM slider multiplies that Survival baseline, so `1.00` on Survival is still Survival - not Normal.
-
-### Character (Action Points, Sprint, Carry, Health)
-
-Runtime GMST and player ActorValue sliders for AP feel, sprint cost, carry capacity, and health:
-
-- **Action Points**: AP pool base, AP per Agility, AP regen rate, combat regen multiplier, regen delay, out-of-breath delay, regen delay cap.
-- **Sprint**: drain base term, Endurance term, overall drain multiplier.
-- **Carry Weight**: base carry capacity and capacity per Strength.
-- **Health**: max health per Endurance, max health per level, passive health regen, and combat health regen multiplier.
-
-Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla default as their neutral value (e.g. `0.75` combat AP regen and `-0.05` Endurance term); leaving a Direct slider on its default preserves whatever baseline another mod has written.
-
-AP pool changes (`AP Pool Base`, `AP per Agility`), carry-weight formula changes, and max-health formula changes (`Health per Endurance`, `Health per Level`) edit the actor-value formula but the player's *current* derived value may not refresh until the engine recomputes actor values - typically on level-up, equip change, fast-travel, or save/load.
-
-`AP Regen Rate`, `Passive Health Regen`, and `Combat Health Regen` write the player's live ActorValue bases (`restoreAPRate`, `restoreHealthRate`, and `combatHealthRegenMult`) because these are not GMSTs. Unlike GMST Direct sliders, these three use absolute vanilla-neutral values so saved player ActorValues always have a deterministic reset path.
-
-The `Remove Survival Carry-Weight Penalty` Survival Unlock stacks above the carry-weight GMST baseline: this slider tunes the underlying capacity formula, the unlock removes the Survival-only `HC_ReduceCarryWeightAbility` penalty on top of it.
-
-If `Out-of-Breath Delay` exceeds `AP Regen Delay Max`, House Rules logs a one-shot warning; the engine will clamp to the cap rather than honoring the larger value.
-
-### Damage Formulas
-
-Runtime GMST sliders for the raw damage and armor-reduction terms shared by every actor:
-
-- **Radiation**: `fRadsDamageFactor` (raw rad-damage factor) and `fRadsArmorDmgReductionExp` (rad resistance exponent). Survival-relevant: rads accumulate in Survival and these sliders are the cleanest way to dial that pressure up or down.
-- **Physical**: `fPhysicalDamageFactor` and `fPhysicalArmorDmgReductionExp`. Broad advanced controls - they stack with the Difficulty I incoming/outgoing damage multipliers, so a `0.10` factor here combined with a Difficulty slider compounds.
-- **Energy**: `fEnergyDamageFactor` and `fEnergyArmorDmgReductionExp`. Same shape as the Physical pair but for energy damage / energy resistance.
-
-Each slider's neutral value is the vanilla default (`0.15` for damage factors, `0.365` for armor exponents). Leaving a slider on neutral preserves whatever baseline another mod has written; moving it off neutral writes the literal value to the GMST.
-
-### Power Armor & Jetpack
-
-Runtime GMST sliders for jetpack feel, fusion-core drain, and Power Armor durability:
-
-- **Jetpack**: initial and sustained fuel drain (multiplier), initial and sustained thrust (multiplier), minimum fuel required to ignite (vanilla 3), and seconds before sustained mode (vanilla 0.15).
-- **Fusion Core Drain**: drain per AP spent and per second running (multiplier), and direct per-jump / per-melee-attack / per-hard-landing drain entries (vanilla 0 for all three).
-- **Durability**: player PA condition damage multiplier (1.0 vanilla, 0 = unbreakable) and NPC PA condition damage multiplier (vanilla 3).
-
-Multiplier sliders show `1.00 = vanilla`. Direct sliders show the vanilla default as their neutral value; leaving a Direct slider on its default preserves whatever baseline another mod has written.
-
-### Economy
-
-Runtime GMST sliders for vendor buy/sell pricing:
-
-- **Buy Price Floor** (`fBarterMin`, vanilla 2.0): minimum price multiplier when buying. Higher values mean vendors charge more.
-- **Sell Price Floor** (`fBarterMax`, vanilla 3.5): divisor applied when selling. Higher values mean vendors pay less.
-- **Max Buy Multiplier** (`fBarterBuyMax`, vanilla 1.2) and **Max Sell Multiplier** (`fBarterSellMax`, vanilla 0.8): caps on the value multiplier the Barter perk / Charisma curve can reach in either direction.
-
-The two "floor" sliders read inversely: raising `fBarterMin` pushes buy prices up, raising `fBarterMax` pushes sell payouts down. All four are Direct sliders; leaving one on its vanilla default preserves whatever baseline another mod has written.
-
-### Progression
-
-Runtime GMST sliders for non-difficulty XP sources:
-
-- **Crafting XP** for Cooking (`fCookingExp{Base,Max,Mult}`, vanilla 1 / 10 / 0.15), Weapon/Armor Workbench (`fWorkbenchExperience{Base,Max,Mult}`, vanilla 2 / 50 / 0.03), and Settlement Workshop (`fWorkshopExperience{Base,Max,Mult}`, vanilla 2 / 25 / 0.10). Engine clamps computed XP between Base and Max; if you invert a pair (Base > Max) House Rules logs a one-shot warning rather than mutating the values.
-- **Lockpick XP** per pick at Apprentice / Adept / Expert / Master (`fLockpickXPReward{Easy,Average,Hard,VeryHard}`, vanilla 5 / 10 / 15 / 20).
-- **Mine Disarm XP** (`iMineDisarmExperience`, vanilla 5): XP per disarmed mine or trap.
-
-All sliders are Direct with the vanilla default as their neutral value; leaving a slider on neutral preserves whatever baseline another mod has written.
-
-### VATS
-
-Runtime GMST sliders for VATS targeting and safety:
-
-- **Max Engage Distance** (`fVATSMaxEngageDistance`, vanilla 5000): range where VATS can activate. `0` disables VATS targeting.
-- **Target-Select Time** (`fVATSTimeMultTargetSelect`, vanilla 0.04): lower values slow time more while choosing targets.
-- **Player Damage Mult** (`fVATSPlayerDamageMult`, vanilla 0.10): incoming damage multiplier while VATS is active. `1.0` removes the vanilla damage reduction.
-
-All three are Direct sliders with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written.
-
-### Skills
-
-Runtime GMST sliders for pickpocket, hacking, and lockpicking:
-
-- **Pickpocket**: minimum / maximum chance (`fPickPocketMinChance`, `fPickPocketMaxChance`, vanilla 0 / 90) and reverse-pickpocket explosive timer (`fProjectileInventoryGrenadeTimer`, vanilla 2 seconds).
-- **Hacking**: minimum / maximum terminal password words (`iHackingMinWords`, `iHackingMaxWords`, vanilla 6 / 20).
-- **Lockpicking**: break base, sweet-spot base, durability by lock level, and sweet-spot width by lock level.
-
-All Skills sliders are Direct with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written. Lockpick XP remains on the Progression page.
-
-### Sneak
-
-Runtime GMST sliders for sneak attacks and core detection:
-
-- **Sneak Attack**: gun, unarmed/fist, one-handed, and two-handed damage multipliers.
-- **Detection**: exterior detection distance multiplier, light sensitivity, and maximum detection distance.
-
-All Sneak sliders are Direct with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written. NPC search timers and stealth-point internals remain deferred.
-
-### Survival
-
-Toggles for the vanilla Survival hardcore-rule subsystems via direct writes to the manager script's gating `TESGlobal`s:
-
-- **Disable Hunger and Thirst** writes `HC_Rule_SustenanceEffects` (FormID `0x854`) - food/water needs no longer accumulate or apply.
-- **Disable Sleep Deprivation** writes `HC_Rule_SleepEffects` (FormID `0x812`) - sleep timer no longer accumulates and stages no longer apply.
-- **Disable Diseases** writes `HC_Rule_DiseaseEffects` (FormID `0x88A`) - risk events no longer roll and disease effects no longer apply.
-- **Disable Adrenaline** writes `HC_Rule_AdrenalineOn` (FormID `0x810`) - kill-streak Adrenaline perk progression and bonus no longer apply.
-
-All four default OFF (vanilla behavior). Survival difficulty stays active in every case. **Requires save reload after toggling** for immediate effect; otherwise the change takes hold on the manager script's next tick (a few in-game minutes).
-
-The page also exposes ~38 tuning sliders that write the `Hardcore:HC_ManagerScript` Papyrus properties directly (per-tick costs, game-hours-per-tick, stage thresholds, sleep timer, disease risk amounts, adrenaline rank pacing). All defaults are vanilla; moving a slider mutates the script's bound-object storage and propagates on its next tick. See [docs/FEATURES.md](docs/FEATURES.md) for the full slider list.
-
-### Companions Affinity
-
-Direct writes to nine vanilla `Fallout4.esm` `TESGlobal` records that drive per-reaction affinity changes and event cooldown timing (no Papyrus, no script forks):
-
-- **Affinity Per Reaction**: Loves (+35), Likes (+15), Indifferent (0), Dislikes (-15), Hates (-35). Each value is the *delta* a single reaction event applies to a companion's affinity score, not a threshold the player must reach.
-- **Reaction Cooldowns** in game days: Immediate (0), Short (0.05), Medium (2), Long (5).
-
-Each global is addressed by stable Fallout4.esm FormID, so the writes are runtime-portable across OG / NG / AE.
-
-### Developer Diagnostics
-
-The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`). `settings.ini` also exposes dev-only diagnostics that are not shown in MCM:
-
-- `SurvivalObserver` for correlating survival actor values / active effects with vanilla behavior.
-- `SleepWait` integration logging for sit/wait/sleep boundaries.
-- `ActorValueProbe` for investigating deferred non-GMST AP / health regen surfaces.
-- `HCManagerProbe` for read-only inspection of the vanilla `Hardcore:HC_ManagerScript` Papyrus manager object before any Survival need-rate work.
-- `iLogLevel` controls plugin log verbosity from MCM: `0=Quiet`, `1=Normal`, `2=Verbose`, `3=Trace`. `sLogLevel` remains as a manual fallback for invalid integer values.
-- `bValidationAudit=1` emits structured `HRVERIFY_SUMMARY` lines for GMST and ActorValue writes; set `sValidationAuditMode=Full` to include per-target `HRVERIFY` lines.
-
-To validate an audit log after launching through F4SE and loading a save:
-
-```powershell
-python tools\validate_house_rules_log.py `
-    --require-module DifficultyEffects --require-module Character `
-    --require-module ActorValues --require-module DamageFormulas `
-    --require-module PowerArmor --require-module Economy `
-    --require-module Progression --require-module VATS `
-    --require-module Skills --require-module Sneak `
-    --require-module CombatPerks --require-module Settlements
-```
-
-Companions Affinity writes vanilla TESGlobals (not GMSTs), so it doesn't show up in HRVERIFY. Verify its writes by grepping the plugin log for `Globals: wrote FormID …` lines after moving a slider on the Companions page.
+The full per-slider reference (defaults, units, behavior notes) lives in [docs/FEATURES.md](docs/FEATURES.md).
+
+- **Survival Unlocks** - opt-in toggles for console, manual / auto saves, fast travel, compass enemies / locations, chem / ammo weight, carry weight, god mode, and re-entering Survival.
+- **Survival** - kill-switches for the four Hardcore subsystems (Hunger/Thirst, Sleep, Diseases, Adrenaline) plus ~38 tuning sliders that write `Hardcore:HC_ManagerScript` Papyrus properties.
+- **Magnitudes** - stimpak / limb repair / RadAway / Rad-X / food healing and hunger / thirst / sleep penalty severity.
+- **Difficulty I** - per-tier incoming / outgoing damage, XP base + Intelligence bonus, legendary chance / rarity.
+- **Difficulty II** - per-tier effect duration and effect magnitude.
+- **Character** - AP pool, sprint cost, carry capacity, max-health scaling, AP / passive / combat health regen.
+- **Damage Formulas** - radiation, physical, and energy damage factor + armor exponent.
+- **Power Armor & Jetpack** - jetpack drain / thrust, fusion-core drain, player / NPC PA durability.
+- **Economy** - barter min / max floors, buy / sell multiplier caps.
+- **Progression** - cooking / workbench / workshop XP, lockpick rewards, mine disarm XP.
+- **VATS** - max engage distance, target-select time scale, player damage mult.
+- **Skills** - pickpocket, hacking, lockpicking.
+- **Sneak** - sneak attack multipliers, exterior / light / max detection.
+- **Combat Perks** - disarm / stagger / knockdown / paralyze chances and Light / Heavy Armor perk-tier multipliers.
+- **Settlements** - workshop build / repair / wire timers, settler population cap, placement-radius constraints.
+- **Companions Affinity** - the nine vanilla TESGlobals that drive per-reaction affinity deltas and event cooldowns.
+
+Two caveats to know about:
+
+- **Carry-weight unlock** and the **Survival kill-switches** require a save reload after toggling for immediate effect; otherwise they apply on the script's next tick (a few in-game minutes).
+- Sliders take effect when the pause menu closes; some Magnitude changes wait for the next consumable use.
 
 ## Design Principles
 
-- **Vanilla-first.** House Rules does not add new mechanics. It exposes existing ones.
-- **Yield to conflicts.** Other mods that edit the same records should win; House Rules is a floor, not a ceiling.
-- **Right tool per feature.** Some settings are pre-baked via an ESP (GMSTs, static record fields), others are runtime hooks in the DLL (byte patches, composable MCM sliders). Default is ESP; DLL is used when a setting must live-toggle, compose with others, or reach a target only accessible from native code.
-- **Documented everything.** Each setting has a clear MCM description. The source of every vanilla value is cited where recovered from reverse-engineering work.
-- **Minimum dependencies.** F4SE + Address Library + MCM. No script extenders beyond F4SE core, no hard-required companion mods.
+- **Vanilla-first.** No new mechanics; only exposes existing ones.
+- **Yield to conflicts.** Other mods editing the same records win; House Rules is a floor, not a ceiling.
+- **Right tool per feature.** Some settings are runtime hooks in the DLL (byte patches, composable MCM sliders), others are direct GMST / ActorValue / TESGlobal writes. The DLL is used when a setting must live-toggle, compose, or reach a target only accessible from native code.
+- **Minimum dependencies.** F4SE + Address Library + MCM. No script extenders beyond F4SE core; no hard-required companion mods.
+
+## Validation
+
+A built-in self-test verifies every GMST target. Set `bValidationAudit=1` (and optionally `sValidationAuditMode=Full`) under `[Diagnostic]` in `Data/MCM/Config/HouseRules/settings.ini`, open and close the pause menu in-game, then run:
+
+```sh
+python tools/validate_house_rules_log.py
+```
+
+v1.0.0 ships with 0 failed / 0 skipped across 12 GMST modules (381 targets) on OG / NG / AE. Companions Affinity uses vanilla TESGlobal writes, so it doesn't show up in HRVERIFY; grep the plugin log for `Globals: wrote FormID ...` to verify those.
 
 ## Installation
 
