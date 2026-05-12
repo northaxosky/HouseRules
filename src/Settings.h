@@ -374,12 +374,14 @@ namespace MCM
 			inline static REX::INI::F32<> fRestrictedBuildMaxTurretRadius { "Settlements", "fRestrictedBuildMaxTurretRadius",  70.0f };
 		};
 
-		// Survival: kill-switch toggles for the vanilla hardcore rule globals (food/water and sleep deprivation systems).
+		// Survival: kill-switch toggles for the vanilla hardcore rule globals (sustenance, sleep, disease, adrenaline).
 		class Survival
 		{
 		public:
-			inline static REX::INI::Bool<> bDisableSustenance      { "Survival", "bDisableSustenance",      false };
+			inline static REX::INI::Bool<> bDisableSustenance      { "Survival", "bDisableSustenance",       false };
 			inline static REX::INI::Bool<> bDisableSleepDeprivation{ "Survival", "bDisableSleepDeprivation", false };
+			inline static REX::INI::Bool<> bDisableDiseases        { "Survival", "bDisableDiseases",         false };
+			inline static REX::INI::Bool<> bDisableAdrenaline      { "Survival", "bDisableAdrenaline",       false };
 		};
 
 		// Diagnostics. Some values are exposed in MCM; developer-only toggles

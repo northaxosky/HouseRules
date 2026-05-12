@@ -1,6 +1,6 @@
 #pragma once
 
-// Survival rule kill-switches: writes the vanilla HC_Rule_SustenanceEffects and HC_Rule_SleepEffects TESGlobals to disable the food/water and sleep mechanics without leaving Survival difficulty.
+// Survival rule kill-switches: writes the four vanilla HC_Rule_* TESGlobals (sustenance, sleep deprivation, diseases, adrenaline) to disable each subsystem independently without leaving Survival difficulty.
 namespace Tweaks::Survival
 {
 	void Apply();

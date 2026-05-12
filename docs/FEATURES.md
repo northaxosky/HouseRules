@@ -391,14 +391,16 @@ All Direct sliders. Leaving one on its default keeps any changes another mod has
 
 ## Survival
 
-Toggles for the vanilla Survival hardcore-rule systems. Use these to keep Survival difficulty active while disabling its food/water or sleep mechanics. Both default OFF (vanilla behavior).
+Toggles for the vanilla Survival hardcore-rule systems. Use these to keep Survival difficulty active while disabling its food/water, sleep, disease, or adrenaline subsystems independently. All four default OFF (vanilla behavior).
 
 | Toggle | What it does |
 |---|---|
 | Disable Hunger and Thirst | Turns off the food and water need system entirely. Stages no longer accumulate or apply. |
 | Disable Sleep Deprivation | Turns off the sleep deprivation system. Sleep timer no longer accumulates and stages no longer apply. |
+| Disable Diseases | Turns off the Survival disease system. Risk events no longer roll and disease effects no longer apply. |
+| Disable Adrenaline | Turns off the Survival Adrenaline perk system. Kill streaks no longer build the Adrenaline rank, and the perk's damage bonus no longer applies. |
 
-Both toggles write the vanilla `HC_Rule_SustenanceEffects` / `HC_Rule_SleepEffects` global variables that the hardcore manager script reads each tick. **Save and reload after toggling for immediate effect**; otherwise the change takes hold on the next in-game tick (a few in-game minutes).
+Each toggle writes the matching vanilla global variable (`HC_Rule_SustenanceEffects`, `HC_Rule_SleepEffects`, `HC_Rule_DiseaseEffects`, `HC_Rule_AdrenalineOn`) that the hardcore manager script reads each tick. **Save and reload after toggling for immediate effect**; otherwise the change takes hold on the next in-game tick (a few in-game minutes).
 
 ## Coming Soon
 
