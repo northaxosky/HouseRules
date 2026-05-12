@@ -429,14 +429,11 @@ namespace MCM
 			inline static REX::INI::F32<>  fDiseaseRiskRainAmount           { "Survival", "fDiseaseRiskRainAmount",            0.03f };
 			inline static REX::INI::F32<>  fDiseaseRiskSwimmingAmount       { "Survival", "fDiseaseRiskSwimmingAmount",        0.03f };
 
-			// Adrenaline tuning
-			inline static REX::INI::I32<>  iMaxAdrenaline               { "Survival", "iMaxAdrenaline",               50 };
+			// Adrenaline tuning (vanilla MaxAdrenaline is computed as KillsForPerkLevel * MaxPerkLevel)
 			inline static REX::INI::I32<>  iKillsForAdrenalinePerkLevel { "Survival", "iKillsForAdrenalinePerkLevel",  5 };
 			inline static REX::INI::I32<>  iMaxAdrenalinePerkLevel      { "Survival", "iMaxAdrenalinePerkLevel",      10 };
 
-			// Combat misc
-			inline static REX::INI::F32<>  fMinDaysPerCombat                  { "Survival", "fMinDaysPerCombat",                   0.1f };
-			inline static REX::INI::F32<>  fGameTimerIntervalEncumbrance      { "Survival", "fGameTimerIntervalEncumbrance",      24.0f };
+			inline static REX::INI::F32<>  fGameTimerIntervalEncumbrance { "Survival", "fGameTimerIntervalEncumbrance", 24.0f };
 		};
 
 		// Diagnostics. Some values are exposed in MCM; developer-only toggles

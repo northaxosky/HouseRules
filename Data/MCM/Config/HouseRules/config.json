@@ -464,13 +464,6 @@
                 { "type": "spacer" },
                 { "text": "Adrenaline", "type": "section" },
                 {
-                    "id": "iMaxAdrenaline:Survival",
-                    "text": "Max Adrenaline Kills",
-                    "type": "slider",
-                    "help": "Maximum tracked kill counter (max level x kills-per-level). Vanilla 50.",
-                    "valueOptions": { "min": 0, "max": 500, "step": 5, "sourceType": "ModSettingInt" }
-                },
-                {
                     "id": "iKillsForAdrenalinePerkLevel:Survival",
                     "text": "Kills Per Perk Rank",
                     "type": "slider",
@@ -485,14 +478,7 @@
                     "valueOptions": { "min": 1, "max": 20, "step": 1, "sourceType": "ModSettingInt" }
                 },
                 { "type": "spacer" },
-                { "text": "Combat & Other", "type": "section" },
-                {
-                    "id": "fMinDaysPerCombat:Survival",
-                    "text": "Min Days Per Combat",
-                    "type": "slider",
-                    "help": "Minimum in-game days between combat-disease risk events. Vanilla 0.1.",
-                    "valueOptions": { "min": 0.0, "max": 7.0, "step": 0.05, "sourceType": "ModSettingFloat" }
-                },
+                { "text": "Encumbrance", "type": "section" },
                 {
                     "id": "fGameTimerIntervalEncumbrance:Survival",
                     "text": "Encumbrance Check Interval",

@@ -470,15 +470,13 @@ Negative pool values at which each food stage triggers. Lower (more negative) de
 
 | Slider | Default | What it changes |
 |---|---|---|
-| Max Adrenaline Kills | 50 | Maximum tracked kill counter (max rank x kills-per-rank). |
 | Kills Per Perk Rank | 5 | Kills needed to advance one Adrenaline rank. |
 | Max Adrenaline Rank | 10 | Maximum Adrenaline perk rank. |
 
-### Combat & Other
+### Encumbrance
 
 | Slider | Default | What it changes |
 |---|---|---|
-| Min Days Per Combat | 0.1 | Minimum in-game days between combat-disease risk events. |
 | Encumbrance Check Interval | 24 | In-game hours between over-encumbrance damage ticks. |
 
 All tuning sliders write the `Hardcore:HC_ManagerScript` Papyrus object's properties directly. The script reads its own properties each tick, so changes propagate within a few in-game minutes; save+reload for immediate effect.

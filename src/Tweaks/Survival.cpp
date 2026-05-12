@@ -77,13 +77,10 @@ namespace Tweaks::Survival
 			HC::SetFloat("DiseaseRiskRainAmount",         S::fDiseaseRiskRainAmount.GetValue());
 			HC::SetFloat("DiseaseRiskSwimmingAmount",     S::fDiseaseRiskSwimmingAmount.GetValue());
 
-			// Adrenaline tuning
-			HC::SetInt("MaxAdrenaline",               S::iMaxAdrenaline.GetValue());
+			// Adrenaline tuning (MaxAdrenaline itself is a script-local, derived from these two)
 			HC::SetInt("KillsForAdrenalinePerkLevel", S::iKillsForAdrenalinePerkLevel.GetValue());
 			HC::SetInt("MaxAdrenalinePerkLevel",      S::iMaxAdrenalinePerkLevel.GetValue());
 
-			// Combat misc
-			HC::SetFloat("MinDaysPerCombat",              S::fMinDaysPerCombat.GetValue());
 			HC::SetFloat("GameTimerInterval_Encumbrance", S::fGameTimerIntervalEncumbrance.GetValue());
 		}
 	}
