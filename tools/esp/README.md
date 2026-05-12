@@ -1,18 +1,22 @@
-# HouseRules.esp regeneration
+# HouseRules.esp regeneration (dormant)
 
-HouseRules ships a tiny companion ESP containing:
+**Status: not used in current builds.** As of v0.5.0 House Rules ships as a
+DLL only; the prior carry-weight gate is now a runtime SPEL-magnitude
+mutation (`Tweaks::SurvivalCarryWeight`) instead of a condition-overridden
+record. The pipeline below is kept as a template in case a future feature
+needs condition-gated record overrides that can't be done at runtime.
+
+The original ESP contained:
 
 - `HR_NoCarryWeight` GLOB (type: Float, default 0.0)
 - Override of `HC_ReduceCarryWeightAbility` [SPEL:00249F6A] with one extra
   condition on each of its 3 effects:
   `GetGlobalValue HR_NoCarryWeight == 0`
 
-The Pascal script `HR_BuildHouseRulesESP.pas` builds the ESP deterministically.
+The Pascal script `HR_BuildHouseRulesESP.pas` builds an ESP deterministically.
 The save step is manual because xEdit script mode is not compatible with
 `-quickedit`, `-P:` still leaves the Module Selection flow exposed, and
-automating xEdit's modal save dialogs is flaky. The ESP is committed to the
-repo as a build artifact; you only need to run this procedure when we add new
-GLOB-gated features to the ESP.
+automating xEdit's modal save dialogs is flaky.
 
 ## Fast path
 

@@ -24,6 +24,7 @@
 #include "Tweaks/Settlements.h"
 #include "Tweaks/Skills.h"
 #include "Tweaks/Sneak.h"
+#include "Tweaks/SurvivalCarryWeight.h"
 #include "Tweaks/VATS.h"
 
 namespace
@@ -71,6 +72,7 @@ namespace
 				Tweaks::CompanionsAffinity::Apply();
 				Tweaks::CombatPerks::Apply();
 				Tweaks::Settlements::Apply();
+				Tweaks::SurvivalCarryWeight::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("PauseMenu");
 				Diagnostics::HCManagerProbe::MaybeRun("PauseMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
@@ -98,6 +100,7 @@ namespace
 				Tweaks::CompanionsAffinity::Apply();
 				Tweaks::CombatPerks::Apply();
 				Tweaks::Settlements::Apply();
+				Tweaks::SurvivalCarryWeight::Apply();
 				Diagnostics::ActorValueProbe::MaybeRun("LoadingMenu");
 				Diagnostics::HCManagerProbe::MaybeRun("LoadingMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
