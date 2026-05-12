@@ -489,12 +489,20 @@ Finer-grained Survival tuning sliders (tick rates, stage thresholds, combat-tick
 
 ## Validation
 
-House Rules has a built-in self-test. Open the console and type `HRVERIFY`. The plugin writes a per-page PASS / FAIL / SKIP report to its log file. Every active feature should show PASS.
+House Rules has a built-in self-test. Set `bValidationAudit=1` under `[Diagnostic]` in `Data/MCM/Config/HouseRules/settings.ini` (optionally `sValidationAuditMode=Full` for per-target detail), then open and close the pause menu in-game. The plugin writes per-module PASS / FAIL / SKIP records to `HouseRules.log` on the next apply pass. Every active GMST writer should show PASS. Set the audit back to `0` afterward so it stops writing on every menu close.
 
-To check the log automatically after launch:
+To check the log automatically:
 
 ```powershell
-python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module ActorValues --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS --require-module Skills --require-module Sneak
+python tools\validate_house_rules_log.py `
+    --require-module DifficultyEffects --require-module Character `
+    --require-module ActorValues --require-module DamageFormulas `
+    --require-module PowerArmor --require-module Economy `
+    --require-module Progression --require-module VATS `
+    --require-module Skills --require-module Sneak `
+    --require-module CombatPerks --require-module Settlements
 ```
+
+Companions Affinity, Survival kill-switches + tuning, and SurvivalCarryWeight don't run through this GMST audit; they verify via their own log line prefixes (`Globals: wrote FormID ...`, `HCManagerScript: 'PropName' = value`, `SurvivalCarryWeight: gate=ON wrote N effect magnitude(s)`).
 
 The validation list will grow as new tracks ship.
