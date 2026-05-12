@@ -1,22 +1,24 @@
 # House Rules
 
-An F4SE plugin that exposes high-impact vanilla Fallout 4 settings through a single, well-documented MCM menu. Its goal is to give players the tools they need to tune vanilla mechanics so they fit a modded playthrough - not to add new gameplay.
-
-## Compatibility
-
-All three main Fallout 4 runtimes:
-
-- OG 1.10.163 (pre-NG)
-- NG 1.10.984
-- AE 1.11.x
-
-Requires **F4SE** and **Address Library for F4SE**. Mod Configuration Menu (MCM) is required for the settings UI.
+An F4SE plugin that exposes high-impact vanilla Fallout 4 settings through a single MCM menu. Its goal is to give players the tools they need to tune vanilla mechanics so they fit a modded playthrough - not to add new gameplay.
 
 ## Status
 
-House Rules is under active development. The plugin started as a Survival-focused curation tool and is expanding into a broader vanilla-tweak utility. Below are the features that ship today; the scope charter in this repo will document what's planned next.
+**v1.0.0** - feature-complete for the original scope. Self-test (`HRVERIFY`) reports 381 GMST targets PASS, 0 failed / 0 skipped across all 12 GMST modules.
 
-## Currently Shipping
+## Compatibility
+
+Validated on all three main Fallout 4 runtimes:
+
+- OG 1.10.163 (pre-NG)
+- NG 1.10.984
+- AE 1.11.x (1.11.191 tested)
+
+Requires **F4SE** and **Address Library for F4SE**. Mod Configuration Menu (MCM) is required for the settings UI.
+
+## Features
+
+The full per-slider reference lives in [docs/FEATURES.md](docs/FEATURES.md). Sections below are a summary of what's in MCM.
 
 ### Survival Unlocks
 
@@ -156,7 +158,7 @@ Toggles for the vanilla Survival hardcore-rule subsystems via direct writes to t
 
 All four default OFF (vanilla behavior). Survival difficulty stays active in every case. **Requires save reload after toggling** for immediate effect; otherwise the change takes hold on the manager script's next tick (a few in-game minutes).
 
-The page also exposes ~40 tuning sliders that write the `Hardcore:HC_ManagerScript` Papyrus properties directly (per-tick costs, game-hours-per-tick, stage thresholds, sleep timer, disease risk amounts, adrenaline rank pacing). All defaults are vanilla; moving a slider mutates the script's bound-object storage and propagates on its next tick. See [docs/FEATURES.md](docs/FEATURES.md) for the full slider list.
+The page also exposes ~38 tuning sliders that write the `Hardcore:HC_ManagerScript` Papyrus properties directly (per-tick costs, game-hours-per-tick, stage thresholds, sleep timer, disease risk amounts, adrenaline rank pacing). All defaults are vanilla; moving a slider mutates the script's bound-object storage and propagates on its next tick. See [docs/FEATURES.md](docs/FEATURES.md) for the full slider list.
 
 ### Companions Affinity
 
