@@ -144,7 +144,7 @@
                     "id": "bNoSurvivalCarryWeight:Unlocks",
                     "text": "Remove Survival Carry-Weight Penalty",
                     "type": "switcher",
-                    "help": "ON neutralizes Survival's -100 carry-weight ability for player and companions.",
+                    "help": "ON neutralizes Survival's -100 carry-weight ability for player and companions. Save and reload after toggling for the change to take effect on already-applied characters.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
                 },
                 {

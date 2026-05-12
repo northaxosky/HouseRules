@@ -32,7 +32,7 @@ All toggles default OFF (vanilla behavior). Turning one ON applies that tweak wh
 | Show Locations on Compass | Restores vanilla undiscovered-location markers |
 | Remove Chem/Aid Weight | Strips Survival's added weight from consumables |
 | Remove Ammo Weight | Strips Survival's added weight from ammunition |
-| Remove Survival Carry-Weight Penalty | Zeroes the effect magnitudes on `HC_ReduceCarryWeightAbility` (snapshot/restored when toggled off), so Survival no longer applies the carry-weight reduction on you or your companions |
+| Remove Survival Carry-Weight Penalty | Zeroes the effect magnitudes on `HC_ReduceCarryWeightAbility` (snapshot/restored when toggled off), so Survival no longer applies the carry-weight reduction on you or your companions. **Requires save reload after toggling** for the engine to re-read the magnitude on currently-applied spell instances. |
 | Allow God Mode | `tgm` / `tim` console cheats work in Survival via validated byte patches |
 | Allow Re-entering Survival | Removes vanilla's one-way gate - switch Survival on and off freely |
 
