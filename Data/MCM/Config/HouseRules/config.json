@@ -16,6 +16,7 @@
             "html": true,
             "type": "text"
         },
+        { "type": "spacer", "numLines": 2 },
         {
             "type": "image",
             "libName": "HouseRules",
