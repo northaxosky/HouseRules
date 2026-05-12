@@ -168,8 +168,16 @@ The main MCM page exposes `Log Level` (`Quiet`, `Normal`, `Verbose`, or `Trace`)
 To validate an audit log after launching through F4SE and loading a save:
 
 ```powershell
-python tools\validate_house_rules_log.py --require-module DifficultyEffects --require-module Character --require-module ActorValues --require-module DamageFormulas --require-module PowerArmor --require-module Economy --require-module Progression --require-module VATS --require-module Skills --require-module Sneak
+python tools\validate_house_rules_log.py `
+    --require-module DifficultyEffects --require-module Character `
+    --require-module ActorValues --require-module DamageFormulas `
+    --require-module PowerArmor --require-module Economy `
+    --require-module Progression --require-module VATS `
+    --require-module Skills --require-module Sneak `
+    --require-module CombatPerks --require-module Settlements
 ```
+
+Companions Affinity writes vanilla TESGlobals (not GMSTs), so it doesn't show up in HRVERIFY. Verify its writes by grepping the plugin log for `Globals: wrote FormID …` lines after moving a slider on the Companions page.
 
 ## Design Principles
 
