@@ -10,19 +10,18 @@
             "html": true,
             "type": "text"
         },
-        { "type": "spacer" },
+        { "text": "", "type": "section" },
         {
             "text": "<font color='#AAAAAA'><p align='center'>Tune high-impact vanilla Fallout 4 systems through one MCM: combat, character, economy, progression, perks, settlements, companions, and Survival mechanics.</p></font>",
             "html": true,
             "type": "text"
         },
-        { "type": "spacer", "numLines": 2 },
         {
             "type": "image",
             "libName": "HouseRules",
             "className": "s1"
         },
-        { "type": "spacer", "numLines": 2 },
+        { "type": "spacer" },
         {
             "text": "General",
             "type": "section"
