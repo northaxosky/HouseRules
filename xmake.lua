@@ -40,6 +40,9 @@ target("HouseRules")
 
     add_deps("commonlibf4")
 
+    -- match CommonLibF4's runtime slot count (its xmake define is not public, so REL::ID would silently truncate to 1 slot)
+    add_defines("COMMONLIB_RUNTIMECOUNT=3")
+
     add_files("src/**.cpp")
     add_headerfiles("src/**.h")
     add_includedirs("src")
