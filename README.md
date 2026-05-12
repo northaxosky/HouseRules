@@ -145,6 +145,15 @@ Runtime GMST sliders for sneak attacks and core detection:
 
 All Sneak sliders are Direct with the vanilla default as neutral; leaving a slider on neutral preserves whatever baseline another mod has written. NPC search timers and stealth-point internals remain deferred.
 
+### Survival
+
+Toggles for the vanilla Survival hardcore-rule systems via direct writes to the manager script's gating `TESGlobal`s:
+
+- **Disable Hunger and Thirst** writes `HC_Rule_SustenanceEffects` (FormID `0x854`) - food/water needs no longer accumulate or apply.
+- **Disable Sleep Deprivation** writes `HC_Rule_SleepEffects` (FormID `0x812`) - sleep timer no longer accumulates and stages no longer apply.
+
+Both default OFF (vanilla behavior). Survival difficulty stays active in either case. **Requires save reload after toggling** for immediate effect; otherwise the change takes hold on the manager script's next tick (a few in-game minutes).
+
 ### Companions Affinity
 
 Direct writes to nine vanilla `Fallout4.esm` `TESGlobal` records that drive per-reaction affinity changes and event cooldown timing (no Papyrus, no script forks):

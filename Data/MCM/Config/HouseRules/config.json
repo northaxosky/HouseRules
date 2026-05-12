@@ -1637,6 +1637,37 @@
                     "valueOptions": { "min": 0.0, "max": 500.0, "step": 5.0, "sourceType": "ModSettingFloat" }
                 }
             ]
+        },
+        {
+            "pageDisplayName": "Survival",
+            "content": [
+                {
+                    "text": "<font size='24'><p align='center'>Survival</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                {
+                    "text": "<font color='#AAAAAA'><p align='center'>Toggles for the vanilla Survival hardcore-rule systems (food/water and sleep deprivation). Save and reload after toggling so the script picks up the new state immediately; otherwise the change takes effect on the next in-game tick (within a few in-game minutes).</p></font>",
+                    "html": true,
+                    "type": "text"
+                },
+                { "type": "spacer" },
+                { "text": "Hardcore Rules", "type": "section" },
+                {
+                    "id": "bDisableSustenance:Survival",
+                    "text": "Disable Hunger and Thirst",
+                    "type": "switcher",
+                    "help": "ON disables the food and water need system. Stages no longer accumulate or apply. Survival difficulty stays active otherwise.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bDisableSleepDeprivation:Survival",
+                    "text": "Disable Sleep Deprivation",
+                    "type": "switcher",
+                    "help": "ON disables the sleep deprivation system. Sleep timer no longer accumulates and stages no longer apply. Survival difficulty stays active otherwise.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
+                }
+            ]
         }
     ]
 }

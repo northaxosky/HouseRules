@@ -389,9 +389,20 @@ Sliders for vanilla workshop game settings: build timers, repair cost, wire leng
 
 All Direct sliders. Leaving one on its default keeps any changes another mod has made.
 
+## Survival
+
+Toggles for the vanilla Survival hardcore-rule systems. Use these to keep Survival difficulty active while disabling its food/water or sleep mechanics. Both default OFF (vanilla behavior).
+
+| Toggle | What it does |
+|---|---|
+| Disable Hunger and Thirst | Turns off the food and water need system entirely. Stages no longer accumulate or apply. |
+| Disable Sleep Deprivation | Turns off the sleep deprivation system. Sleep timer no longer accumulates and stages no longer apply. |
+
+Both toggles write the vanilla `HC_Rule_SustenanceEffects` / `HC_Rule_SleepEffects` global variables that the hardcore manager script reads each tick. **Save and reload after toggling for immediate effect**; otherwise the change takes hold on the next in-game tick (a few in-game minutes).
+
 ## Coming Soon
 
-No firmly-planned tracks at the moment. Suggestions welcome.
+Finer-grained Survival tuning sliders (tick rates, stage thresholds, combat-tick multipliers) are planned for a follow-up release once the Papyrus VM writer infrastructure lands.
 
 ## Validation
 
