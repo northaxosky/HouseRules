@@ -402,6 +402,87 @@ Toggles for the vanilla Survival hardcore-rule systems. Use these to keep Surviv
 
 Each toggle writes the matching vanilla global variable (`HC_Rule_SustenanceEffects`, `HC_Rule_SleepEffects`, `HC_Rule_DiseaseEffects`, `HC_Rule_AdrenalineOn`) that the hardcore manager script reads each tick. **Save and reload after toggling for immediate effect**; otherwise the change takes hold on the next in-game tick (a few in-game minutes).
 
+### Sustenance Tuning
+
+Slows or speeds the food/water accumulation independently of the kill-switch.
+
+| Slider | Default | What it changes |
+|---|---|---|
+| Food Cost Per Tick | 4 | How much the food pool drops each tick. Lower = needs accumulate slower. |
+| Drink Cost Per Tick | 4 | How much the drink pool drops each tick. |
+| Game Hours Per Tick | 1.0 | In-game hours between sustenance ticks. Higher = slower accumulation. |
+| Bonus Digestion Hours | 1.0 | Protected window after eating during which no further need accumulates. |
+| Tick Multiplier While Sleeping | 0.25 | Multiplier on sustenance accrual while asleep. |
+| Extra Hours Per Combat | 0.25 | Extra in-game hours added to the tick during combat. Higher = combat makes you hungrier/thirstier faster. |
+
+### Food Stage Thresholds
+
+Negative pool values at which each food stage triggers. Lower (more negative) defers the stage onset.
+
+| Slider | Default |
+|---|---|
+| Peckish At | -24 |
+| Hungry At | -48 |
+| Famished At | -96 |
+| Ravenous At | -144 |
+| Starving At | -256 |
+
+### Drink Stage Thresholds
+
+| Slider | Default |
+|---|---|
+| Parched At | -16 |
+| Thirsty At | -36 |
+| Mildly Dehydrated At | -72 |
+| Dehydrated At | -120 |
+| Severely Dehydrated At | -180 |
+
+### Sleep Tuning
+
+| Slider | Default | What it changes |
+|---|---|---|
+| Sleep Deprivation Interval | 14 | In-game hours between sleep-deprivation checks. Higher = sleep stages progress slower. |
+| Insomnia Sleep Multiplier | 0.5 | Multiplier on sleep recovery while the Insomnia disease is active. |
+| Minimum Hours to Cure Sleep | 2 | Minimum in-game hours of sleep needed to cure any sleep stage effect. |
+| Caffeine Sleep Delay | 2.333 | Hours of sleep delay imposed after consuming a caffeinated item. |
+| Extra Caffeine Sleep Delay | 7 | Additional sleep-delay hours stacked for repeated caffeine use. |
+| Sleepiness Disease Timer Mult | 0.5 | Multiplier on the sleep-deprivation timer while Sleepiness is active. Lower = sleep stages progress faster when diseased. |
+
+### Disease Tuning
+
+| Slider | Default | What it changes |
+|---|---|---|
+| Disease Risk Threshold | 0.25 | Risk-pool value above which a disease roll is made. Higher = diseases trigger less often. |
+| Disease Grace Period | 1.0 | In-game days after the last disease before another can trigger. |
+| Disease Risk Drain Per Cycle | -0.01 | Passive disease-risk drain per cycle when no risk events fire. |
+| Disease Pool Value Mult | 1.75 | Multiplier on the disease pool's current value. |
+| Need More Food Multiplier | 0.5 | Sustenance-cost multiplier while the Need More Food disease is active. |
+| Immunodeficiency Mult | 1.2 | Disease-chance multiplier while Immunodeficiency is active. |
+| Risk: Cannibalism | 0.05 | Risk pool gain per cannibalism event. |
+| Risk: Chems | 0.07 | Risk pool gain per chem use. |
+| Risk: Combat | 0.05 | Risk pool gain from combat exposure to disease-carrying enemies. |
+| Risk: Risky Food | 0.12 | Risk pool gain from high-risk food (raw, irradiated, etc.). |
+| Risk: Standard Food | 0.07 | Risk pool gain from standard food. |
+| Risk: Rain Exposure | 0.03 | Risk pool gain from being in radioactive rain. |
+| Risk: Swimming | 0.03 | Risk pool gain from swimming. |
+
+### Adrenaline
+
+| Slider | Default | What it changes |
+|---|---|---|
+| Max Adrenaline Kills | 50 | Maximum tracked kill counter (max rank x kills-per-rank). |
+| Kills Per Perk Rank | 5 | Kills needed to advance one Adrenaline rank. |
+| Max Adrenaline Rank | 10 | Maximum Adrenaline perk rank. |
+
+### Combat & Other
+
+| Slider | Default | What it changes |
+|---|---|---|
+| Min Days Per Combat | 0.1 | Minimum in-game days between combat-disease risk events. |
+| Encumbrance Check Interval | 24 | In-game hours between over-encumbrance damage ticks. |
+
+All tuning sliders write the `Hardcore:HC_ManagerScript` Papyrus object's properties directly. The script reads its own properties each tick, so changes propagate within a few in-game minutes; save+reload for immediate effect.
+
 ## Coming Soon
 
 Finer-grained Survival tuning sliders (tick rates, stage thresholds, combat-tick multipliers) are planned for a follow-up release once the Papyrus VM writer infrastructure lands.

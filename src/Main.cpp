@@ -9,6 +9,7 @@
 #include "Hooks/Unlocks.h"
 #include "Settings.h"
 #include "SleepWait/Integration.h"
+#include "Survival/HCManagerScript.h"
 #include "Tweaks/ActionPoints.h"
 #include "Tweaks/ActorValues.h"
 #include "Tweaks/CharacterStats.h"
@@ -141,6 +142,7 @@ namespace
 				// baselines from leaking between loaded saves.
 				Tweaks::ActorValues::ResetSnapshots();
 				Diagnostics::HCManagerProbe::Reset();
+				Survival::HCManagerScript::Reset();
 				break;
 			case F4SE::MessagingInterface::kGameDataReady:
 				MCM::Settings::Update();

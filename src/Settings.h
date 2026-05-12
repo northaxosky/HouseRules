@@ -374,14 +374,69 @@ namespace MCM
 			inline static REX::INI::F32<> fRestrictedBuildMaxTurretRadius { "Settlements", "fRestrictedBuildMaxTurretRadius",  70.0f };
 		};
 
-		// Survival: kill-switch toggles for the vanilla hardcore rule globals (sustenance, sleep, disease, adrenaline).
+		// Survival: kill-switch toggles for the vanilla hardcore rule globals + tuning sliders that write the manager script's bound-object properties.
 		class Survival
 		{
 		public:
+			// Kill switches (TESGlobal writes via Globals::WriteByFormID)
 			inline static REX::INI::Bool<> bDisableSustenance      { "Survival", "bDisableSustenance",       false };
 			inline static REX::INI::Bool<> bDisableSleepDeprivation{ "Survival", "bDisableSleepDeprivation", false };
 			inline static REX::INI::Bool<> bDisableDiseases        { "Survival", "bDisableDiseases",         false };
 			inline static REX::INI::Bool<> bDisableAdrenaline      { "Survival", "bDisableAdrenaline",       false };
+
+			// Sustenance tuning (HC_ManagerScript properties)
+			inline static REX::INI::I32<>  iFoodCostPerTick                  { "Survival", "iFoodCostPerTick",                  4    };
+			inline static REX::INI::I32<>  iDrinkCostPerTick                 { "Survival", "iDrinkCostPerTick",                 4    };
+			inline static REX::INI::F32<>  fGamesHoursPerTick                { "Survival", "fGamesHoursPerTick",                1.0f };
+			inline static REX::INI::F32<>  fBonusDigestionHours              { "Survival", "fBonusDigestionHours",              1.0f };
+			inline static REX::INI::F32<>  fSustenanceTickWhileSleepingMult  { "Survival", "fSustenanceTickWhileSleepingMult",  0.25f };
+			inline static REX::INI::F32<>  fTickHoursCostPerCombat           { "Survival", "fTickHoursCostPerCombat",           0.25f };
+
+			// Food stage thresholds (negative pool values that trigger each stage)
+			inline static REX::INI::I32<>  iFoodPoolPeckishAmount   { "Survival", "iFoodPoolPeckishAmount",   -24  };
+			inline static REX::INI::I32<>  iFoodPoolHungryAmount    { "Survival", "iFoodPoolHungryAmount",    -48  };
+			inline static REX::INI::I32<>  iFoodPoolFamishedAmount  { "Survival", "iFoodPoolFamishedAmount",  -96  };
+			inline static REX::INI::I32<>  iFoodPoolRavenousAmount  { "Survival", "iFoodPoolRavenousAmount", -144 };
+			inline static REX::INI::I32<>  iFoodPoolStarvingAmount  { "Survival", "iFoodPoolStarvingAmount", -256 };
+
+			// Drink stage thresholds
+			inline static REX::INI::I32<>  iDrinkPoolParchedAmount             { "Survival", "iDrinkPoolParchedAmount",             -16  };
+			inline static REX::INI::I32<>  iDrinkPoolThirstyAmount             { "Survival", "iDrinkPoolThirstyAmount",             -36  };
+			inline static REX::INI::I32<>  iDrinkPoolMildlyDehydratedAmount    { "Survival", "iDrinkPoolMildlyDehydratedAmount",    -72  };
+			inline static REX::INI::I32<>  iDrinkPoolDehydratedAmount          { "Survival", "iDrinkPoolDehydratedAmount",         -120  };
+			inline static REX::INI::I32<>  iDrinkPoolSeverelyDehydratedAmount  { "Survival", "iDrinkPoolSeverelyDehydratedAmount", -180  };
+
+			// Sleep tuning
+			inline static REX::INI::F32<>  fGameTimerIntervalSleepDeprivation { "Survival", "fGameTimerIntervalSleepDeprivation", 14.0f };
+			inline static REX::INI::F32<>  fInsomniaSleepMult                 { "Survival", "fInsomniaSleepMult",                  0.5f };
+			inline static REX::INI::I32<>  iMinHoursForCuringSleepEffects     { "Survival", "iMinHoursForCuringSleepEffects",      2    };
+			inline static REX::INI::F32<>  fCaffeineInducedSleepDelay         { "Survival", "fCaffeineInducedSleepDelay",          2.333f };
+			inline static REX::INI::F32<>  fExtraCaffeineInducedSleepDelay    { "Survival", "fExtraCaffeineInducedSleepDelay",     7.0f };
+			inline static REX::INI::F32<>  fDiseasedSleepinessTimerMult       { "Survival", "fDiseasedSleepinessTimerMult",         0.5f };
+
+			// Disease tuning
+			inline static REX::INI::F32<>  fDiseaseGracePeriod              { "Survival", "fDiseaseGracePeriod",               1.0f  };
+			inline static REX::INI::F32<>  fDiseaseRiskRollThreshold        { "Survival", "fDiseaseRiskRollThreshold",         0.25f };
+			inline static REX::INI::F32<>  fDiseaseRiskDrainPerCycle        { "Survival", "fDiseaseRiskDrainPerCycle",        -0.01f };
+			inline static REX::INI::F32<>  fCurrentDiseasePoolValueMult     { "Survival", "fCurrentDiseasePoolValueMult",      1.75f };
+			inline static REX::INI::F32<>  fDiseaseNeedMoreFoodMult         { "Survival", "fDiseaseNeedMoreFoodMult",          0.5f  };
+			inline static REX::INI::F32<>  fImmunodeficiencyDiseaseMult     { "Survival", "fImmunodeficiencyDiseaseMult",      1.2f  };
+			inline static REX::INI::F32<>  fDiseaseRiskCannibalAmount       { "Survival", "fDiseaseRiskCannibalAmount",        0.05f };
+			inline static REX::INI::F32<>  fDiseaseRiskChemsAmount          { "Survival", "fDiseaseRiskChemsAmount",           0.07f };
+			inline static REX::INI::F32<>  fDiseaseRiskCombatantAmount      { "Survival", "fDiseaseRiskCombatantAmount",       0.05f };
+			inline static REX::INI::F32<>  fDiseaseRiskFoodHighAmount       { "Survival", "fDiseaseRiskFoodHighAmount",        0.12f };
+			inline static REX::INI::F32<>  fDiseaseRiskFoodStandardAmount   { "Survival", "fDiseaseRiskFoodStandardAmount",    0.07f };
+			inline static REX::INI::F32<>  fDiseaseRiskRainAmount           { "Survival", "fDiseaseRiskRainAmount",            0.03f };
+			inline static REX::INI::F32<>  fDiseaseRiskSwimmingAmount       { "Survival", "fDiseaseRiskSwimmingAmount",        0.03f };
+
+			// Adrenaline tuning
+			inline static REX::INI::I32<>  iMaxAdrenaline               { "Survival", "iMaxAdrenaline",               50 };
+			inline static REX::INI::I32<>  iKillsForAdrenalinePerkLevel { "Survival", "iKillsForAdrenalinePerkLevel",  5 };
+			inline static REX::INI::I32<>  iMaxAdrenalinePerkLevel      { "Survival", "iMaxAdrenalinePerkLevel",      10 };
+
+			// Combat misc
+			inline static REX::INI::F32<>  fMinDaysPerCombat                  { "Survival", "fMinDaysPerCombat",                   0.1f };
+			inline static REX::INI::F32<>  fGameTimerIntervalEncumbrance      { "Survival", "fGameTimerIntervalEncumbrance",      24.0f };
 		};
 
 		// Diagnostics. Some values are exposed in MCM; developer-only toggles

@@ -156,6 +156,8 @@ Toggles for the vanilla Survival hardcore-rule subsystems via direct writes to t
 
 All four default OFF (vanilla behavior). Survival difficulty stays active in every case. **Requires save reload after toggling** for immediate effect; otherwise the change takes hold on the manager script's next tick (a few in-game minutes).
 
+The page also exposes ~40 tuning sliders that write the `Hardcore:HC_ManagerScript` Papyrus properties directly (per-tick costs, game-hours-per-tick, stage thresholds, sleep timer, disease risk amounts, adrenaline rank pacing). All defaults are vanilla; moving a slider mutates the script's bound-object storage and propagates on its next tick. See [docs/FEATURES.md](docs/FEATURES.md) for the full slider list.
+
 ### Companions Affinity
 
 Direct writes to nine vanilla `Fallout4.esm` `TESGlobal` records that drive per-reaction affinity changes and event cooldown timing (no Papyrus, no script forks):

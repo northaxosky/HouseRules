@@ -1680,6 +1680,300 @@
                     "type": "switcher",
                     "help": "ON disables the Survival Adrenaline perk system. Kill streaks no longer build the Adrenaline rank, and the perk's damage bonus no longer applies. Survival difficulty stays active otherwise.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                { "type": "spacer" },
+                { "text": "Sustenance Tuning", "type": "section" },
+                {
+                    "id": "iFoodCostPerTick:Survival",
+                    "text": "Food Cost Per Tick",
+                    "type": "slider",
+                    "help": "How much the food pool decreases each tick. Lower = needs accumulate slower. Vanilla 4.",
+                    "valueOptions": { "min": 0, "max": 20, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iDrinkCostPerTick:Survival",
+                    "text": "Drink Cost Per Tick",
+                    "type": "slider",
+                    "help": "How much the drink pool decreases each tick. Lower = needs accumulate slower. Vanilla 4.",
+                    "valueOptions": { "min": 0, "max": 20, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "fGamesHoursPerTick:Survival",
+                    "text": "Game Hours Per Tick",
+                    "type": "slider",
+                    "help": "How many in-game hours between sustenance ticks. Higher = needs accumulate slower. Vanilla 1.0.",
+                    "valueOptions": { "min": 0.1, "max": 24.0, "step": 0.1, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fBonusDigestionHours:Survival",
+                    "text": "Bonus Digestion Hours",
+                    "type": "slider",
+                    "help": "Protected window after eating during which no further need accumulates. Vanilla 1.0.",
+                    "valueOptions": { "min": 0.0, "max": 24.0, "step": 0.1, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fSustenanceTickWhileSleepingMult:Survival",
+                    "text": "Tick Multiplier While Sleeping",
+                    "type": "slider",
+                    "help": "Multiplier on sustenance accrual while asleep. Vanilla 0.25 (sleep slows need accumulation).",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fTickHoursCostPerCombat:Survival",
+                    "text": "Extra Hours Per Combat",
+                    "type": "slider",
+                    "help": "Extra in-game hours added to the sustenance tick during combat. Higher = combat makes you hungrier/thirstier faster. Vanilla 0.25.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Food Stage Thresholds", "type": "section" },
+                {
+                    "id": "iFoodPoolPeckishAmount:Survival",
+                    "text": "Peckish At",
+                    "type": "slider",
+                    "help": "Food pool value where the Peckish stage triggers. Lower (more negative) = later onset. Vanilla -24.",
+                    "valueOptions": { "min": -1000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iFoodPoolHungryAmount:Survival",
+                    "text": "Hungry At",
+                    "type": "slider",
+                    "help": "Food pool value where the Hungry stage triggers. Vanilla -48.",
+                    "valueOptions": { "min": -1000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iFoodPoolFamishedAmount:Survival",
+                    "text": "Famished At",
+                    "type": "slider",
+                    "help": "Food pool value where the Famished stage triggers. Vanilla -96.",
+                    "valueOptions": { "min": -2000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iFoodPoolRavenousAmount:Survival",
+                    "text": "Ravenous At",
+                    "type": "slider",
+                    "help": "Food pool value where the Ravenous stage triggers. Vanilla -144.",
+                    "valueOptions": { "min": -2000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iFoodPoolStarvingAmount:Survival",
+                    "text": "Starving At",
+                    "type": "slider",
+                    "help": "Food pool value where the Starving stage triggers. Vanilla -256.",
+                    "valueOptions": { "min": -5000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                { "type": "spacer" },
+                { "text": "Drink Stage Thresholds", "type": "section" },
+                {
+                    "id": "iDrinkPoolParchedAmount:Survival",
+                    "text": "Parched At",
+                    "type": "slider",
+                    "help": "Drink pool value where the Parched stage triggers. Vanilla -16.",
+                    "valueOptions": { "min": -1000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iDrinkPoolThirstyAmount:Survival",
+                    "text": "Thirsty At",
+                    "type": "slider",
+                    "help": "Drink pool value where the Thirsty stage triggers. Vanilla -36.",
+                    "valueOptions": { "min": -1000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iDrinkPoolMildlyDehydratedAmount:Survival",
+                    "text": "Mildly Dehydrated At",
+                    "type": "slider",
+                    "help": "Drink pool value where the Mildly Dehydrated stage triggers. Vanilla -72.",
+                    "valueOptions": { "min": -2000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iDrinkPoolDehydratedAmount:Survival",
+                    "text": "Dehydrated At",
+                    "type": "slider",
+                    "help": "Drink pool value where the Dehydrated stage triggers. Vanilla -120.",
+                    "valueOptions": { "min": -2000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iDrinkPoolSeverelyDehydratedAmount:Survival",
+                    "text": "Severely Dehydrated At",
+                    "type": "slider",
+                    "help": "Drink pool value where the Severely Dehydrated stage triggers. Vanilla -180.",
+                    "valueOptions": { "min": -5000, "max": 0, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                { "type": "spacer" },
+                { "text": "Sleep Tuning", "type": "section" },
+                {
+                    "id": "fGameTimerIntervalSleepDeprivation:Survival",
+                    "text": "Sleep Deprivation Interval",
+                    "type": "slider",
+                    "help": "In-game hours between sleep-deprivation checks. Higher = sleep stages progress slower. Vanilla 14.",
+                    "valueOptions": { "min": 0.5, "max": 96.0, "step": 0.5, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fInsomniaSleepMult:Survival",
+                    "text": "Insomnia Sleep Multiplier",
+                    "type": "slider",
+                    "help": "Multiplier on sleep recovery when the Insomnia disease is active. Vanilla 0.5.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "iMinHoursForCuringSleepEffects:Survival",
+                    "text": "Minimum Hours to Cure Sleep",
+                    "type": "slider",
+                    "help": "Minimum in-game hours of sleep needed to cure any sleep stage effects. Vanilla 2.",
+                    "valueOptions": { "min": 1, "max": 24, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "fCaffeineInducedSleepDelay:Survival",
+                    "text": "Caffeine Sleep Delay",
+                    "type": "slider",
+                    "help": "Hours of sleep delay imposed after consuming a caffeinated item. Vanilla 2.333.",
+                    "valueOptions": { "min": 0.0, "max": 24.0, "step": 0.1, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fExtraCaffeineInducedSleepDelay:Survival",
+                    "text": "Extra Caffeine Sleep Delay",
+                    "type": "slider",
+                    "help": "Additional sleep-delay hours stacked for repeated caffeine use. Vanilla 7.",
+                    "valueOptions": { "min": 0.0, "max": 24.0, "step": 0.1, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseasedSleepinessTimerMult:Survival",
+                    "text": "Sleepiness Disease Timer Mult",
+                    "type": "slider",
+                    "help": "Multiplier on sleep-deprivation timer when Sleepiness disease is active. Lower = sleep stages progress faster while diseased. Vanilla 0.5.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Disease Tuning", "type": "section" },
+                {
+                    "id": "fDiseaseRiskRollThreshold:Survival",
+                    "text": "Disease Risk Threshold",
+                    "type": "slider",
+                    "help": "Risk pool value above which a disease roll is made. Higher = diseases trigger less often. Vanilla 0.25.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.01, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseGracePeriod:Survival",
+                    "text": "Disease Grace Period",
+                    "type": "slider",
+                    "help": "In-game days after the last disease before another can trigger. Vanilla 1.0.",
+                    "valueOptions": { "min": 0.0, "max": 30.0, "step": 0.5, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseRiskDrainPerCycle:Survival",
+                    "text": "Disease Risk Drain Per Cycle",
+                    "type": "slider",
+                    "help": "Passive disease-risk drain per cycle when no risk events fire. Vanilla -0.01 (negative drains pool).",
+                    "valueOptions": { "min": -0.5, "max": 0.5, "step": 0.005, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fCurrentDiseasePoolValueMult:Survival",
+                    "text": "Disease Pool Value Mult",
+                    "type": "slider",
+                    "help": "Multiplier on the disease pool's current value. Vanilla 1.75.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseNeedMoreFoodMult:Survival",
+                    "text": "Need More Food Multiplier",
+                    "type": "slider",
+                    "help": "Sustenance-cost multiplier when the Need More Food disease is active. Vanilla 0.5.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fImmunodeficiencyDiseaseMult:Survival",
+                    "text": "Immunodeficiency Mult",
+                    "type": "slider",
+                    "help": "Disease-chance multiplier when Immunodeficiency is active. Vanilla 1.2.",
+                    "valueOptions": { "min": 0.0, "max": 5.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseRiskCannibalAmount:Survival",
+                    "text": "Risk: Cannibalism",
+                    "type": "slider",
+                    "help": "Risk pool gain per cannibalism event. Vanilla 0.05.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.005, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseRiskChemsAmount:Survival",
+                    "text": "Risk: Chems",
+                    "type": "slider",
+                    "help": "Risk pool gain per chem use. Vanilla 0.07.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.005, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseRiskCombatantAmount:Survival",
+                    "text": "Risk: Combat",
+                    "type": "slider",
+                    "help": "Risk pool gain from combat exposure to disease-carrying enemies. Vanilla 0.05.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.005, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseRiskFoodHighAmount:Survival",
+                    "text": "Risk: Risky Food",
+                    "type": "slider",
+                    "help": "Risk pool gain from high-risk food (raw, irradiated, etc.). Vanilla 0.12.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.005, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseRiskFoodStandardAmount:Survival",
+                    "text": "Risk: Standard Food",
+                    "type": "slider",
+                    "help": "Risk pool gain from standard food. Vanilla 0.07.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.005, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseRiskRainAmount:Survival",
+                    "text": "Risk: Rain Exposure",
+                    "type": "slider",
+                    "help": "Risk pool gain from being out in radioactive rain. Vanilla 0.03.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.005, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fDiseaseRiskSwimmingAmount:Survival",
+                    "text": "Risk: Swimming",
+                    "type": "slider",
+                    "help": "Risk pool gain from swimming. Vanilla 0.03.",
+                    "valueOptions": { "min": 0.0, "max": 1.0, "step": 0.005, "sourceType": "ModSettingFloat" }
+                },
+                { "type": "spacer" },
+                { "text": "Adrenaline", "type": "section" },
+                {
+                    "id": "iMaxAdrenaline:Survival",
+                    "text": "Max Adrenaline Kills",
+                    "type": "slider",
+                    "help": "Maximum tracked kill counter (max level x kills-per-level). Vanilla 50.",
+                    "valueOptions": { "min": 0, "max": 500, "step": 5, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iKillsForAdrenalinePerkLevel:Survival",
+                    "text": "Kills Per Perk Rank",
+                    "type": "slider",
+                    "help": "Kills needed to advance one Adrenaline perk rank. Vanilla 5.",
+                    "valueOptions": { "min": 1, "max": 50, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                {
+                    "id": "iMaxAdrenalinePerkLevel:Survival",
+                    "text": "Max Adrenaline Rank",
+                    "type": "slider",
+                    "help": "Maximum Adrenaline perk rank. Vanilla 10.",
+                    "valueOptions": { "min": 1, "max": 20, "step": 1, "sourceType": "ModSettingInt" }
+                },
+                { "type": "spacer" },
+                { "text": "Combat & Other", "type": "section" },
+                {
+                    "id": "fMinDaysPerCombat:Survival",
+                    "text": "Min Days Per Combat",
+                    "type": "slider",
+                    "help": "Minimum in-game days between combat-disease risk events. Vanilla 0.1.",
+                    "valueOptions": { "min": 0.0, "max": 7.0, "step": 0.05, "sourceType": "ModSettingFloat" }
+                },
+                {
+                    "id": "fGameTimerIntervalEncumbrance:Survival",
+                    "text": "Encumbrance Check Interval",
+                    "type": "slider",
+                    "help": "In-game hours between over-encumbrance damage ticks. Vanilla 24.",
+                    "valueOptions": { "min": 0.5, "max": 168.0, "step": 0.5, "sourceType": "ModSettingFloat" }
                 }
             ]
         }
