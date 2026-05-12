@@ -14,7 +14,7 @@ F4SE_EXPORT constinit auto F4SEPlugin_Version = []() noexcept {
 	F4SE::PluginVersionData v{};
 	v.PluginVersion({ 0, 6, 1, 0 });
 	v.PluginName("HouseRules");
-	v.AuthorName("Kuz");
+	v.AuthorName("Mute");
 	v.UsesAddressLibrary(true);   // 1.11.137+ AddressLib
 	v.UsesSigScanning(false);
 	v.IsLayoutDependent(true);    // 1.11.137+ layout
