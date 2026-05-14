@@ -4,4 +4,5 @@
 namespace Tweaks::SurvivalCarryWeight
 {
 	void Apply();
+	void ResetSnapshots();
 }

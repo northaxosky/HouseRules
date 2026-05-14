@@ -4,7 +4,7 @@ An F4SE plugin that exposes high-impact vanilla Fallout 4 settings through a sin
 
 ## Status
 
-**v1.0.0** - feature-complete for the original scope. Self-test (`HRVERIFY`) reports 381 GMST targets PASS, 0 failed / 0 skipped across 12 modules.
+**v1.1.0** - adds the Keep Exit Save unlock + an AV-cache refresh so formula sliders take effect immediately. Self-test (`HRVERIFY`) reports 381 GMST targets PASS, 0 failed / 0 skipped across 12 modules.
 
 ## Compatibility
 
@@ -20,7 +20,7 @@ Requires **F4SE** and **Address Library for F4SE**. Mod Configuration Menu (MCM)
 
 The full per-slider reference (defaults, units, behavior notes) lives in [docs/FEATURES.md](docs/FEATURES.md).
 
-- **Survival Unlocks** - opt-in toggles for console, manual / auto saves, fast travel, compass enemies / locations, chem / ammo weight, carry weight, god mode, and re-entering Survival.
+- **Survival Unlocks** - opt-in toggles for console, manual / auto saves, fast travel, compass enemies / locations, chem / ammo weight, carry weight, god mode, re-entering Survival, and keeping the exit save on load.
 - **Survival** - kill-switches for the four Hardcore subsystems (Hunger/Thirst, Sleep, Diseases, Adrenaline) plus ~38 tuning sliders that write `Hardcore:HC_ManagerScript` Papyrus properties.
 - **Magnitudes** - stimpak / limb repair / RadAway / Rad-X / food healing and hunger / thirst / sleep penalty severity.
 - **Difficulty I** - per-tier incoming / outgoing damage, XP base + Intelligence bonus, legendary chance / rarity.
@@ -57,7 +57,7 @@ A built-in self-test verifies every GMST target. Set `bValidationAudit=1` (and o
 python tools/validate_house_rules_log.py
 ```
 
-v1.0.0 ships with 0 failed / 0 skipped across 12 GMST modules (381 targets) on OG / NG / AE. Companions Affinity uses vanilla TESGlobal writes, so it doesn't show up in HRVERIFY; grep the plugin log for `Globals: wrote FormID ...` to verify those.
+v1.1.0 ships with 0 failed / 0 skipped across 12 GMST modules (381 targets) on OG / NG / AE. Companions Affinity uses vanilla TESGlobal writes, so it doesn't show up in HRVERIFY; grep the plugin log for `Globals: wrote FormID ...` to verify those.
 
 ## Installation
 

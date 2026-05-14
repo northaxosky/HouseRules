@@ -35,6 +35,7 @@ All toggles default OFF (vanilla Survival). Turning one ON applies that change w
 | Remove Survival Carry-Weight Penalty | Zeroes the Survival carry-weight reduction (the `HC_ReduceCarryWeightAbility` spell's effect magnitudes) on you and your companions. Stacks with the carry-weight sliders on the Character page. **Requires save reload after toggling** for the change to take effect on already-applied characters. |
 | Allow God Mode | Lets the `tgm` and `tim` console commands work in Survival. |
 | Allow Re-entering Survival | Lets you switch Survival on and off freely. Vanilla only allows leaving Survival, never coming back. Updates right away. |
+| Keep Exit Save | Stops the game deleting the Survival exit save on load. Toggle OFF to delete an exit save from the load menu. |
 
 ## Magnitudes
 

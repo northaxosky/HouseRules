@@ -159,6 +159,13 @@
                     "type": "switcher",
                     "help": "ON lets you turn Survival back on after leaving it.",
                     "valueOptions": { "sourceType": "ModSettingBool" }
+                },
+                {
+                    "id": "bKeepExitSave:Unlocks",
+                    "text": "Keep Exit Save",
+                    "type": "switcher",
+                    "help": "ON keeps the exit save on load. Toggle OFF to delete it from the load menu.",
+                    "valueOptions": { "sourceType": "ModSettingBool" }
                 }
             ]
         },

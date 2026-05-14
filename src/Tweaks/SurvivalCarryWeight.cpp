@@ -81,4 +81,10 @@ namespace Tweaks::SurvivalCarryWeight
 			REX::INFO("SurvivalCarryWeight: gate={} wrote {} effect magnitude(s)", gate ? "ON" : "OFF", changed);
 		}
 	}
+
+	void ResetSnapshots()
+	{
+		g_snapshots.clear();
+		g_warnedMissing = false;
+	}
 }

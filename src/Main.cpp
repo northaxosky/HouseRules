@@ -4,6 +4,7 @@
 #include "Diagnostics/DumpDefaultObjects.h"
 #include "Diagnostics/HCManagerProbe.h"
 #include "Diagnostics/SurvivalObserver.h"
+#include "Hooks/ExitSave.h"
 #include "Hooks/GodMode.h"
 #include "Hooks/SafeTravel.h"
 #include "Hooks/Unlocks.h"
@@ -20,6 +21,7 @@
 #include "Tweaks/DifficultyEffects.h"
 #include "Tweaks/Economy.h"
 #include "Tweaks/Magnitudes.h"
+#include "Tweaks/PlayerRefresh.h"
 #include "Tweaks/PowerArmor.h"
 #include "Tweaks/Progression.h"
 #include "Tweaks/Settlements.h"
@@ -76,6 +78,8 @@ namespace
 				Tweaks::Settlements::Apply();
 				Tweaks::SurvivalCarryWeight::Apply();
 				Tweaks::Survival::Apply();
+				// Bust derived AV cache last so the engine sees all GMST writes from this pass.
+				Tweaks::PlayerRefresh::ResetDerivedActorValues();
 				Diagnostics::ActorValueProbe::MaybeRun("PauseMenu");
 				Diagnostics::HCManagerProbe::MaybeRun("PauseMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
@@ -105,6 +109,8 @@ namespace
 				Tweaks::Settlements::Apply();
 				Tweaks::SurvivalCarryWeight::Apply();
 				Tweaks::Survival::Apply();
+				// Bust derived AV cache last so the engine sees all GMST writes from this pass.
+				Tweaks::PlayerRefresh::ResetDerivedActorValues();
 				Diagnostics::ActorValueProbe::MaybeRun("LoadingMenu");
 				Diagnostics::HCManagerProbe::MaybeRun("LoadingMenu");
 				Diagnostics::SurvivalObserver::OnMenuOpenClose(a_event);
@@ -137,10 +143,9 @@ namespace
 			case F4SE::MessagingInterface::kPreLoadGame:
 			case F4SE::MessagingInterface::kPostLoadGame:
 			case F4SE::MessagingInterface::kNewGame:
-				// These messages are not safe for touching forms on OG, but
-				// clearing per-save process state here prevents ActorValue
-				// baselines from leaking between loaded saves.
+				// Reset per-save caches; do not touch forms here on OG.
 				Tweaks::ActorValues::ResetSnapshots();
+				Tweaks::SurvivalCarryWeight::ResetSnapshots();
 				Diagnostics::HCManagerProbe::Reset();
 				Survival::HCManagerScript::Reset();
 				break;
@@ -178,6 +183,7 @@ F4SE_EXPORT bool F4SEPlugin_Load(const F4SE::LoadInterface* a_f4se)
 	Diagnostics::SurvivalObserver::Install();
 	Hooks::Unlocks::Install();
 	Hooks::GodMode::Install();
+	Hooks::ExitSave::Install();
 	SleepWait::Integration::Install();
 
 	REX::INFO("House Rules loaded");

@@ -8,17 +8,21 @@
 
 namespace Survival::HCManagerScript
 {
+	struct Batch::Impl
+	{
+		RE::BSTSmartPointer<RE::BSScript::Object> obj;
+	};
+
 	namespace
 	{
 		constexpr std::uint32_t      kManagerQuestFormID = 0x0000080Eu;
 		constexpr std::string_view   kScriptName{ "Hardcore:HC_ManagerScript" };
 
-		// Cached for the duration of one save load. Reset() drops it.
-		RE::BSTSmartPointer<RE::BSScript::Object> g_cachedObject;
-		bool                                       g_warnedMissing = false;
+		bool g_warnedMissing = false;
 
 		RE::TESQuest* FindHCManagerQuest()
 		{
+			// Linear-scan; GetFormByID can trip BSStaticTriShapeDB::Force during save-load on OG.
 			auto* dh = RE::TESDataHandler::GetSingleton();
 			if (!dh) {
 				return nullptr;
@@ -31,59 +35,58 @@ namespace Survival::HCManagerScript
 			return nullptr;
 		}
 
-		RE::BSScript::Object* GetManagerObject()
+		bool TryAcquire(RE::BSTSmartPointer<RE::BSScript::Object>& a_out)
 		{
-			if (g_cachedObject) {
-				return g_cachedObject.get();
-			}
-
 			auto* vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 			auto* quest = FindHCManagerQuest();
 			if (!vm || !quest) {
-				return nullptr;
+				return false;
 			}
 
 			auto& policy = vm->GetObjectHandlePolicy();
 			const auto handle = policy.GetHandleForObject(
 				RE::BSScript::GetVMTypeID<RE::TESQuest>(), quest);
 			if (handle == policy.EmptyHandle()) {
-				return nullptr;
+				return false;
 			}
 
-			RE::BSTSmartPointer<RE::BSScript::Object> obj;
-			if (!vm->FindBoundObject(handle, kScriptName.data(), true, obj, true) || !obj) {
+			if (!vm->FindBoundObject(handle, kScriptName.data(), true, a_out, true) || !a_out) {
 				if (!g_warnedMissing) {
 					REX::WARN("HCManagerScript: '{}' not bound on quest 0x{:08X}; Survival may be inactive",
 						kScriptName, kManagerQuestFormID);
 					g_warnedMissing = true;
 				}
-				return nullptr;
+				return false;
 			}
-
-			g_cachedObject = std::move(obj);
 			g_warnedMissing = false;
-			return g_cachedObject.get();
-		}
-
-		RE::BSScript::Variable* LookupProperty(const char* a_name)
-		{
-			auto* obj = GetManagerObject();
-			if (!obj) {
-				return nullptr;
-			}
-			RE::BSFixedString key{ a_name };
-			auto* var = obj->GetProperty(key);
-			if (!var) {
-				REX::WARN("HCManagerScript: property '{}' not found on bound object", a_name);
-			}
-			return var;
+			return true;
 		}
 	}
 
-	bool SetFloat(const char* a_property, float a_value)
+	Batch::Batch() :
+		m_impl(std::make_unique<Impl>())
 	{
-		auto* var = LookupProperty(a_property);
+		if (!TryAcquire(m_impl->obj)) {
+			m_impl.reset();
+		}
+	}
+
+	Batch::~Batch() = default;
+
+	Batch::operator bool() const noexcept
+	{
+		return m_impl != nullptr;
+	}
+
+	bool Batch::SetFloat(const char* a_property, float a_value)
+	{
+		if (!m_impl) {
+			return false;
+		}
+		RE::BSFixedString key{ a_property };
+		auto* var = m_impl->obj->GetProperty(key);
 		if (!var) {
+			REX::WARN("HCManagerScript: property '{}' not found on bound object", a_property);
 			return false;
 		}
 		if (var->is<float>()) {
@@ -98,10 +101,15 @@ namespace Survival::HCManagerScript
 		return false;
 	}
 
-	bool SetInt(const char* a_property, std::int32_t a_value)
+	bool Batch::SetInt(const char* a_property, std::int32_t a_value)
 	{
-		auto* var = LookupProperty(a_property);
+		if (!m_impl) {
+			return false;
+		}
+		RE::BSFixedString key{ a_property };
+		auto* var = m_impl->obj->GetProperty(key);
 		if (!var) {
+			REX::WARN("HCManagerScript: property '{}' not found on bound object", a_property);
 			return false;
 		}
 		if (var->is<std::int32_t>()) {
@@ -118,7 +126,6 @@ namespace Survival::HCManagerScript
 
 	void Reset()
 	{
-		g_cachedObject.reset();
 		g_warnedMissing = false;
 	}
 }

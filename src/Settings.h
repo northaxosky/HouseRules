@@ -26,6 +26,7 @@ namespace MCM
 			inline static REX::INI::Bool<> bNoAmmoWeight{ "Unlocks", "bNoAmmoWeight", false };
 			inline static REX::INI::Bool<> bNoSurvivalCarryWeight{ "Unlocks", "bNoSurvivalCarryWeight", false };
 			inline static REX::INI::Bool<> bReenableSurvival{ "Unlocks", "bReenableSurvival", false };
+			inline static REX::INI::Bool<> bKeepExitSave{ "Unlocks", "bKeepExitSave", false };
 		};
 
 		// Runtime magnitude settings. 1.0 = vanilla for implemented paths; some

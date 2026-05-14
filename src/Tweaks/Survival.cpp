@@ -30,58 +30,62 @@ namespace Tweaks::Survival
 		void ApplyScriptTuning()
 		{
 			using S = MCM::Settings::Survival;
-			namespace HC = ::Survival::HCManagerScript;
+			::Survival::HCManagerScript::Batch hc;
+			if (!hc) {
+				return;
+			}
 
 			// Sustenance tuning
-			HC::SetInt  ("FoodCostPerTick",                 S::iFoodCostPerTick.GetValue());
-			HC::SetInt  ("DrinkCostPerTick",                S::iDrinkCostPerTick.GetValue());
-			HC::SetFloat("GamesHoursPerTick",               S::fGamesHoursPerTick.GetValue());
-			HC::SetFloat("BonusDigestionHours",             S::fBonusDigestionHours.GetValue());
-			HC::SetFloat("SustenanceTickWhileSleepingMult", S::fSustenanceTickWhileSleepingMult.GetValue());
-			HC::SetFloat("TickHoursCostPerCombat",          S::fTickHoursCostPerCombat.GetValue());
+			hc.SetInt  ("FoodCostPerTick",                 S::iFoodCostPerTick.GetValue());
+			hc.SetInt  ("DrinkCostPerTick",                S::iDrinkCostPerTick.GetValue());
+			hc.SetFloat("GamesHoursPerTick",               S::fGamesHoursPerTick.GetValue());
+			hc.SetFloat("BonusDigestionHours",             S::fBonusDigestionHours.GetValue());
+			hc.SetFloat("SustenanceTickWhileSleepingMult", S::fSustenanceTickWhileSleepingMult.GetValue());
+			hc.SetFloat("TickHoursCostPerCombat",          S::fTickHoursCostPerCombat.GetValue());
 
 			// Food stage thresholds
-			HC::SetInt("iFoodPoolPeckishAmount",  S::iFoodPoolPeckishAmount.GetValue());
-			HC::SetInt("iFoodPoolHungryAmount",   S::iFoodPoolHungryAmount.GetValue());
-			HC::SetInt("iFoodPoolFamishedAmount", S::iFoodPoolFamishedAmount.GetValue());
-			HC::SetInt("iFoodPoolRavenousAmount", S::iFoodPoolRavenousAmount.GetValue());
-			HC::SetInt("iFoodPoolStarvingAmount", S::iFoodPoolStarvingAmount.GetValue());
+			hc.SetInt("iFoodPoolPeckishAmount",  S::iFoodPoolPeckishAmount.GetValue());
+			hc.SetInt("iFoodPoolHungryAmount",   S::iFoodPoolHungryAmount.GetValue());
+			hc.SetInt("iFoodPoolFamishedAmount", S::iFoodPoolFamishedAmount.GetValue());
+			hc.SetInt("iFoodPoolRavenousAmount", S::iFoodPoolRavenousAmount.GetValue());
+			hc.SetInt("iFoodPoolStarvingAmount", S::iFoodPoolStarvingAmount.GetValue());
 
 			// Drink stage thresholds
-			HC::SetInt("iDrinkPoolParchedAmount",            S::iDrinkPoolParchedAmount.GetValue());
-			HC::SetInt("iDrinkPoolThirstyAmount",            S::iDrinkPoolThirstyAmount.GetValue());
-			HC::SetInt("iDrinkPoolMildlyDehydratedAmount",   S::iDrinkPoolMildlyDehydratedAmount.GetValue());
-			HC::SetInt("iDrinkPoolDehydratedAmount",         S::iDrinkPoolDehydratedAmount.GetValue());
-			HC::SetInt("iDrinkPoolSeverelyDehydratedAmount", S::iDrinkPoolSeverelyDehydratedAmount.GetValue());
+			hc.SetInt("iDrinkPoolParchedAmount",            S::iDrinkPoolParchedAmount.GetValue());
+			hc.SetInt("iDrinkPoolThirstyAmount",            S::iDrinkPoolThirstyAmount.GetValue());
+			hc.SetInt("iDrinkPoolMildlyDehydratedAmount",   S::iDrinkPoolMildlyDehydratedAmount.GetValue());
+			hc.SetInt("iDrinkPoolDehydratedAmount",         S::iDrinkPoolDehydratedAmount.GetValue());
+			hc.SetInt("iDrinkPoolSeverelyDehydratedAmount", S::iDrinkPoolSeverelyDehydratedAmount.GetValue());
 
 			// Sleep tuning (vanilla typo "Disase..." preserved on the script property name)
-			HC::SetFloat("GameTimerInterval_SleepDeprivation",              S::fGameTimerIntervalSleepDeprivation.GetValue());
-			HC::SetFloat("InsomniaSleepMult",                               S::fInsomniaSleepMult.GetValue());
-			HC::SetInt  ("MinHoursForCuringSleepEffects",                   S::iMinHoursForCuringSleepEffects.GetValue());
-			HC::SetFloat("CaffeineInducedSleepDelay",                       S::fCaffeineInducedSleepDelay.GetValue());
-			HC::SetFloat("ExtraCaffeineInducedSleepDelay",                  S::fExtraCaffeineInducedSleepDelay.GetValue());
-			HC::SetFloat("DisaseSleepinessSleepDeprivationTimerMult",       S::fDiseasedSleepinessTimerMult.GetValue());
+			hc.SetFloat("GameTimerInterval_SleepDeprivation",         S::fGameTimerIntervalSleepDeprivation.GetValue());
+			hc.SetFloat("InsomniaSleepMult",                          S::fInsomniaSleepMult.GetValue());
+			hc.SetInt  ("MinHoursForCuringSleepEffects",              S::iMinHoursForCuringSleepEffects.GetValue());
+			hc.SetFloat("CaffeineInducedSleepDelay",                  S::fCaffeineInducedSleepDelay.GetValue());
+			hc.SetFloat("ExtraCaffeineInducedSleepDelay",             S::fExtraCaffeineInducedSleepDelay.GetValue());
+			hc.SetFloat("DisaseSleepinessSleepDeprivationTimerMult",  S::fDiseasedSleepinessTimerMult.GetValue());
 
 			// Disease tuning
-			HC::SetFloat("DiseaseGracePeriod",            S::fDiseaseGracePeriod.GetValue());
-			HC::SetFloat("DiseaseRiskRollThreshold",      S::fDiseaseRiskRollThreshold.GetValue());
-			HC::SetFloat("DiseaseRiskDrainPerCycle",      S::fDiseaseRiskDrainPerCycle.GetValue());
-			HC::SetFloat("CurrentDiseasePoolValueMult",   S::fCurrentDiseasePoolValueMult.GetValue());
-			HC::SetFloat("DiseaseNeedMoreFoodMult",       S::fDiseaseNeedMoreFoodMult.GetValue());
-			HC::SetFloat("ImmunodeficiencyDiseaseChanceMult", S::fImmunodeficiencyDiseaseMult.GetValue());
-			HC::SetFloat("DiseaseRiskCannibalAmount",     S::fDiseaseRiskCannibalAmount.GetValue());
-			HC::SetFloat("DiseaseRiskChemsAmount",        S::fDiseaseRiskChemsAmount.GetValue());
-			HC::SetFloat("DiseaseRiskCombatantAmount",    S::fDiseaseRiskCombatantAmount.GetValue());
-			HC::SetFloat("DiseaseRiskFoodHighAmount",     S::fDiseaseRiskFoodHighAmount.GetValue());
-			HC::SetFloat("DiseaseRiskFoodStandardAmount", S::fDiseaseRiskFoodStandardAmount.GetValue());
-			HC::SetFloat("DiseaseRiskRainAmount",         S::fDiseaseRiskRainAmount.GetValue());
-			HC::SetFloat("DiseaseRiskSwimmingAmount",     S::fDiseaseRiskSwimmingAmount.GetValue());
+			hc.SetFloat("DiseaseGracePeriod",                 S::fDiseaseGracePeriod.GetValue());
+			hc.SetFloat("DiseaseRiskRollThreshold",           S::fDiseaseRiskRollThreshold.GetValue());
+			hc.SetFloat("DiseaseRiskDrainPerCycle",           S::fDiseaseRiskDrainPerCycle.GetValue());
+			hc.SetFloat("CurrentDiseasePoolValueMult",        S::fCurrentDiseasePoolValueMult.GetValue());
+			hc.SetFloat("DiseaseNeedMoreFoodMult",            S::fDiseaseNeedMoreFoodMult.GetValue());
+			hc.SetFloat("ImmunodeficiencyDiseaseChanceMult",  S::fImmunodeficiencyDiseaseMult.GetValue());
+			hc.SetFloat("DiseaseRiskCannibalAmount",          S::fDiseaseRiskCannibalAmount.GetValue());
+			hc.SetFloat("DiseaseRiskChemsAmount",             S::fDiseaseRiskChemsAmount.GetValue());
+			hc.SetFloat("DiseaseRiskCombatantAmount",         S::fDiseaseRiskCombatantAmount.GetValue());
+			hc.SetFloat("DiseaseRiskFoodHighAmount",          S::fDiseaseRiskFoodHighAmount.GetValue());
+			hc.SetFloat("DiseaseRiskFoodStandardAmount",      S::fDiseaseRiskFoodStandardAmount.GetValue());
+			hc.SetFloat("DiseaseRiskRainAmount",              S::fDiseaseRiskRainAmount.GetValue());
+			hc.SetFloat("DiseaseRiskSwimmingAmount",          S::fDiseaseRiskSwimmingAmount.GetValue());
 
 			// Adrenaline tuning (MaxAdrenaline itself is a script-local, derived from these two)
-			HC::SetInt("KillsForAdrenalinePerkLevel", S::iKillsForAdrenalinePerkLevel.GetValue());
-			HC::SetInt("MaxAdrenalinePerkLevel",      S::iMaxAdrenalinePerkLevel.GetValue());
+			hc.SetInt("KillsForAdrenalinePerkLevel", S::iKillsForAdrenalinePerkLevel.GetValue());
+			hc.SetInt("MaxAdrenalinePerkLevel",      S::iMaxAdrenalinePerkLevel.GetValue());
 
-			HC::SetFloat("GameTimerInterval_Encumbrance", S::fGameTimerIntervalEncumbrance.GetValue());
+			// Encumbrance
+			hc.SetFloat("GameTimerInterval_Encumbrance", S::fGameTimerIntervalEncumbrance.GetValue());
 		}
 	}
 

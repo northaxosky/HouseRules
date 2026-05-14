@@ -6,13 +6,13 @@ namespace
 	constexpr auto kRuntimeOG  = REL::Version{ 1, 10, 163, 0 };   // pre-Next-Gen
 	constexpr auto kRuntimeNG  = REL::Version{ 1, 10, 984, 0 };   // Next-Gen
 
-	constexpr std::uint32_t kPluginVersion = (1u << 24) | (0u << 16) | (0u << 4) | 0u;  // 1.0.0.0
+	constexpr std::uint32_t kPluginVersion = (1u << 24) | (1u << 16) | (0u << 4) | 0u;  // 1.1.0.0
 }
 
 // New-API plugin declaration (Next-Gen runtimes, 1.10.980+).
 F4SE_EXPORT constinit auto F4SEPlugin_Version = []() noexcept {
 	F4SE::PluginVersionData v{};
-	v.PluginVersion({ 1, 0, 0, 0 });
+	v.PluginVersion({ 1, 1, 0, 0 });
 	v.PluginName("HouseRules");
 	v.AuthorName("Mute");
 	v.UsesAddressLibrary(true);   // 1.11.137+ AddressLib
